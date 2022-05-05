@@ -7,5 +7,11 @@ namespace ClickAndCollect.DAL
 {
     public class CustomerDAL: ICustomerDAL
     {
+        private string connectionString;
+
+        public CustomerDAL (string connectionString)
+        {
+            this.connectionString = connectionString;
+        }
     }
 }

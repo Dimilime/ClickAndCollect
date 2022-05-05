@@ -25,6 +25,7 @@ namespace ClickAndCollect
         {
             string connectionString = Configuration.GetConnectionString("default");
             services.AddControllersWithViews();
+            services.AddTransient
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
