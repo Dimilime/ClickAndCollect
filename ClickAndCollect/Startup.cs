@@ -1,3 +1,5 @@
+using ClickAndCollect.DAL;
+using ClickAndCollect.DAL.IDAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,7 +27,14 @@ namespace ClickAndCollect
         {
             string connectionString = Configuration.GetConnectionString("default");
             services.AddControllersWithViews();
-            services.AddTransient
+            services.AddTransient<ICashierDAL>(cad => new CashierDAL(connectionString));
+            services.AddTransient<ICustomerDAL>(cud => new CustomerDAL(connectionString));
+            services.AddTransient<IOrderDAL>(od => new OrderDAL(connectionString));
+            services.AddTransient<IOrderPickerDAL>(opd => new OrderPickerDAL(connectionString));
+            services.AddTransient<IPersonDAL>(pd => new PersonDAL(connectionString));
+            services.AddTransient<IProductsDAL>(psd => new ProductsDAL(connectionString));
+            services.AddTransient<IShopDAL>(sd => new ShopDAL(connectionString));
+            services.AddTransient<ITimeSlotDAL>(tsd => new TimeSlotDAL(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

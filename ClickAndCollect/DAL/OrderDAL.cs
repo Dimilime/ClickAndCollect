@@ -8,5 +8,11 @@ namespace ClickAndCollect.DAL
 {
     public class OrderDAL: IOrderDAL
     {
+        private string connectionString;
+
+        public OrderDAL(string connectionString)
+        {
+            this.connectionString = connectionString;
+        }
     }
 }

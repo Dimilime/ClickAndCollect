@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 
 namespace ClickAndCollect.DAL
 {
-    public class IPersonDAL
+    public interface IPersonDAL
     {
+        public bool Authenticate (string email, string password);
+        public void LogOut();
+        public void Register();
     }
 }

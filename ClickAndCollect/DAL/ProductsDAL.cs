@@ -8,5 +8,11 @@ namespace ClickAndCollect.DAL
 {
     public class ProductsDAL : IProductsDAL
     {
+        private string connectionString;
+
+        public ProductsDAL(string connectionString)
+        {
+            this.connectionString = connectionString;
+        }
     }
 }
