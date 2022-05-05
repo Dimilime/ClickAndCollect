@@ -61,7 +61,7 @@ namespace ClickAndCollect
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Person}/{action=HomePage}/{id?}");
             });
         }
     }
