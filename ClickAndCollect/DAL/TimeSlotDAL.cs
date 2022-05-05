@@ -8,5 +8,11 @@ namespace ClickAndCollect.DAL
 {
     public class TimeSlotDAL : ITimeSlotDAL
     {
+        private string connectionString;
+
+        public TimeSlotDAL(string connectionString)
+        {
+            this.connectionString = connectionString;
+        }
     }
 }

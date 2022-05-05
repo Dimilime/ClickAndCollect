@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClickAndCollect.DAL
 {
-    public class ICustomerDAL
+    public interface ICustomerDAL
     {
 
     }

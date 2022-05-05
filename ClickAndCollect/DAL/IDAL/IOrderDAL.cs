@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ClickAndCollect.DAL.IDAL
 {
-    public class IOrderDAL
+    public interface IOrderDAL
     {
     }
 }

@@ -10,7 +10,7 @@ namespace ClickAndCollect.DAL
     {
         private string connectionString;
 
-        public CustomerDAL (string connectionString)
+        public CustomerDAL(string connectionString)
         {
             this.connectionString = connectionString;
         }

@@ -8,5 +8,11 @@ namespace ClickAndCollect.DAL
 {
     public class ShopDAL : IShopDAL
     {
+        private string connectionString;
+
+        public ShopDAL(string connectionString)
+        {
+            this.connectionString = connectionString;
+        }
     }
 }
