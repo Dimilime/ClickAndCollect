@@ -10,7 +10,7 @@ namespace ClickAndCollect.DAL
     {
         public void AddCustomer(Customer c);
 
-        public Boolean EmailExists(Customer c);
+        //public Boolean EmailExists(Customer c);
 
     }
 }

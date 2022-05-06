@@ -50,9 +50,9 @@ namespace ClickAndCollect.Models
             customerDAL.AddCustomer(this);
         }
 
-        public bool VerifierMail(ICustomerDAL customerDAL)
-        {
-            return customerDAL.EmailExists(this);
-        }
+        //public Boolean VerifierMail(ICustomerDAL customerDAL)
+        //{
+        //    return customerDAL.EmailExists(this);
+        //}
     }
 }

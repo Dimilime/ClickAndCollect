@@ -12,7 +12,7 @@ namespace ClickAndCollect.Controllers
     {
         private readonly ICustomerDAL _customerDAL;
 
-        public CustomerController(CustomerDAL customerDAL)
+        public CustomerController(ICustomerDAL customerDAL)
         {
             _customerDAL = customerDAL;
         }
@@ -22,20 +22,20 @@ namespace ClickAndCollect.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Register(Customer customer)
-        {
-            if(ModelState.IsValid)
-            {
-                if(customer.VerifierMail(_customerDAL) != false)
-                {
-                    customer.Register(_customerDAL);
-                    return View("Views/Customer/Succes");
-                }
-                return View("View/Customer/Error");
+        //[HttpPost]
+        //public IActionResult Register(Customer customer)
+        //{
+        //    if(ModelState.IsValid)
+        //    {
+        //        if(customer.VerifierMail(_customerDAL) != false)
+        //        {
+        //            customer.Register(_customerDAL);
+        //            return View("Views/Customer/Succes");
+        //        }
+        //        return View("View/Customer/Error");
 
-            }
-            return View();
-        }
+        //    }
+        //    return View();
+        //}
     }
 }
