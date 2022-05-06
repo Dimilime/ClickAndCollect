@@ -17,33 +17,39 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
-        //public Boolean EmailExists(Customer c)
-        //{
-        //    bool result = false;
+        public Boolean EmailExists(Customer c)
+        {
+            bool result = false;
 
-        //    using (SqlConnection connection = new SqlConnection(connectionString))
-        //    {
-        //        SqlCommand cmd = new SqlCommand("SELECT * from dbo.Person WHERE email = @Email AND TYPE = 'Customer'", connection);
-        //        connection.Open();
-        //        using (SqlDataReader reader = cmd.ExecuteReader())
-        //        {
-        //            while (reader.Read())
-        //            {
-        //                result = true;
-        //            }
-        //        }
-        //    }
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * from Person WHERE EMAIL = @Email AND TYPE = 'Customer'", connection);
+                connection.Open();
+                //using (SqlDataReader reader = cmd.ExecuteReader())
+                //{
+                //    while (reader.Read())
+                //    {
+                //        result = true;
+                //    }
+                //}
+            }
 
-        //    return result;
-        //}
+            return result;
+        }
         public void AddCustomer(Customer c)
         {
-            //using(SqlConnection connection = new SqlConnection(connectionString))
-            //{
-            //    SqlCommand cmd = new SqlCommand("INSERT INTO Person (LastName, FirstName, Email, Password, Type) VALUES (@LastName, @FirstName, @Email, @Password, 'Customer')", connection);
-            //    cmd.Parameters.AddWithValue("LastName", c.LastName);
-            //    connection.Open();
-            //}
+            using(SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("INSERT INTO dbo.Person (LastName, FirstName, Email, Password, Type) VALUES ('tit', 'oio', 'jnkd@fds.dd', 'lol', 'Customer')", connection);
+                //SqlCommand cmd2 = new SqlCommand("INSERT INTO Customer(DoB, PhoneNumber) VALUES (@Dob, @PhoneNumber)", connection);
+                cmd.Parameters.AddWithValue("LastName", c.LastName);
+                cmd.Parameters.AddWithValue("FirstName", c.FirstName);
+                cmd.Parameters.AddWithValue("Email", c.Email);
+                cmd.Parameters.AddWithValue("Password", c.Password);
+                //cmd2.Parameters.AddWithValue("DoB", c.DoB);
+                //cmd2.Parameters.AddWithValue("PhoneNumber", c.PhoneNumber);
+                connection.Open();
+            }
         }
     }
 }

@@ -22,20 +22,20 @@ namespace ClickAndCollect.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public IActionResult Register(Customer customer)
-        //{
-        //    if(ModelState.IsValid)
-        //    {
-        //        if(customer.VerifierMail(_customerDAL) != false)
-        //        {
-        //            customer.Register(_customerDAL);
-        //            return View("Views/Customer/Succes");
-        //        }
-        //        return View("View/Customer/Error");
+        [HttpPost]
+        public IActionResult Register(Customer customer)
+        {
+            if(ModelState.IsValid)
+            {
+                if(customer.VerifierMail(_customerDAL) != true)
+                {
+                    customer.Register(_customerDAL);
+                    return View("Views/Customer/Succes");
+                }
+                return View("View/Customer/Error");
 
-        //    }
-        //    return View();
-        //}
+            }
+            return View();
+        }
     }
 }

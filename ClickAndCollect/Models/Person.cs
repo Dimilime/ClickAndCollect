@@ -13,6 +13,10 @@ namespace ClickAndCollect.Models
         private string email;
         private string password;
         
+        public Person()
+        {
+
+        }
         public Person (string ln, string fn, string e, string p)
         {
             lastName = ln;

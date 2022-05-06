@@ -13,6 +13,10 @@ namespace ClickAndCollect.Models
         private int phoneNumber;
         private List<Order> orders;
 
+        public Customer()
+        {
+
+        }
         public Customer (string ln, string fn, string e, string p, DateTime d, int pn)
             :base(ln,fn,e,p)
         {
@@ -50,9 +54,9 @@ namespace ClickAndCollect.Models
             customerDAL.AddCustomer(this);
         }
 
-        //public Boolean VerifierMail(ICustomerDAL customerDAL)
-        //{
-        //    return customerDAL.EmailExists(this);
-        //}
+        public Boolean VerifierMail(ICustomerDAL customerDAL)
+        {
+            return customerDAL.EmailExists(this);
+        }
     }
 }
