@@ -21,11 +21,6 @@ namespace ClickAndCollect.Models
             throw new NotImplementedException();
         }
 
-        public override void Register()
-        {
-            throw new NotImplementedException();
-        }
-
         public void AccesDailyCustomers()
         {
 

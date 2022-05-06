@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ClickAndCollect.DAL;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,14 +21,38 @@ namespace ClickAndCollect.Models
             orders = new List<Order>();
         }
 
+        [Display(Name = "Date de naissance")]
+        [Required(ErrorMessage ="La date de naisse est obligatoire !")]
+        [DataType(DataType.Date, ErrorMessage ="La date de naisse est invalide !")]
+        public DateTime DoB
+        {
+            get { return doB; }
+            set { doB = value; }
+        }
+        
+        [Display(Name = "Numéro de téléphone")]
+        [Required(ErrorMessage ="Le numéro de téléphone est obligatoire !")]
+        [DataType(DataType.PhoneNumber, ErrorMessage ="Le numéro de téléphone est invalide !")]
+        public int PhoneNumber
+        {
+            get { return phoneNumber; }
+            set { phoneNumber = value; }
+        }
+
+
         public override void LogOut()
         {
             throw new NotImplementedException();
         }
 
-        public override void Register()
+        public void Register(ICustomerDAL customerDAL)
         {
-            throw new NotImplementedException();
+            customerDAL.AddCustomer(this);
+        }
+
+        public bool VerifierMail(ICustomerDAL customerDAL)
+        {
+            return customerDAL.EmailExists(this);
         }
     }
 }

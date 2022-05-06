@@ -1,6 +1,8 @@
 ﻿using ClickAndCollect.DAL.IDAL;
+using ClickAndCollect.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,19 +17,5 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
-        public bool Authenticate(string email, string password)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void LogOut()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Register()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
