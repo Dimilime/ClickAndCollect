@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ClickAndCollect.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,11 @@ namespace ClickAndCollect.Controllers
     public class PersonController : Controller
     {
         public IActionResult HomePage()
+        {
+            return View();
+        }
+
+        public IActionResult Connexion()
         {
             return View();
         }
