@@ -12,6 +12,7 @@ namespace ClickAndCollect.Models
         private string firstName;
         private string email;
         private string password;
+        private string type;
         
         public Person()
         {
@@ -59,6 +60,12 @@ namespace ClickAndCollect.Models
         {
             get { return password; }
             set { password = value; }
+        }
+
+        public string Type
+        {
+            get { return type; }
+            set { type = value; }
         }
 
         public static void Authenticate(string email, string password)

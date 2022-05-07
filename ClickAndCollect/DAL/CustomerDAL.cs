@@ -23,15 +23,19 @@ namespace ClickAndCollect.DAL
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT * from Person WHERE EMAIL = @Email AND TYPE = 'Customer'", connection);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Person WHERE EMAIL = @Email AND TYPE = 'Customer'", connection);
+                
+                cmd.Parameters.AddWithValue("Email", c.Email);
+                
                 connection.Open();
-                //using (SqlDataReader reader = cmd.ExecuteReader())
-                //{
-                //    while (reader.Read())
-                //    {
-                //        result = true;
-                //    }
-                //}
+                
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        result = true;
+                    }
+                }
             }
 
             return result;
@@ -40,16 +44,23 @@ namespace ClickAndCollect.DAL
         {
             using(SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("INSERT INTO dbo.Person (LastName, FirstName, Email, Password, Type) VALUES ('tit', 'oio', 'jnkd@fds.dd', 'lol', 'Customer')", connection);
-                //SqlCommand cmd2 = new SqlCommand("INSERT INTO Customer(DoB, PhoneNumber) VALUES (@Dob, @PhoneNumber)", connection);
+                c.Type = "Customer";
+
+                SqlCommand cmd = new SqlCommand("INSERT INTO Person (LastName, FirstName, Email, Password, Type) VALUES (@LastName, @FirstName, @Email, @Password, @Type)", connection);
+                SqlCommand cmd2 = new SqlCommand("INSERT INTO Customer(IdPerson,DoB, PhoneNumber) VALUES (@IdPerson, @Dob, @PhoneNumber)", connection);
+                
                 cmd.Parameters.AddWithValue("LastName", c.LastName);
                 cmd.Parameters.AddWithValue("FirstName", c.FirstName);
                 cmd.Parameters.AddWithValue("Email", c.Email);
                 cmd.Parameters.AddWithValue("Password", c.Password);
-                //cmd2.Parameters.AddWithValue("DoB", c.DoB);
-                //cmd2.Parameters.AddWithValue("PhoneNumber", c.PhoneNumber);
+                cmd.Parameters.AddWithValue("Type", c.Type);
+                cmd2.Parameters.AddWithValue("IdPerson", c.IdPerson);
+                cmd2.Parameters.AddWithValue("DoB", c.DoB);
+                cmd2.Parameters.AddWithValue("PhoneNumber", c.PhoneNumber);
+
                 connection.Open();
             }
+
         }
     }
 }

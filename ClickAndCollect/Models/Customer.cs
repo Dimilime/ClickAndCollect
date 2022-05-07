@@ -11,10 +11,14 @@ namespace ClickAndCollect.Models
     {
         private DateTime doB;
         private int phoneNumber;
+        public static int nbr = 1007; //A CHANGER AVANT DE RENDRE LE PROJET !!!!!!
+        private int idPerson;
         private List<Order> orders;
 
-        public Customer()
+        public Customer() //verifier si peut faire un this
         {
+            nbr = nbr + 1;
+            IdPerson = nbr;
 
         }
         public Customer (string ln, string fn, string e, string p, DateTime d, int pn)
@@ -23,6 +27,8 @@ namespace ClickAndCollect.Models
             doB = d;
             phoneNumber = pn;
             orders = new List<Order>();
+            nbr = nbr + 1;
+            IdPerson = nbr;
         }
 
         [Display(Name = "Date de naissance")]
@@ -41,6 +47,12 @@ namespace ClickAndCollect.Models
         {
             get { return phoneNumber; }
             set { phoneNumber = value; }
+        }
+
+        public int IdPerson
+        {
+            get { return idPerson; }
+            set { idPerson = value; }
         }
 
 
