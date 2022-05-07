@@ -40,6 +40,19 @@ namespace ClickAndCollect.DAL
 
             return result;
         }
+
+        public bool CheckAccount(Customer c)
+        {
+            bool result = false;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+            }
+
+            return result;
+        }
+
         public void AddCustomer(Customer c)
         {
             using(SqlConnection connection = new SqlConnection(connectionString))

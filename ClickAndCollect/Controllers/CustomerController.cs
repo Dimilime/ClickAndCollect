@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace ClickAndCollect.Controllers
 {
@@ -35,6 +36,16 @@ namespace ClickAndCollect.Controllers
 
                 }
                 return View("View/Customer/Error");
+
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Authenticate(Customer customer)
+        {
+            if (ModelState.IsValid)
+            {
 
             }
             return View();
