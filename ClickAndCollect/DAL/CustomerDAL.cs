@@ -17,7 +17,7 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
-        public Boolean EmailCustomerExists(Customer c)
+        public bool EmailCustomerExists(Customer c)
         {
             bool result = false;
 
