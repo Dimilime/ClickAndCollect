@@ -50,8 +50,12 @@ namespace ClickAndCollect.DAL
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     SqlCommand cmd = new SqlCommand("SELECT * FROM Person WHERE EMAIL = @Email and PASSWORD = @Password", connection);
-                    cmd.Parameters.AddWithValue
+                    
                 }
+            }
+            catch
+            {
+
             }
 
             return result;

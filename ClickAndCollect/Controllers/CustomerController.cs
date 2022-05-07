@@ -48,6 +48,10 @@ namespace ClickAndCollect.Controllers
             {
                 customer.VerifierCompte(_customerDAL);
             }
+            catch
+            {
+
+            }
             return View();
         }
     }
