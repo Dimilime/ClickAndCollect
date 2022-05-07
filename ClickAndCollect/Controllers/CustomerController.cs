@@ -44,9 +44,9 @@ namespace ClickAndCollect.Controllers
         [HttpPost]
         public IActionResult Authenticate(Customer customer)
         {
-            if (ModelState.IsValid)
+            try
             {
-
+                customer.VerifierCompte(_customerDAL);
             }
             return View();
         }
