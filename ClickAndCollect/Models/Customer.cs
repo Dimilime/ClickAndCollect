@@ -71,9 +71,5 @@ namespace ClickAndCollect.Models
             return customerDAL.EmailExists(this);
         }
 
-        public bool VerifierCompte(ICustomerDAL customerDAL)
-        {
-            return customerDAL.CheckAccount(this);
-        }
     }
 }

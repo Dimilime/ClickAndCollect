@@ -41,14 +41,5 @@ namespace ClickAndCollect.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Authenticate(Customer customer)
-        {
-            try
-            {
-                customer.VerifierCompte(_customerDAL);
-            }
-            return View();
-        }
     }
 }

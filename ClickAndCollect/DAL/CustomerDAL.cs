@@ -41,22 +41,6 @@ namespace ClickAndCollect.DAL
             return result;
         }
 
-        public bool CheckAccount(Customer c)
-        {
-            bool result = false;
-
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    SqlCommand cmd = new SqlCommand("SELECT * FROM Person WHERE EMAIL = @Email and PASSWORD = @Password", connection);
-                    cmd.Parameters.AddWithValue
-                }
-            }
-
-            return result;
-        }
-
         public void AddCustomer(Customer c)
         {
             using(SqlConnection connection = new SqlConnection(connectionString))
