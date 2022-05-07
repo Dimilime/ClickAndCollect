@@ -11,7 +11,7 @@ namespace ClickAndCollect.Models
     {
         private DateTime doB;
         private int phoneNumber;
-        public static int nbr = 1007; //A CHANGER AVANT DE RENDRE LE PROJET !!!!!!
+        public static int nbr = 1009; //A CHANGER AVANT DE RENDRE LE PROJET !!!!!!
         private int idPerson;
         private List<Order> orders;
 
@@ -55,25 +55,16 @@ namespace ClickAndCollect.Models
             set { idPerson = value; }
         }
 
-
-        public override void LogOut()
-        {
-            throw new NotImplementedException();
-        }
-
         public void Register(ICustomerDAL customerDAL)
         {
             customerDAL.AddCustomer(this);
         }
 
-        public bool VerifierMail(ICustomerDAL customerDAL)
+        public bool VerifierMailCustomer(ICustomerDAL customerDAL)
         {
-            return customerDAL.EmailExists(this);
+            return customerDAL.EmailCustomerExists(this);
         }
 
-        public bool VerifierCompte(ICustomerDAL customerDAL)
-        {
-            return customerDAL.CheckAccount(this);
-        }
+
     }
 }

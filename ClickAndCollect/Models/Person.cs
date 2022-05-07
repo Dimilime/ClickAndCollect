@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClickAndCollect.DAL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClickAndCollect.Models
 {
-    public abstract class Person
+    public class Person
     {
         private string lastName;
         private string firstName;
@@ -73,7 +74,22 @@ namespace ClickAndCollect.Models
 
         }
 
-        public abstract void LogOut();
+        public bool VerifierCompte(IPersonDAL PersonDAL)
+        {
+            return PersonDAL.AccountExists(this);
+        }
+
+        public void GetUser(IPersonDAL personDAL)
+        {
+
+        }
+
+
+
+        public void LogOut()
+        {
+
+        }
 
     }
 }

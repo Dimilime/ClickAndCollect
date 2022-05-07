@@ -8,6 +8,6 @@ namespace ClickAndCollect.DAL
 {
     public interface IPersonDAL
     {
-
+        public Boolean AccountExists(Person p);
     }
 }

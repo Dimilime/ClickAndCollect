@@ -17,7 +17,7 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
-        public Boolean EmailExists(Customer c)
+        public Boolean EmailCustomerExists(Customer c)
         {
             bool result = false;
 
@@ -41,18 +41,6 @@ namespace ClickAndCollect.DAL
             return result;
         }
 
-        public bool CheckAccount(Customer c)
-        {
-            bool result = false;
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-
-            }
-
-            return result;
-        }
-
         public void AddCustomer(Customer c)
         {
             using(SqlConnection connection = new SqlConnection(connectionString))
@@ -67,9 +55,9 @@ namespace ClickAndCollect.DAL
                 cmd.Parameters.AddWithValue("Email", c.Email);
                 cmd.Parameters.AddWithValue("Password", c.Password);
                 cmd.Parameters.AddWithValue("Type", c.Type);
-                cmd2.Parameters.AddWithValue("IdPerson", c.IdPerson);
                 cmd2.Parameters.AddWithValue("DoB", c.DoB);
                 cmd2.Parameters.AddWithValue("PhoneNumber", c.PhoneNumber);
+                cmd2.Parameters.AddWithValue("IdPerson", c.IdPerson);
 
                 connection.Open();
             }
