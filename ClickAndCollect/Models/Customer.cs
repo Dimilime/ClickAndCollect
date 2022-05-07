@@ -11,7 +11,7 @@ namespace ClickAndCollect.Models
     {
         private DateTime doB;
         private int phoneNumber;
-        public static int nbr = 1007; //A CHANGER AVANT DE RENDRE LE PROJET !!!!!!
+        public static int nbr = 6; //A CHANGER AVANT DE RENDRE LE PROJET !!!!!!
         private int idPerson;
         private List<Order> orders;
 

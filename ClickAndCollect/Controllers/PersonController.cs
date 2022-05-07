@@ -1,5 +1,6 @@
 ﻿using ClickAndCollect.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,6 +11,11 @@ namespace ClickAndCollect.Controllers
 {
     public class PersonController : Controller
     {
+        private readonly ILogger<PersonController> _logger;
+        public PersonController(ILogger<PersonController> logger)
+        {
+            _logger = logger;
+        }
         public IActionResult HomePage()
         {
             return View();

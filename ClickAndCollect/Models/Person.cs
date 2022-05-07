@@ -8,6 +8,7 @@ namespace ClickAndCollect.Models
 {
     public abstract class Person
     {
+        public int Id { get; set; }
         private string lastName;
         private string firstName;
         private string email;

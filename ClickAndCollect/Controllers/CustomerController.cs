@@ -32,10 +32,10 @@ namespace ClickAndCollect.Controllers
                 {
                     
                     customer.Register(_customerDAL);
-                    return View("Views/Customer/Succes");
+                    return View("Views/Customer/Succes.cshtml");
 
                 }
-                return View("View/Customer/Error");
+                return View("Views/Customer/Error.cshtml");
 
             }
             return View();
