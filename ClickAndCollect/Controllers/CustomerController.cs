@@ -28,7 +28,7 @@ namespace ClickAndCollect.Controllers
         {
             if(ModelState.IsValid)
             {
-                if(customer.VerifierMail(_customerDAL) != true)
+                if(customer.VerifierMailCustomer(_customerDAL) != true)
                 {
                     
                     customer.Register(_customerDAL);
@@ -41,14 +41,5 @@ namespace ClickAndCollect.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Authenticate(Customer customer)
-        {
-            if (ModelState.IsValid)
-            {
-
-            }
-            return View();
-        }
     }
 }

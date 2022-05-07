@@ -17,5 +17,30 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
+        public Boolean AccountExists(Person p)
+        {
+            bool result = false;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Person WHERE EMAIL = @Email AND PASSWORD = @Password", connection);
+
+                cmd.Parameters.AddWithValue("Email", p.Email);
+                cmd.Parameters.AddWithValue("Password", p.Password);
+
+                connection.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        result = true;
+                    }
+                }
+            }
+
+            return result;
+        }
+
     }
 }

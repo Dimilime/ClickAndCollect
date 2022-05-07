@@ -16,11 +16,6 @@ namespace ClickAndCollect.Models
             shop = s;
         }
 
-        public override void LogOut()
-        {
-            throw new NotImplementedException();
-        }
-
         public void AccesDailyCustomers()
         {
 
