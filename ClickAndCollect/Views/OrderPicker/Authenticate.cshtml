@@ -1,0 +1,11 @@
+﻿@model OrderPicker
+
+<form asp-controller="OrderPicker" asp-action="Authenticate" method="post">
+    <label asp-for="Email"></label>
+    <input asp-for="Email" />
+    <span asp-validation-for="Email"></span>
+
+    <label asp-for="Password"></label>
+    <input asp-for="Password" />
+    <span asp-validation-for="Password"></span>
+</form>
