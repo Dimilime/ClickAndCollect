@@ -10,15 +10,13 @@ namespace ClickAndCollect.Models
     public class Customer : Person
     {
         private DateTime doB;
-        private int phoneNumber;
-        public static int nbr = 6; //A CHANGER AVANT DE RENDRE LE PROJET !!!!!!
+        private int phoneNumber;   
         private int idPerson;
         private List<Order> orders;
+        public int OrderId { get; set; }
 
-        public Customer() //verifier si peut faire un this
+        public Customer()
         {
-            nbr = nbr + 1;
-            IdPerson = nbr;
 
         }
         public Customer (string ln, string fn, string e, string p, DateTime d, int pn)
@@ -27,8 +25,7 @@ namespace ClickAndCollect.Models
             doB = d;
             phoneNumber = pn;
             orders = new List<Order>();
-            nbr = nbr + 1;
-            IdPerson = nbr;
+            
         }
 
         [Display(Name = "Date de naissance")]
@@ -63,7 +60,12 @@ namespace ClickAndCollect.Models
 
         public void Register(ICustomerDAL customerDAL)
         {
-            customerDAL.AddCustomer(this);
+            if (customerDAL.AddCustomer(this))
+            {
+
+            }
+            else
+                Console.WriteLine("Erreur, inscription échoué !");
         }
 
         public bool VerifierMail(ICustomerDAL customerDAL)
