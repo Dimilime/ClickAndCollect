@@ -19,8 +19,9 @@ namespace ClickAndCollect.Controllers
         public IActionResult HomePage()
         {
             return View();
+            
         }
-
+        
         public IActionResult Connexion()
         {
             return View();

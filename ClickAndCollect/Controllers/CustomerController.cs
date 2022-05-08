@@ -6,12 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace ClickAndCollect.Controllers
 {
     public class CustomerController : Controller
     {
         private readonly ICustomerDAL _customerDAL;
+        
 
         public CustomerController(ICustomerDAL customerDAL)
         {
@@ -30,12 +32,14 @@ namespace ClickAndCollect.Controllers
             {
                 if(customer.VerifierMail(_customerDAL) != true)
                 {
-                    
-                    customer.Register(_customerDAL);
-                    return View("Views/Customer/Succes.cshtml");
-
+                    if (customer.Register(_customerDAL))
+                    {
+                        return View("Views/Customer/Succes.cshtml");
+                    }
+                    else
+                     return View("Views/Customer/Error.cshtml");   
                 }
-                return View("Views/Customer/Error.cshtml");
+                
 
             }
             return View();

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace ClickAndCollect.DAL
 {
@@ -17,7 +18,7 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
-        public Boolean EmailExists(Customer c)
+        public bool EmailExists(Customer c)
         {
             bool result = false;
 
@@ -25,8 +26,9 @@ namespace ClickAndCollect.DAL
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM Person WHERE EMAIL = @Email AND TYPE = 'Customer'", connection);
                 
-                cmd.Parameters.AddWithValue("Email", c.Email);
                 
+                cmd.Parameters.Add("@Email", SqlDbType.VarChar);
+                cmd.Parameters["@Email"].Value=c.Email;
                 connection.Open();
                 
                 using (SqlDataReader reader = cmd.ExecuteReader())
@@ -61,26 +63,33 @@ namespace ClickAndCollect.DAL
             return result;
         }
 
-        public void AddCustomer(Customer c)
+        public bool AddCustomer(Customer c)
         {
+            bool success = false;
             using(SqlConnection connection = new SqlConnection(connectionString))
             {
-                c.Type = "Customer";
-
+               
                 SqlCommand cmd = new SqlCommand("INSERT INTO Person (LastName, FirstName, Email, Password, Type) VALUES (@LastName, @FirstName, @Email, @Password, @Type)", connection);
-                SqlCommand cmd2 = new SqlCommand("INSERT INTO Customer(IdPerson,DoB, PhoneNumber) VALUES (@IdPerson, @Dob, @PhoneNumber)", connection);
+                SqlCommand cmd2 = new SqlCommand("INSERT INTO Customer(IdPerson, DoB, PhoneNumber) VALUES (ident_current('Person'),@Dob, @PhoneNumber)", connection);
+
+                c.Type = "Customer";
+                cmd.Parameters.AddWithValue("@LastName", c.LastName);
+                cmd.Parameters.AddWithValue("@FirstName", c.FirstName);
+                cmd.Parameters.AddWithValue("@Email", c.Email);
+                cmd.Parameters.AddWithValue("@Password", c.Password);
+                cmd.Parameters.AddWithValue("@Type", c.Type);    
+                cmd2.Parameters.AddWithValue("@DoB", c.DoB);
+                cmd2.Parameters.AddWithValue("@PhoneNumber", c.PhoneNumber);
                 
-                cmd.Parameters.AddWithValue("LastName", c.LastName);
-                cmd.Parameters.AddWithValue("FirstName", c.FirstName);
-                cmd.Parameters.AddWithValue("Email", c.Email);
-                cmd.Parameters.AddWithValue("Password", c.Password);
-                cmd.Parameters.AddWithValue("Type", c.Type);
-                cmd2.Parameters.AddWithValue("IdPerson", c.IdPerson);
-                cmd2.Parameters.AddWithValue("DoB", c.DoB);
-                cmd2.Parameters.AddWithValue("PhoneNumber", c.PhoneNumber);
 
                 connection.Open();
+                int res = cmd.ExecuteNonQuery();
+                int res2 = cmd2.ExecuteNonQuery();
+                success = res > 0 && res2 > 0;
+                
+                
             }
+            return success;
 
         }
     }
