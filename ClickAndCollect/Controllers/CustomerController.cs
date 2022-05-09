@@ -30,15 +30,9 @@ namespace ClickAndCollect.Controllers
             {
                 if(customer.VerifierMailCustomer(_customerDAL) != true)
                 {
-                    
-                    if(customer.Register(_customerDAL) == true)
-                    {
-                        return View("Views/Customer/Succes");
-                    }
-                    else
-                    {
-                        return View("View/Customer/Error");
-                    }
+
+                    customer.Register(_customerDAL);
+                    View("Views/Customer/Succes");
 
                 }
                 return View("View/Customer/Error");
