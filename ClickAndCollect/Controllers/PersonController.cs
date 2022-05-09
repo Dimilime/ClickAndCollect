@@ -1,5 +1,6 @@
 ﻿using ClickAndCollect.DAL;
 using ClickAndCollect.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -37,21 +38,38 @@ namespace ClickAndCollect.Controllers
 
                 if (person.Type == "Customer")
                 {
-                    return View("View/Person/SuccessCustomer");
+                    if(string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
+                    {
+                        HttpContext.Session.SetInt32("Id", person.Id);
+                        return Redirect("/Products/Index");
+                    }
                 }
                 if (person.Type == "OrderPicker")
                 {
-                    return View("View/Person/SuccessOrderPicker");
+                    if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
+                    {
+                        HttpContext.Session.SetInt32("Id", person.Id);
+                        return View("View/Person/SuccessOrderPicker");
+                    }
                 }
                 if (person.Type == "Cashier")
                 {
-                    return View("View/Person/SuccessCashier");
+                    if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
+                    {
+                        HttpContext.Session.SetInt32("Id", person.Id);
+                        return View("View/Person/SuccessCashier");
+                    }
                 }
 
             }
             return View("View/Person/Error");
         }
 
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.Clear();
+            return Redirect("/Person/HomePage");
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

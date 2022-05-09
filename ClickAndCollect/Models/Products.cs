@@ -17,11 +17,28 @@ namespace ClickAndCollect.Models
         private Categorys category;
         private List<Order> orders;
 
+        public Products()
+        {
+
+        }
+
         public Products(string n, Categorys c)
         {
             name = n;
             category = c;
             orders = new List<Order>();
+        }
+        
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        public Categorys Category
+        {
+            get { return category; }
+            set { category = value; }
         }
 
         public static void GetProducts()
