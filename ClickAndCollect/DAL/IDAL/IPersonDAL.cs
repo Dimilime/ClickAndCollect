@@ -9,5 +9,6 @@ namespace ClickAndCollect.DAL
     public interface IPersonDAL
     {
         public bool AccountExists(Person p);
+        public Person GetAllFromUser(Person p);
     }
 }

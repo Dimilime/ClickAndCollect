@@ -31,16 +31,27 @@ namespace ClickAndCollect.Controllers
         [HttpPost]
         public IActionResult Authenticate(Person person)
         {
-            if (ModelState.IsValid)
+            if (person.VerifierCompte(_personDAL) == true)
             {
-                if (person.VerifierCompte(_personDAL) != true)
+                person.GetUser(_personDAL);
+
+                if (person.Type == "Customer")
                 {
-                    return View("View/Person/Success");
+                    return View("View/Person/SuccessCustomer");
                 }
-                return View("View/Person/Error");
+                if (person.Type == "OrderPicker")
+                {
+                    return View("View/Person/SuccessOrderPicker");
+                }
+                if (person.Type == "Cashier")
+                {
+                    return View("View/Person/SuccessCashier");
+                }
+
             }
-            return View();
+            return View("View/Person/Error");
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
