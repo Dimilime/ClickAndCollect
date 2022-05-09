@@ -1,6 +1,5 @@
 ﻿using ClickAndCollect.DAL;
 using ClickAndCollect.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -38,10 +37,6 @@ namespace ClickAndCollect.Controllers
 
                 if (person.Type == "Customer")
                 {
-                    /*if(string.IsNullOrEmpty(HttpContext.Session.))
-                    {
-
-                    }*/
                     return View("View/Person/SuccessCustomer");
                 }
                 if (person.Type == "OrderPicker")
