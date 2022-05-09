@@ -1,0 +1,18 @@
+﻿@model List<Products>
+
+<div class="text-center">
+    <table class="table">
+        <tr>
+            <th>Nom</th>
+            <th>Categorie</th>
+        </tr>
+        @foreach (Products p in Model)
+        {
+            <tr>
+                <td>@p.Name</td>
+                <td>@p.Category</td>
+            </tr>
+        }
+    </table>
+
+</div>
