@@ -65,6 +65,11 @@ namespace ClickAndCollect.Controllers
             return View("View/Person/Error");
         }
 
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.Clear();
+            return Redirect("/Person/HomePage");
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
