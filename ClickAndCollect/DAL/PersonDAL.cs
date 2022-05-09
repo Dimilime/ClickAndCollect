@@ -17,7 +17,7 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
-        public Boolean AccountExists(Person p)
+        public bool AccountExists(Person p)
         {
             bool result = false;
 
@@ -38,7 +38,6 @@ namespace ClickAndCollect.DAL
                     }
                 }
             }
-
             return result;
         }
 
