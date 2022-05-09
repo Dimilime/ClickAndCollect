@@ -9,6 +9,7 @@ namespace ClickAndCollect.Models
 {
     public class Person
     {
+        public int Id { get; set; }
         private string lastName;
         private string firstName;
         private string email;
@@ -83,7 +84,6 @@ namespace ClickAndCollect.Models
         {
 
         }
-
 
 
         public void LogOut()
