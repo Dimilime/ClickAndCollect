@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClickAndCollect.DAL.IDAL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -36,11 +37,15 @@ namespace ClickAndCollect.Models
             set { category = value; }
         }
 
-        public static void GetProducts()
+        public static List<Products> GetProducts(IProductsDAL productsDAL, Products p)
         {
-
+            return productsDAL.GetProducts(p);
         }
-
+        
+        public static List<Products> GetCategorys(IProductsDAL productsDAL)
+        {
+            return productsDAL.GetCategorys();
+        }
         public void AddToList()
         {
 

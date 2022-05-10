@@ -18,13 +18,14 @@ namespace ClickAndCollect.Controllers
         }
         public IActionResult Index()
         {
-            List<Products> categorys = _productsDAL.GetCategorys();
+            List<Products> categorys = Products.GetCategorys(_productsDAL);
             return View(categorys);
         }
 
         public IActionResult Details(Products p)
         {
-            List<Products> ps = _productsDAL.GetProducts(p);
+            
+            List<Products> ps = Products.GetProducts(_productsDAL,p); 
             return View(ps);
         }
 

@@ -71,11 +71,6 @@ namespace ClickAndCollect.Models
             set { type = value; }
         }
 
-        public static void Authenticate(string email, string password)
-        {
-
-        }
-
         public bool VerifierCompte(IPersonDAL PersonDAL)
         {
             return PersonDAL.AccountExists(this);
@@ -84,12 +79,6 @@ namespace ClickAndCollect.Models
         public void GetUser(IPersonDAL personDAL)
         {
             personDAL.GetAllFromUser(this);
-        }
-
-
-        public void LogOut()
-        {
-
         }
 
     }
