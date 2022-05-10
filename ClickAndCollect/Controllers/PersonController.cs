@@ -19,11 +19,6 @@ namespace ClickAndCollect.Controllers
             _personDAL = personDAL;
         }
         
-        public IActionResult HomePage()
-        {
-            return View();
-        }
-
         public IActionResult Authenticate()
         {
             return View();
@@ -62,13 +57,13 @@ namespace ClickAndCollect.Controllers
                 }
 
             }
-            return View("View/Person/Error");
+            return View("View/Products/Index");
         }
 
         public IActionResult LogOut()
         {
             HttpContext.Session.Clear();
-            return Redirect("/Person/HomePage");
+            return Redirect("/Products/Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
