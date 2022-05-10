@@ -43,14 +43,16 @@ namespace ClickAndCollect.DAL
             return categorys;
         }
 
-        public List<Products> GetProducts()
+        public List<Products> GetProducts(Products product)
         {
 
-            List<Products> products = new List<Products>();
+            List<Products> ps = new List<Products>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Products WHERE Category = @category", connection);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Products WHERE Category = @Category", connection);
+
+                cmd.Parameters.AddWithValue("Category", product.Category);
 
                 connection.Open();
 
@@ -60,13 +62,13 @@ namespace ClickAndCollect.DAL
                     {
                         Products p = new Products();
                         p.Name = reader.GetString("Name");
-                        //p.Category = reader.GetString("Category");
-                        products.Add(p);
+                        p.Category = reader.GetString("Category");
+                        ps.Add(p);
                     }
                 }
             }
 
-            return products;
+            return ps;
         }
     }
 }

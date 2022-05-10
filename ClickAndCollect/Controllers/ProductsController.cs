@@ -22,9 +22,10 @@ namespace ClickAndCollect.Controllers
             return View(categorys);
         }
 
-        public IActionResult Details()
+        public IActionResult Details(Products p)
         {
-            return View();
+            List<Products> ps = _productsDAL.GetProducts(p);
+            return View(ps);
         }
 
     }
