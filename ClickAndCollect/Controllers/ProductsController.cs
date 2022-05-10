@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ClickAndCollect.DAL.IDAL;
+using ClickAndCollect.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +10,23 @@ namespace ClickAndCollect.Controllers
 {
     public class ProductsController : Controller
     {
+        private readonly IProductsDAL _productsDAL;
+
+        public ProductsController(IProductsDAL productsDAL)
+        {
+            _productsDAL = productsDAL;
+        }
         public IActionResult Index()
         {
-            return View();
+            List<Products> categorys = _productsDAL.GetCategorys();
+            return View(categorys);
         }
+
+        public IActionResult Details(Products p)
+        {
+            List<Products> ps = _productsDAL.GetProducts(p);
+            return View(ps);
+        }
+
     }
 }

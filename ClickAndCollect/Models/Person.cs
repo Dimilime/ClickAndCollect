@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClickAndCollect.DAL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClickAndCollect.Models
 {
-    public abstract class Person
+    public class Person
     {
         public int Id { get; set; }
         private string lastName;
@@ -57,6 +58,7 @@ namespace ClickAndCollect.Models
         [Display(Name = "Mot de passe")]
         [Required(ErrorMessage ="Le mot de passe est obligatoire !")]
         [DataType(DataType.Password, ErrorMessage ="Le mot de passe est invalide !")]
+        [RegularExpression(@"^(?=.{8,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$", ErrorMessage = "Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre, 1 caractère spécial et une longueur d'au moins 8 !")]
         public string Password
         {
             get { return password; }
@@ -74,7 +76,21 @@ namespace ClickAndCollect.Models
 
         }
 
-        public abstract void LogOut();
+        public bool VerifierCompte(IPersonDAL PersonDAL)
+        {
+            return PersonDAL.AccountExists(this);
+        }
+
+        public void GetUser(IPersonDAL personDAL)
+        {
+            personDAL.GetAllFromUser(this);
+        }
+
+
+        public void LogOut()
+        {
+
+        }
 
     }
 }

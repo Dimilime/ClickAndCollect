@@ -1,4 +1,6 @@
-﻿using ClickAndCollect.Models;
+﻿using ClickAndCollect.DAL;
+using ClickAndCollect.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,20 +13,64 @@ namespace ClickAndCollect.Controllers
 {
     public class PersonController : Controller
     {
-        private readonly ILogger<PersonController> _logger;
-        public PersonController(ILogger<PersonController> logger)
+        private readonly IPersonDAL _personDAL;
+
+        public PersonController(IPersonDAL personDAL)
         {
-            _logger = logger;
+            _personDAL = personDAL;
         }
+        
         public IActionResult HomePage()
         {
             return View();
             
         }
-        
-        public IActionResult Connexion()
+
+        public IActionResult Authenticate()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Authenticate(Person person)
+        {
+            if (person.VerifierCompte(_personDAL) == true)
+            {
+                person.GetUser(_personDAL);
+
+                if (person.Type == "Customer")
+                {
+                    if(string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
+                    {
+                        HttpContext.Session.SetInt32("Id", person.Id);
+                        return Redirect("/Products/Index");
+                    }
+                }
+                if (person.Type == "OrderPicker")
+                {
+                    if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
+                    {
+                        HttpContext.Session.SetInt32("Id", person.Id);
+                        return View("View/Person/SuccessOrderPicker");
+                    }
+                }
+                if (person.Type == "Cashier")
+                {
+                    if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
+                    {
+                        HttpContext.Session.SetInt32("Id", person.Id);
+                        return View("View/Person/SuccessCashier");
+                    }
+                }
+
+            }
+            return View("View/Person/Error");
+        }
+
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.Clear();
+            return Redirect("/Person/HomePage");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -32,5 +78,6 @@ namespace ClickAndCollect.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }

@@ -18,7 +18,7 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
-        public bool EmailExists(Customer c)
+        public bool EmailCustomerExists(Customer c)
         {
             bool result = false;
 
@@ -43,32 +43,12 @@ namespace ClickAndCollect.DAL
             return result;
         }
 
-        public bool CheckAccount(Customer c)
-        {
-            bool result = false;
-
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    SqlCommand cmd = new SqlCommand("SELECT * FROM Person WHERE EMAIL = @Email and PASSWORD = @Password", connection);
-                    
-                }
-            }
-            catch
-            {
-
-            }
-             
-            return result;
-        }
-
         public bool AddCustomer(Customer c)
         {
             bool success = false;
-            using(SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-               
+
                 SqlCommand cmd = new SqlCommand("INSERT INTO Person (LastName, FirstName, Email, Password, Type) VALUES (@LastName, @FirstName, @Email, @Password, @Type)", connection);
                 SqlCommand cmd2 = new SqlCommand("INSERT INTO Customer(IdPerson, DoB, PhoneNumber) VALUES (ident_current('Person'),@Dob, @PhoneNumber)", connection);
 
@@ -77,17 +57,16 @@ namespace ClickAndCollect.DAL
                 cmd.Parameters.AddWithValue("@FirstName", c.FirstName);
                 cmd.Parameters.AddWithValue("@Email", c.Email);
                 cmd.Parameters.AddWithValue("@Password", c.Password);
-                cmd.Parameters.AddWithValue("@Type", c.Type);    
+                cmd.Parameters.AddWithValue("@Type", c.Type);
                 cmd2.Parameters.AddWithValue("@DoB", c.DoB);
                 cmd2.Parameters.AddWithValue("@PhoneNumber", c.PhoneNumber);
-                
+
 
                 connection.Open();
                 int res = cmd.ExecuteNonQuery();
                 int res2 = cmd2.ExecuteNonQuery();
                 success = res > 0 && res2 > 0;
-                
-                
+
             }
             return success;
 

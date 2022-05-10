@@ -30,33 +30,24 @@ namespace ClickAndCollect.Controllers
         {
             if(ModelState.IsValid)
             {
-                if(customer.VerifierMail(_customerDAL) != true)
+                if(customer.VerifierMailCustomer(_customerDAL) != true)
                 {
-                    if (customer.Register(_customerDAL))
+                    
+                    if(customer.Register(_customerDAL) == true)
                     {
-                        return View("Views/Customer/Succes.cshtml");
+                        return View("Views/Customer/Succes");
                     }
                     else
-                     return View("Views/Customer/Error.cshtml");   
+                    {
+                        return View("View/Customer/Error");
+                    }
+
                 }
-                
+                return View("View/Customer/Error");
 
             }
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Authenticate(Customer customer)
-        {
-            try
-            {
-                customer.VerifierCompte(_customerDAL);
-            }
-            catch
-            {
-
-            }
-            return View();
-        }
     }
 }

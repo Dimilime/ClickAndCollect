@@ -6,22 +6,34 @@ using System.Threading.Tasks;
 
 namespace ClickAndCollect.Models
 {
-    public enum Categorys
-    {
-        DairyProduct, FruitAndVegetable, FrozenFood, OilAndSpice, OrganicFood, Drinks, StarchyFood
-    }
-
     public class Products
     {
         private string name;
-        private Categorys category;
+        private string category;
         private List<Order> orders;
 
-        public Products(string n, Categorys c)
+        public Products()
+        {
+
+        }
+
+        public Products(string n, string c)
         {
             name = n;
             category = c;
             orders = new List<Order>();
+        }
+        
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        public string Category
+        {
+            get { return category; }
+            set { category = value; }
         }
 
         public static void GetProducts()
