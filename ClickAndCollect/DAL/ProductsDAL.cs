@@ -18,6 +18,31 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
+        public List<Products> GetCategorys()
+        {
+            List<Products> categorys = new List<Products>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT Category FROM Products GROUP BY Category", connection);
+
+                connection.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Products p = new Products();
+                        p.Name = null;
+                        p.Category = reader.GetString("Category");
+                        categorys.Add(p);
+                    }
+                }
+            }
+
+            return categorys;
+        }
+
         public List<Products> GetProducts()
         {
 
@@ -25,7 +50,7 @@ namespace ClickAndCollect.DAL
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT Name FROM Products", connection);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Products WHERE Category = @category", connection);
 
                 connection.Open();
 
