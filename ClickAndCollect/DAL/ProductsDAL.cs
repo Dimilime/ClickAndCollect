@@ -18,14 +18,41 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
-        public List<Products> GetProducts()
+        public List<Products> GetCategorys()
         {
-
-            List<Products> products = new List<Products>();
+            List<Products> categorys = new List<Products>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT Name FROM Products", connection);
+                SqlCommand cmd = new SqlCommand("SELECT Category FROM Products GROUP BY Category", connection);
+
+                connection.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Products p = new Products();
+                        p.Name = null;
+                        p.Category = reader.GetString("Category");
+                        categorys.Add(p);
+                    }
+                }
+            }
+
+            return categorys;
+        }
+
+        public List<Products> GetProducts(Products product)
+        {
+
+            List<Products> ps = new List<Products>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Products WHERE Category = @Category", connection);
+
+                cmd.Parameters.AddWithValue("Category", product.Category);
 
                 connection.Open();
 
@@ -35,13 +62,13 @@ namespace ClickAndCollect.DAL
                     {
                         Products p = new Products();
                         p.Name = reader.GetString("Name");
-                        //p.Category = reader.GetString("Category");
-                        products.Add(p);
+                        p.Category = reader.GetString("Category");
+                        ps.Add(p);
                     }
                 }
             }
 
-            return products;
+            return ps;
         }
     }
 }

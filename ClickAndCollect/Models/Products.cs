@@ -6,15 +6,10 @@ using System.Threading.Tasks;
 
 namespace ClickAndCollect.Models
 {
-    public enum Categorys
-    {
-        DairyProduct, FruitAndVegetable, FrozenFood, OilAndSpice, OrganicFood, Drinks, StarchyFood
-    }
-
     public class Products
     {
         private string name;
-        private Categorys category;
+        private string category;
         private List<Order> orders;
 
         public Products()
@@ -22,7 +17,7 @@ namespace ClickAndCollect.Models
 
         }
 
-        public Products(string n, Categorys c)
+        public Products(string n, string c)
         {
             name = n;
             category = c;
@@ -35,7 +30,7 @@ namespace ClickAndCollect.Models
             set { name = value; }
         }
 
-        public Categorys Category
+        public string Category
         {
             get { return category; }
             set { category = value; }

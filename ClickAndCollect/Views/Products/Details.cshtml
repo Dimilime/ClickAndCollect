@@ -3,13 +3,12 @@
 <div class="text-center">
     <table class="table">
         <tr>
-            Categorie
+            <th>Nom</th>
         </tr>
         @foreach (Products p in Model)
         {
             <tr>
-                <td>@p.Category</td>
-                <td><a asp-controller="Products" asp-action="Details" asp-route-category="@p.Category" >details</a></td>
+                <td>@p.Name</td>
             </tr>
         }
     </table>
