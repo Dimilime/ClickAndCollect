@@ -61,6 +61,7 @@ namespace ClickAndCollect.DAL
                     while (reader.Read())
                     {
                         Products p = new Products();
+                        p.NumProduct = reader.GetInt32("NumProduct");
                         p.Name = reader.GetString("Name");
                         p.Category = reader.GetString("Category");
                         ps.Add(p);

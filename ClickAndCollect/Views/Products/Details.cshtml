@@ -11,9 +11,9 @@
                 <tr>
                     <td>@p.Name</td>
                     @*Ajouter un moyen de mettre un nombre*@
+                    <td><a asp-controller="Order" asp-action="AddProduct" asp-route-NumProduct="@p.NumProduct">Ajouter</a></td>
                 </tr>
             }
-            @*<td><a asp-controller="Order" asp-action="AddProduct" asp-all-route-data="params">Ajouter</a></td>*@
         }
 
     </table>
