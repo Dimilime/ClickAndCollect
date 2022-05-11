@@ -20,8 +20,15 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @*Condition pour se deco ?*@
-                        <partial name="_LogOut" />
+                        @{ 
+                            TempData.Keep("State");
+
+                            if ((string)TempData["State"] == "connected"){
+                            <partial name="_LogOut" />
+                                }
+
+                            }
+
                     </ul>
                 </div>
             </div>

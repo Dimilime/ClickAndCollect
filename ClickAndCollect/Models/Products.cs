@@ -9,6 +9,7 @@ namespace ClickAndCollect.Models
 {
     public class Products
     {
+        public int NumProduct { get; set; }
         private string name;
         private string category;
         private List<Order> orders;

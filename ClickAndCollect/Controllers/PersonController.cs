@@ -36,6 +36,8 @@ namespace ClickAndCollect.Controllers
                     if(string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
                     {
                         HttpContext.Session.SetInt32("Id", person.Id);
+                        HttpContext.Session.SetString("state", "connected");
+                        TempData["State"] = HttpContext.Session.GetString("state");
                         return Redirect("/Products/Index");
                     }
                 }
@@ -44,6 +46,8 @@ namespace ClickAndCollect.Controllers
                     if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
                     {
                         HttpContext.Session.SetInt32("Id", person.Id);
+                        HttpContext.Session.SetString("state", "connected");
+                        TempData["State"] = HttpContext.Session.GetString("state");
                         return View("View/Person/SuccessOrderPicker");
                     }
                 }
@@ -52,6 +56,8 @@ namespace ClickAndCollect.Controllers
                     if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
                     {
                         HttpContext.Session.SetInt32("Id", person.Id);
+                        HttpContext.Session.SetString("state", "connected");
+                        TempData["State"] = HttpContext.Session.GetString("state");
                         return View("View/Person/SuccessCashier");
                     }
                 }
@@ -63,6 +69,7 @@ namespace ClickAndCollect.Controllers
         public IActionResult LogOut()
         {
             HttpContext.Session.Clear();
+            TempData["State"] = "Disconnect";
             return Redirect("/Products/Index");
         }
 

@@ -18,9 +18,8 @@ namespace ClickAndCollect.Models
         private TimeSlot timeSlot;
         private Shop shop;
 
-        public Order(Customer c)
+        public Order()
         {
-            customer = c;
             product = new Dictionary<Products, int>();
         }
 
