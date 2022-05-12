@@ -47,9 +47,10 @@ namespace ClickAndCollect.Models
         {
             return productsDAL.GetCategorys();
         }
-        public void AddToList()
-        {
 
+        public Products GetInfoProduct(IProductsDAL productsDAL)
+        {
+            return productsDAL.InfoPro(this);
         }
     }
 }

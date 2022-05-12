@@ -36,8 +36,9 @@ namespace ClickAndCollect.Controllers
                     if(string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
                     {
                         HttpContext.Session.SetInt32("Id", person.Id);
-                        HttpContext.Session.SetString("state", "connected");
-                        TempData["State"] = HttpContext.Session.GetString("state");
+                        HttpContext.Session.SetString("State", "connected");
+                        HttpContext.Session.SetString("OrderExist", "false");
+                        TempData["State"] = HttpContext.Session.GetString("State");
                         return Redirect("/Products/Index");
                     }
                 }
@@ -46,8 +47,9 @@ namespace ClickAndCollect.Controllers
                     if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
                     {
                         HttpContext.Session.SetInt32("Id", person.Id);
-                        HttpContext.Session.SetString("state", "connected");
-                        TempData["State"] = HttpContext.Session.GetString("state");
+                        HttpContext.Session.SetString("State", "connected");
+                        HttpContext.Session.SetString("OrderExist", "false");
+                        TempData["State"] = HttpContext.Session.GetString("State");
                         return View("View/Person/SuccessOrderPicker");
                     }
                 }
@@ -56,8 +58,9 @@ namespace ClickAndCollect.Controllers
                     if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
                     {
                         HttpContext.Session.SetInt32("Id", person.Id);
-                        HttpContext.Session.SetString("state", "connected");
-                        TempData["State"] = HttpContext.Session.GetString("state");
+                        HttpContext.Session.SetString("State", "connected");
+                        HttpContext.Session.SetString("OrderExist", "false");
+                        TempData["State"] = HttpContext.Session.GetString("State");
                         return View("View/Person/SuccessCashier");
                     }
                 }
@@ -71,12 +74,6 @@ namespace ClickAndCollect.Controllers
             HttpContext.Session.Clear();
             TempData["State"] = "Disconnect";
             return Redirect("/Products/Index");
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
     }

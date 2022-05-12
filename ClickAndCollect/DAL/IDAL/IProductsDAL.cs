@@ -10,5 +10,7 @@ namespace ClickAndCollect.DAL.IDAL
     {
         public List<Products> GetProducts(Products p);
         public List<Products> GetCategorys();
+
+        public Products InfoPro(Products p);
     }
 }
