@@ -1,6 +1,8 @@
-﻿using ClickAndCollect.Models;
+﻿using ClickAndCollect.DAL.IDAL;
+using ClickAndCollect.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,20 +12,23 @@ namespace ClickAndCollect.Controllers
 {
     public class OrderController : Controller
     {
+        private readonly IOrderDAL _orderDAL;
+
+        public OrderController(IOrderDAL orderDAL)
+        {
+            _orderDAL = orderDAL;
+        }
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult AddProduct(int NumProduct)
+        public IActionResult Basket()
         {
-            string sessionProducts = HttpContext.Session.GetString("Order");
-            sessionProducts = "," + NumProduct.ToString();
-            HttpContext.Session.SetString("Order", sessionProducts);
-            var res = HttpContext.Session.GetString("Order");
-            Console.WriteLine(res);
+            Order o = JsonConvert.DeserializeObject<Order>(TempData["CurrentOrder"].ToString());
 
-            return View();
+            return View(o);
         }
+
     }
 }

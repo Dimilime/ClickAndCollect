@@ -70,5 +70,29 @@ namespace ClickAndCollect.DAL
             }
             return ps;
         }
+
+        public Products InfoPro(Products p)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Products WHERE NumProduct = @NumProduct", connection);
+
+                cmd.Parameters.AddWithValue("NumProduct", p.NumProduct);
+
+                connection.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        p.NumProduct = reader.GetInt32("NumProduct");
+                        p.Name = reader.GetString("Name");
+                        p.Category = reader.GetString("Category");
+                    }
+                }
+
+                return p;
+            }
+        }
     }
 }

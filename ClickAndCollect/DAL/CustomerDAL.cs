@@ -51,13 +51,13 @@ namespace ClickAndCollect.DAL
                 SqlCommand cmd2 = new SqlCommand("INSERT INTO Customer(IdPerson, DoB, PhoneNumber) VALUES (ident_current('Person'),@Dob, @PhoneNumber)", connection);
 
                 c.Type = "Customer";
-                cmd.Parameters.AddWithValue("@LastName", c.LastName);
-                cmd.Parameters.AddWithValue("@FirstName", c.FirstName);
-                cmd.Parameters.AddWithValue("@Email", c.Email);
-                cmd.Parameters.AddWithValue("@Password", c.Password);
-                cmd.Parameters.AddWithValue("@Type", c.Type);
-                cmd2.Parameters.AddWithValue("@DoB", c.DoB);
-                cmd2.Parameters.AddWithValue("@PhoneNumber", c.PhoneNumber);
+                cmd.Parameters.AddWithValue("LastName", c.LastName);
+                cmd.Parameters.AddWithValue("FirstName", c.FirstName);
+                cmd.Parameters.AddWithValue("Email", c.Email);
+                cmd.Parameters.AddWithValue("Password", c.Password);
+                cmd.Parameters.AddWithValue("Type", c.Type);
+                cmd2.Parameters.AddWithValue("DoB", c.DoB);
+                cmd2.Parameters.AddWithValue("PhoneNumber", c.PhoneNumber);
 
 
                 connection.Open();
@@ -66,8 +66,8 @@ namespace ClickAndCollect.DAL
                 success = res > 0 && res2 > 0;
 
             }
-            return success;
 
+            return success;
         }
     }
 }

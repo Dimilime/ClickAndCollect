@@ -1,17 +1,29 @@
-﻿@model List<Products>
+﻿@model ClickAndCollect.ViewModels.OrderProductsViewModels;
 
 <div class="text-center">
     <table class="table">
         <tr>
             <th>Nom</th>
-        </tr>
+
+            @if ((string)TempData["State"] == "connected")
+            {
+                <th>Quantité</th>
+            }
+            </tr>
         @{
-            foreach (Products p in Model)
+
+            foreach (Products p in Model.Products)
             {
                 <tr>
                     <td>@p.Name</td>
-                    @*Ajouter un moyen de mettre un nombre*@
-                    <td><a asp-controller="Order" asp-action="AddProduct" asp-route-NumProduct="@p.NumProduct">Ajouter</a></td>
+
+                    @if ((string)TempData["State"] == "connected")
+                    {
+                        <form asp-controller="Products" asp-action="AddProduct" asp-route-NumProduct="@p.NumProduct" method="post">
+                            <td><input asp-for="Nbr" /></td>
+                            <td><input type="submit" /></td>
+                        </form>
+                    }
                 </tr>
             }
         }

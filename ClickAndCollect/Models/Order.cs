@@ -20,7 +20,13 @@ namespace ClickAndCollect.Models
 
         public Order()
         {
-            product = new Dictionary<Products, int>();
+
+        }
+
+        public Dictionary<Products, int> Products
+        {
+            get { return product; }
+            set { product = value; }
         }
 
         public void ViewProducts()

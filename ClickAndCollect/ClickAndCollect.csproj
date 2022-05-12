@@ -5,12 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\" />
     <Folder Include="Views\Cashier\" />
     <Folder Include="Views\OrderPicker\" />
     <Folder Include="Views\TimeSlot\" />
     <Folder Include="Views\Shop\" />
-    <Folder Include="Views\Order\" />
   </ItemGroup>
 
   <ItemGroup>
