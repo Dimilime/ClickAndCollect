@@ -38,6 +38,7 @@ namespace ClickAndCollect.Controllers
                         HttpContext.Session.SetInt32("Id", person.Id);
                         HttpContext.Session.SetString("State", "connected");
                         HttpContext.Session.SetString("OrderExist", "false");
+                        TempData["State"] = HttpContext.Session.GetString("State");
                         return Redirect("/Products/Index");
                     }
                 }
@@ -48,6 +49,7 @@ namespace ClickAndCollect.Controllers
                         HttpContext.Session.SetInt32("Id", person.Id);
                         HttpContext.Session.SetString("State", "connected");
                         HttpContext.Session.SetString("OrderExist", "false");
+                        TempData["State"] = HttpContext.Session.GetString("State");
                         return View("View/Person/SuccessOrderPicker");
                     }
                 }
@@ -58,6 +60,7 @@ namespace ClickAndCollect.Controllers
                         HttpContext.Session.SetInt32("Id", person.Id);
                         HttpContext.Session.SetString("State", "connected");
                         HttpContext.Session.SetString("OrderExist", "false");
+                        TempData["State"] = HttpContext.Session.GetString("State");
                         return View("View/Person/SuccessCashier");
                     }
                 }
