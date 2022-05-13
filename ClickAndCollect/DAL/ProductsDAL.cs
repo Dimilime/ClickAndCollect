@@ -34,6 +34,7 @@ namespace ClickAndCollect.DAL
                     {
                         Products p = new Products();
                         p.Name = null;
+                        p.Prix = 0;
                         p.Category = reader.GetString("Category");
                         categorys.Add(p);
                     }
@@ -63,6 +64,7 @@ namespace ClickAndCollect.DAL
                         Products p = new Products();
                         p.NumProduct = reader.GetInt32("NumProduct");
                         p.Name = reader.GetString("Name");
+                        p.Prix = (float)reader.GetDouble("Prix");
                         p.Category = reader.GetString("Category");
                         ps.Add(p);
                     }
@@ -73,6 +75,7 @@ namespace ClickAndCollect.DAL
 
         public Products InfoPro(Products p)
         {
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM Products WHERE NumProduct = @NumProduct", connection);
@@ -87,6 +90,7 @@ namespace ClickAndCollect.DAL
                     {
                         p.NumProduct = reader.GetInt32("NumProduct");
                         p.Name = reader.GetString("Name");
+                        p.Prix = (float)reader.GetDouble("Prix");
                         p.Category = reader.GetString("Category");
                     }
                 }

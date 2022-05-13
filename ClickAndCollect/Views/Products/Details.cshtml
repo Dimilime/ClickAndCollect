@@ -4,6 +4,7 @@
     <table class="table">
         <tr>
             <th>Nom</th>
+            <th>Prix</th>
 
             @if ((string)TempData["State"] == "connected")
             {
@@ -16,6 +17,7 @@
             {
                 <tr>
                     <td>@p.Name</td>
+                    <td>@p.Prix</td>
 
                     @if ((string)TempData["State"] == "connected")
                     {

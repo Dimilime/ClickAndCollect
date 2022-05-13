@@ -51,13 +51,13 @@ namespace ClickAndCollect.Controllers
                 o.Products = new Dictionary<Products, int>();
                 o.Products.Add(p, Nbr);
 
-                TempData["CurrentOrder"] = JsonConvert.SerializeObject(o);
-                //HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(o));
+                //TempData["CurrentOrder"] = JsonConvert.SerializeObject(o);
+                HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(o));
             }
             else
             {
-                Console.WriteLine(TempData["CurrentOrder"]);
-                //Order o = JsonConvert.DeserializeObject<Order>(TempData["CurrentOrder"].ToString());
+                //Console.WriteLine(TempData["CurrentOrder"]);
+                Order o = JsonConvert.DeserializeObject<Order>(TempData["CurrentOrder"].ToString());
                 //var value = HttpContext.Session.GetString("CurrentOrder");
                 //Order o = JsonConvert.DeserializeObject<Order>(value);
 

@@ -12,6 +12,7 @@ namespace ClickAndCollect.Models
         public int NumProduct { get; set; }
         private string name;
         private string category;
+        private float prix;
         private List<Order> orders;
 
         public Products()
@@ -36,6 +37,12 @@ namespace ClickAndCollect.Models
         {
             get { return category; }
             set { category = value; }
+        }
+
+        public float Prix
+        {
+            get { return prix; }
+            set { prix = value; }
         }
 
         public static List<Products> GetProducts(IProductsDAL productsDAL, Products p)
