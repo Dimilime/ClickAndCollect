@@ -46,25 +46,43 @@ namespace ClickAndCollect.Controllers
                 Products p = new Products();
 
                 p.NumProduct = NumProduct;
-                p.GetInfoProduct(_productsDAL);
+                p=p.GetInfoProduct(_productsDAL);
 
-                o.Products = new Dictionary<Products, int>();
-                o.Products.Add(p, Nbr);
+                Dictionary<int, int> dico = new Dictionary<int, int>();
+                dico.Add(NumProduct, Nbr);
+                OrderDicoViewModels orderDicoViewModels = new OrderDicoViewModels(o, dico);
 
-                //TempData["CurrentOrder"] = JsonConvert.SerializeObject(o);
-                HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(o));
+                HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
+
             }
             else
             {
                 //Console.WriteLine(TempData["CurrentOrder"]);
-                Order o = JsonConvert.DeserializeObject<Order>(TempData["CurrentOrder"].ToString());
+                var obj = HttpContext.Session.GetString("CurrentOrder");
+                OrderDicoViewModels o = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
                 //var value = HttpContext.Session.GetString("CurrentOrder");
                 //Order o = JsonConvert.DeserializeObject<Order>(value);
 
-                Products p = new Products();
-                p.GetInfoProduct(_productsDAL);
+                /****/
+                //AJOUT AU DICO 
+                //1. Est ce que le produuit a deja été ajouté ? si oui on additionne a la quantité
+                // Si non, on ajoute un element au dico et on le reserialize 
+
+                if (o.Dico.ContainsKey(NumProduct))
+                {
+                    //ajouter de la quantité 
+
+                }
+                else
+                {
+                    o.Dico.Add(NumProduct, Nbr);
+                }
+
+                //Products p = new Products();
+                ////p.GetInfoProduct(_productsDAL);
 
                 //o.Products.Add(p, Nbr);
+                HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(o));
 
             }
 

@@ -73,17 +73,17 @@ namespace ClickAndCollect.DAL
             return ps;
         }
 
-        public Products InfoPro(Products p)
+        public Products InfoPro(Products product)
         {
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM Products WHERE NumProduct = @NumProduct", connection);
 
-                cmd.Parameters.AddWithValue("NumProduct", p.NumProduct);
+                cmd.Parameters.AddWithValue("NumProduct", product.NumProduct);
 
                 connection.Open();
-
+                Products p = new Products();
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())

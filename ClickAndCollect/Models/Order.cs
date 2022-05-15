@@ -7,27 +7,27 @@ namespace ClickAndCollect.Models
 {
     public class Order
     {
-        private Boolean ready;
-        private int numberOfBoxUsed;
-        private int numberOfBoxReturned;
-        private Boolean receipt;
-        private static double serviceFees;
-        private double aDeposit;
-        private Dictionary<Products, int> product;
-        private Customer customer;
-        private TimeSlot timeSlot;
-        private Shop shop;
+        public Boolean Ready { get; set; }
+        public int NumberOfBoxUsed { get; set; }
+        public int NumberOfBoxReturned { get; set; }
+        public Boolean Receipt { get; set; }
+        public static double ServiceFees { get; set; }
+        public double ADeposit { get; set; }
+        public Dictionary<Products, int> Products { get; set; }
+        private Customer customer { get; set; }
+        private TimeSlot timeSlot { get; set; }
+        private Shop shop { get; set; }
 
         public Order()
         {
 
         }
 
-        public Dictionary<Products, int> Products
-        {
-            get { return product; }
-            set { product = value; }
-        }
+        //public Dictionary<Products, int> Products
+        //{
+        //    get { return product; }
+        //    set { product = value; }
+        //}
 
         public void ViewProducts()
         {
