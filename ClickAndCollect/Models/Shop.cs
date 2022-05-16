@@ -19,18 +19,6 @@ namespace ClickAndCollect.Models
         {
 
         }
-        public Shop(int p, Cashier c, OrderPicker op, TimeSlot t)
-        {
-
-            postCode = p;
-            orders = new List<Order>();
-            cashiers = new List<Cashier>();
-            cashiers.Add(c);
-            orderPickers = new List<OrderPicker>();
-            orderPickers.Add(op);
-            timeSlots = new List<TimeSlot>();
-            timeSlots.Add(t);
-        }
 
         public int PostCode
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ClickAndCollect.DAL.IDAL;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,11 @@ namespace ClickAndCollect.Controllers
 {
     public class OrderPickerController : Controller
     {
+        private readonly IOrderPickerDAL _orderPickerDAL;
+        public OrderPickerController(IOrderPickerDAL orderPickerDAL)
+        {
+            _orderPickerDAL = orderPickerDAL;
+        }
         public IActionResult Index()
         {
             return View();

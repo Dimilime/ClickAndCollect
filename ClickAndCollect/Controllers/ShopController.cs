@@ -45,6 +45,8 @@ namespace ClickAndCollect.Controllers
 
             orderDicoViewModels.Order.shop = shop;
 
+            HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
+
             return View();
         }
     }

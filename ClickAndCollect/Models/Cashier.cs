@@ -10,10 +10,9 @@ namespace ClickAndCollect.Models
 
         private Shop shop;
 
-        public Cashier(string ln, string fn, string e, string p, Shop s)
-            : base(ln, fn, e, p)
+        public Cashier()
         {
-            shop = s;
+
         }
 
         public void AccesDailyCustomers()

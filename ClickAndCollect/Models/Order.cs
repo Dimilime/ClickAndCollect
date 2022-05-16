@@ -33,11 +33,6 @@ namespace ClickAndCollect.Models
 
         }
 
-        public void AddPickUpPoint()
-        {
-
-        }
-
         public double GetOrderAmount()
         {
             return CalculAmount();
