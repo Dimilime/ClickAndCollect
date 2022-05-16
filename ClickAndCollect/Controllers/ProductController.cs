@@ -99,6 +99,10 @@ namespace ClickAndCollect.Controllers
 
             }
 
+            double SoldePanier = orderDicoViewModels.Order.GetOrderAmount();
+
+            TempData["OrderAmount"] = SoldePanier;
+
             return View(orderDicoViewModels);
         }
 
