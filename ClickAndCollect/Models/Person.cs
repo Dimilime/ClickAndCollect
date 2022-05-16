@@ -71,12 +71,12 @@ namespace ClickAndCollect.Models
             set { type = value; }
         }
 
-        public bool VerifierCompte(IPersonDAL PersonDAL)
+        public bool CheckIfAccountExists(IPersonDAL PersonDAL)
         {
-            return PersonDAL.AccountExists(this);
+            return PersonDAL.CheckIfAccountExists(this);
         }
 
-        public void GetUser(IPersonDAL personDAL)
+        public void GetAllFromUser(IPersonDAL personDAL)
         {
             personDAL.GetAllFromUser(this);
         }

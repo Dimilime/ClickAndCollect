@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 
 namespace ClickAndCollect.DAL
 {
-    public class ProductsDAL : IProductsDAL
+    public class ProductDAL : IProductDAL
     {
         private string connectionString;
 
-        public ProductsDAL(string connectionString)
+        public ProductDAL(string connectionString)
         {
             this.connectionString = connectionString;
         }
 
-        public List<Products> GetCategorys()
+        public List<Product> GetCategorys()
         {
-            List<Products> categorys = new List<Products>();
+            List<Product> categorys = new List<Product>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -32,10 +32,11 @@ namespace ClickAndCollect.DAL
                 {
                     while (reader.Read())
                     {
-                        Products p = new Products();
-                        p.Name = null;
-                        p.Category = reader.GetString("Category");
-                        categorys.Add(p);
+                        Product produit = new Product();
+                        produit.Name = null;
+                        produit.Prix = 0;
+                        produit.Category = reader.GetString("Category");
+                        categorys.Add(produit);
                     }
                 }
             }
@@ -43,10 +44,10 @@ namespace ClickAndCollect.DAL
             return categorys;
         }
 
-        public List<Products> GetProducts(Products product)
+        public List<Product> GetProducts(Product product)
         {
 
-            List<Products> ps = new List<Products>();
+            List<Product> produits = new List<Product>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -60,38 +61,43 @@ namespace ClickAndCollect.DAL
                 {
                     while (reader.Read())
                     {
-                        Products p = new Products();
-                        p.NumProduct = reader.GetInt32("NumProduct");
-                        p.Name = reader.GetString("Name");
-                        p.Category = reader.GetString("Category");
-                        ps.Add(p);
+                        Product produit = new Product();
+                        produit.NumProduct = reader.GetInt32("NumProduct");
+                        produit.Name = reader.GetString("Name");
+                        produit.Prix = (float)reader.GetDouble("Prix");
+                        produit.Category = reader.GetString("Category");
+                        produits.Add(produit);
                     }
                 }
             }
-            return ps;
+            return produits;
         }
 
-        public Products InfoPro(Products p)
+        public Product GetInfoProduct(Product product)
         {
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM Products WHERE NumProduct = @NumProduct", connection);
 
-                cmd.Parameters.AddWithValue("NumProduct", p.NumProduct);
+                cmd.Parameters.AddWithValue("NumProduct", product.NumProduct);
 
                 connection.Open();
+
+                //Product p = new Product();
 
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        p.NumProduct = reader.GetInt32("NumProduct");
-                        p.Name = reader.GetString("Name");
-                        p.Category = reader.GetString("Category");
+                        product.NumProduct = reader.GetInt32("NumProduct");
+                        product.Name = reader.GetString("Name");
+                        product.Prix = (float)reader.GetDouble("Prix");
+                        product.Category = reader.GetString("Category");
                     }
                 }
 
-                return p;
+                return product;
             }
         }
     }

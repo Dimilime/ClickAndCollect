@@ -1,9 +1,10 @@
-﻿@model ClickAndCollect.ViewModels.OrderProductsViewModels;
+﻿@model ClickAndCollect.ViewModels.ProductNbrViewModels;
 
 <div class="text-center">
     <table class="table">
         <tr>
             <th>Nom</th>
+            <th>Prix</th>
 
             @if ((string)TempData["State"] == "connected")
             {
@@ -12,14 +13,15 @@
             </tr>
         @{
 
-            foreach (Products p in Model.Products)
+            foreach (Product p in Model.Product)
             {
                 <tr>
                     <td>@p.Name</td>
+                    <td>@p.Prix</td>
 
                     @if ((string)TempData["State"] == "connected")
                     {
-                        <form asp-controller="Products" asp-action="AddProduct" asp-route-NumProduct="@p.NumProduct" method="post">
+                        <form asp-controller="Product" asp-action="AddProduct" asp-route-NumProduct="@p.NumProduct" method="post">
                             <td><input asp-for="Nbr" /></td>
                             <td><input type="submit" /></td>
                         </form>

@@ -45,12 +45,12 @@ namespace ClickAndCollect.Models
 
         public bool Register(ICustomerDAL customerDAL)
         {
-            return customerDAL.AddCustomer(this);
+            return customerDAL.Register(this);
         }
 
-        public bool VerifierMailCustomer(ICustomerDAL customerDAL)
+        public bool CheckIfEmailCustomerExists(ICustomerDAL customerDAL)
         {
-            return customerDAL.EmailCustomerExists(this);
+            return customerDAL.CheckIfEmailCustomerExists(this);
         }
 
 

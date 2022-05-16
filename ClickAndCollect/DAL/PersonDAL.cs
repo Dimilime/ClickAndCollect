@@ -18,7 +18,7 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
-        public bool AccountExists(Person p)
+        public bool CheckIfAccountExists(Person p)
         {
             bool result = false;
 

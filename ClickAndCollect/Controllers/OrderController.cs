@@ -1,5 +1,6 @@
 ﻿using ClickAndCollect.DAL.IDAL;
 using ClickAndCollect.Models;
+using ClickAndCollect.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -25,9 +26,10 @@ namespace ClickAndCollect.Controllers
 
         public IActionResult Basket()
         {
-            Order o = JsonConvert.DeserializeObject<Order>(TempData["CurrentOrder"].ToString());
+            var obj = HttpContext.Session.GetString("CurrentOrder");
+            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
-            return View(o);
+            return View(orderDicoViewModels);
         }
 
     }
