@@ -1,6 +1,5 @@
 ﻿@model ClickAndCollect.ViewModels.OrderDicoViewModels
 
-@TempData["BasketEmpty"]
 <div class="text-center">
     <table class="table">
         <tr>
@@ -16,8 +15,7 @@
                     <td>@d.Key.Name</td>
                     <td>@d.Value</td>
                     <td>@d.Key.Prix</td>
-                    <td><a asp-controller="Product" asp-action="Modify" asp-route-category="@d.Key">Modifier</a></td>
-                    <td><a asp-controller="Product" asp-action="Delete" asp-route-category="@d.Key">Supprimer</a></td>
+                    <td><a asp-controller="Product" asp-action="Delete" asp-route-Key="@d.Key.NumProduct">Supprimer</a></td>
                 </tr>
             }
         }

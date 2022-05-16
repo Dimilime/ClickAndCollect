@@ -10,7 +10,7 @@ namespace ClickAndCollect.ViewModels
 {
     public class OrderDicoViewModels
     {
-        public Order Order{get;set;}
+        public Order Order {get;set;}
         public Dictionary<int, int> Dictionary { get; set; }
 
         public OrderDicoViewModels(Order order, Dictionary<int, int> dictionary)

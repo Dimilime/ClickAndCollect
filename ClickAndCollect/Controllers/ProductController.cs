@@ -72,20 +72,17 @@ namespace ClickAndCollect.Controllers
 
             }
 
-            return Redirect("/Product/Index");
+            return Redirect("Index");
         }
 
         public IActionResult Basket()
         {
             var obj = HttpContext.Session.GetString("CurrentOrder");
-
             if(obj is null)
             {
-                TempData["BasketEmpty"] = "Le panier est vide";
-                return View();
-
+                TempData["BasketEmpty"] = "Votre panier est vide :(";
+                return View("BasketEmpty");
             }
-
             OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
             orderDicoViewModels.Order.DictionaryProducts = new Dictionary<Product, int>();
@@ -103,6 +100,18 @@ namespace ClickAndCollect.Controllers
             }
 
             return View(orderDicoViewModels);
+        }
+
+        public IActionResult Delete(int Key)
+        {
+            var obj = HttpContext.Session.GetString("CurrentOrder");
+            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+
+            orderDicoViewModels.Dictionary.Remove(Key);
+
+            HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
+
+            return Redirect("Basket");
         }
 
     }
