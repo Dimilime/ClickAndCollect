@@ -84,8 +84,6 @@ namespace ClickAndCollect.DAL
 
                 connection.Open();
 
-                //Product p = new Product();
-
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())

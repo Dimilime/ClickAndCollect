@@ -8,11 +8,10 @@ namespace ClickAndCollect.Models
     public class OrderPicker : Person
     {
         private Shop shop;
-        
-        public OrderPicker(string ln, string fn, string e, string p, Shop s)
-            : base(ln, fn, e, p)
+
+        public OrderPicker()
         {
-            shop = s;
+
         }
 
         public void ViewOrders()

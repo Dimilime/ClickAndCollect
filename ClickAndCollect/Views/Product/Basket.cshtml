@@ -6,7 +6,6 @@
             <th>Produit</th>
             <th>Quantité</th>
             <th>Prix</th>
-
         </tr>
         @{
             foreach (var d in Model.Order.DictionaryProducts)
@@ -24,4 +23,7 @@
 
     </table>
 
+</div>
+<div class="align-text-bottom">
+    <a asp-controller="Shop" asp-action="Index">Valider</a>
 </div>

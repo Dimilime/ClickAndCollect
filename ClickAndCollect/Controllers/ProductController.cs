@@ -21,7 +21,7 @@ namespace ClickAndCollect.Controllers
         }
         public IActionResult Index()
         {
-            List<Product> categorys = Product.GetCategorys(_productDAL);
+            List<Product> categorys = Product.GetCategorys(_productDAL); //ies pour categories
             return View(categorys);
         }
 
@@ -38,6 +38,11 @@ namespace ClickAndCollect.Controllers
         public IActionResult AddProduct(int NumProduct, int Nbr)
         {
 
+            if(Nbr <= 0)
+            {
+                return Redirect("Index");
+            }
+
             if(HttpContext.Session.GetString("OrderExist") == "false")
             {
                 HttpContext.Session.SetString("OrderExist", "True");
@@ -48,7 +53,6 @@ namespace ClickAndCollect.Controllers
                 dictionary.Add(NumProduct, Nbr);
 
                 OrderDicoViewModels orderDicoViewModels = new OrderDicoViewModels(order, dictionary);
-
                 HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
 
             }
@@ -78,6 +82,7 @@ namespace ClickAndCollect.Controllers
         public IActionResult Basket()
         {
             var obj = HttpContext.Session.GetString("CurrentOrder");
+
             if(obj is null)
             {
                 TempData["BasketEmpty"] = "Votre panier est vide :(";
@@ -85,7 +90,6 @@ namespace ClickAndCollect.Controllers
             }
 
             OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
-
             orderDicoViewModels.Order.DictionaryProducts = new Dictionary<Product, int>();
 
             foreach (int key in orderDicoViewModels.Dictionary.Keys)

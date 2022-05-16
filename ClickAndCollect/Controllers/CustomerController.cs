@@ -34,12 +34,13 @@ namespace ClickAndCollect.Controllers
                     
                     if(customer.Register(_customerDAL) == true)
                     {
-                        return View("Views/Customer/Succes"); 
-                        //A changer !!!!!!!
+                        TempData["AccountCreate"] = "Votre compte a été cré !";
+                        return Redirect("/Product/Index");
                     }
 
                 }
-                return View("View/Customer/Error");
+                TempData["EmailExists"] = "L'adresse email a déjà un compte";
+                return View();
 
             }
             return View();

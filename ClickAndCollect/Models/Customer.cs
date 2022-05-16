@@ -15,15 +15,6 @@ namespace ClickAndCollect.Models
 
         public Customer() { }
 
-        public Customer (string ln, string fn, string e, string p, DateTime d, int pn)
-            :base(ln,fn,e,p)
-        {
-            doB = d;
-            phoneNumber = pn;
-            orders = new List<Order>();
-
-        }
-
         [Display(Name = "Date de naissance")]
         [DataType(DataType.Date)]
         //[Range(typeof(DateTime), "01/01/1900", "31/12/2006", ErrorMessage ="La date est incorrect !")] probleme !!!
