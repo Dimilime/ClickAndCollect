@@ -27,9 +27,9 @@ namespace ClickAndCollect.Controllers
         [HttpPost]
         public IActionResult Authenticate(Person person)
         {
-            if (person.VerifierCompte(_personDAL) == true)
+            if (person.CheckIfAccountExists(_personDAL) == true)
             {
-                person.GetUser(_personDAL);
+                person.GetAllFromUser(_personDAL);
 
                 if (person.Type == "Customer")
                 {
@@ -39,7 +39,7 @@ namespace ClickAndCollect.Controllers
                         HttpContext.Session.SetString("State", "connected");
                         HttpContext.Session.SetString("OrderExist", "false");
                         TempData["State"] = HttpContext.Session.GetString("State");
-                        return Redirect("/Products/Index");
+                        return Redirect("/Product/Index");
                     }
                 }
                 if (person.Type == "OrderPicker")
@@ -71,7 +71,7 @@ namespace ClickAndCollect.Controllers
         {
             HttpContext.Session.Clear();
             TempData["State"] = "Disconnect";
-            return Redirect("/Products/Index");
+            return Redirect("/Product/Index");
         }
 
     }

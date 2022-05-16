@@ -13,7 +13,7 @@ namespace ClickAndCollect.Models
         public Boolean Receipt { get; set; }
         public static double ServiceFees { get; set; }
         public double ADeposit { get; set; }
-        public Dictionary<Products, int> Products { get; set; }
+        public Dictionary<Product, int> Products { get; set; }
         private Customer customer { get; set; }
         private TimeSlot timeSlot { get; set; }
         private Shop shop { get; set; }
@@ -22,12 +22,6 @@ namespace ClickAndCollect.Models
         {
 
         }
-
-        //public Dictionary<Products, int> Products
-        //{
-        //    get { return product; }
-        //    set { product = value; }
-        //}
 
         public void ViewProducts()
         {

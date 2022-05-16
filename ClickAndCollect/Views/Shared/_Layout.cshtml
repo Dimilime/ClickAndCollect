@@ -11,7 +11,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-controller="Products" asp-action="Index">Accueil</a>
+                <a class="navbar-brand" asp-controller="Product" asp-action="Index">Accueil</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -23,9 +23,10 @@
 
                             if ((string)TempData["State"] == "connected"){
                             <partial name="_Connected" />
-                                }
+                            }
 
-                            if ((string)TempData["State"] == "Disconnect"){
+                            if ((string)TempData["State"] == "Disconnect" || (string)TempData["State"] is null)
+                            {
                                 <partial name="_Disconnected" />
                                 }
 

@@ -28,16 +28,12 @@ namespace ClickAndCollect.Controllers
         {
             if(ModelState.IsValid)
             {
-                if(customer.VerifierMailCustomer(_customerDAL) != true)
+                if(customer.CheckIfEmailCustomerExists(_customerDAL) != true)
                 {
                     
                     if(customer.Register(_customerDAL) == true)
                     {
                         return View("Views/Customer/Succes");
-                    }
-                    else
-                    {
-                        return View("View/Customer/Error");
                     }
 
                 }

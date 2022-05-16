@@ -9,12 +9,12 @@ namespace ClickAndCollect.ViewModels
     public class OrderDicoViewModels
     {
         public Order Order{get;set;}
-        public Dictionary<int, int> Dico { get; set; }
+        public Dictionary<int, int> Dictionary { get; set; }
 
-        public OrderDicoViewModels(Order o, Dictionary<int, int> dico)
+        public OrderDicoViewModels(Order order, Dictionary<int, int> dictionary)
         {
-            Order = o;
-            Dico = dico;
+            Order = order;
+            Dictionary = dictionary;
         }
     }
 }

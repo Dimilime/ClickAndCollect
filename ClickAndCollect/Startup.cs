@@ -40,7 +40,7 @@ namespace ClickAndCollect
             services.AddTransient<IOrderDAL>(od => new OrderDAL(connectionString));
             services.AddTransient<IOrderPickerDAL>(opd => new OrderPickerDAL(connectionString));
             services.AddTransient<IPersonDAL>(pd => new PersonDAL(connectionString));
-            services.AddTransient<IProductsDAL>(psd => new ProductsDAL(connectionString));
+            services.AddTransient<IProductDAL>(psd => new ProductDAL(connectionString));
             services.AddTransient<IShopDAL>(sd => new ShopDAL(connectionString));
             services.AddTransient<ITimeSlotDAL>(tsd => new TimeSlotDAL(connectionString));
         }
@@ -71,7 +71,7 @@ namespace ClickAndCollect
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Products}/{action=Index}/{id?}");
+                    pattern: "{controller=Product}/{action=Index}/{id?}");
             });
         }
     }

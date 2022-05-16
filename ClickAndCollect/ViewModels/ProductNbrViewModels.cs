@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace ClickAndCollect.ViewModels
 {
-    public class OrderProductsViewModels
+    public class ProductNbrViewModels
     {
-        public List<Products> Products { get; set; }
+        public List<Product> Product { get; set; }
         public int Nbr { get; set; }
 
-        public OrderProductsViewModels(List<Products> products, int nbr)
+        public ProductNbrViewModels(List<Product> product, int nbr)
         {
-            Products = products;
+            Product = product;
             Nbr = nbr;
         } 
     }
