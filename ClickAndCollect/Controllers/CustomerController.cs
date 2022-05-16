@@ -24,6 +24,7 @@ namespace ClickAndCollect.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Register(Customer customer)
         {
             if(ModelState.IsValid)
@@ -33,7 +34,8 @@ namespace ClickAndCollect.Controllers
                     
                     if(customer.Register(_customerDAL) == true)
                     {
-                        return View("Views/Customer/Succes");
+                        return View("Views/Customer/Succes"); 
+                        //A changer !!!!!!!
                     }
 
                 }

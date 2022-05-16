@@ -83,6 +83,7 @@ namespace ClickAndCollect.Controllers
                 TempData["BasketEmpty"] = "Votre panier est vide :(";
                 return View("BasketEmpty");
             }
+
             OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
             orderDicoViewModels.Order.DictionaryProducts = new Dictionary<Product, int>();
