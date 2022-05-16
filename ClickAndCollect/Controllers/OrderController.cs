@@ -24,13 +24,5 @@ namespace ClickAndCollect.Controllers
             return View();
         }
 
-        public IActionResult Basket()
-        {
-            var obj = HttpContext.Session.GetString("CurrentOrder");
-            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
-
-            return View(orderDicoViewModels);
-        }
-
     }
 }

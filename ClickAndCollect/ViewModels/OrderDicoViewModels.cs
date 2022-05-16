@@ -1,4 +1,6 @@
-﻿using ClickAndCollect.Models;
+﻿using ClickAndCollect.DAL;
+using ClickAndCollect.DAL.IDAL;
+using ClickAndCollect.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
