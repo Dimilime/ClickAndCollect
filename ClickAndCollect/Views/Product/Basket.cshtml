@@ -1,0 +1,27 @@
+﻿@model ClickAndCollect.ViewModels.OrderDicoViewModels
+
+<div class="text-center">
+    <table class="table">
+        <tr>
+            <th>Produit</th>
+            <th>Quantité</th>
+            <th>Prix</th>
+
+        </tr>
+        @{
+            foreach (var d in Model.Order.DictionaryProducts)
+            {
+                <tr>
+                    <td>@d.Key.Name</td>
+                    <td>@d.Value</td>
+                    <td>@d.Key.Prix</td>
+                    <td><a asp-controller="Product" asp-action="Delete" asp-route-Key="@d.Key.NumProduct">Supprimer</a></td>
+                </tr>
+            }
+        }
+
+        Total : @TempData["OrderAmount"] €
+
+    </table>
+
+</div>

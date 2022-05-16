@@ -12,23 +12,13 @@ namespace ClickAndCollect.Models
         public int NumberOfBoxReturned { get; set; }
         public Boolean Receipt { get; set; }
         public static double ServiceFees { get; set; }
-        public double ADeposit { get; set; }
-        public Dictionary<Product, int> Products { get; set; }
+        public double BoxesFees { get; set; }
+        public Dictionary<Product, int> DictionaryProducts { get; set; }
         private Customer customer { get; set; }
         private TimeSlot timeSlot { get; set; }
         private Shop shop { get; set; }
 
         public Order()
-        {
-
-        }
-
-        public void ViewProducts()
-        {
-
-        }
-
-        public void AddProduct()
         {
 
         }
@@ -48,14 +38,23 @@ namespace ClickAndCollect.Models
 
         }
 
-        public void GetOrderAmount()
+        public double GetOrderAmount()
         {
-
+            return CalculAmount();
         }
 
-        private void CalculAmount()
+        private double CalculAmount()
         {
+            double prix;
+            double total = 0;
+            
+            foreach (var item in DictionaryProducts)
+            {
+                prix = item.Key.Prix * item.Value;
+                total += prix;
+            }
 
+            return total;
         }
 
         public void GetDetails()
