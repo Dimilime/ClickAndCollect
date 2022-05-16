@@ -22,18 +22,26 @@ namespace ClickAndCollect.Controllers
         
         public IActionResult Index()
         {
+            var obj = HttpContext.Session.GetString("CurrentOrder");
+            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+
+            if (orderDicoViewModels.Dictionary.Count == 0)
+            {
+                return Redirect("/Product/Basket");
+            }
+
             List<Shop> shops = Shop.GetShops(_shopDAL);
             return View(shops);
         }
 
         public IActionResult Select(int ShopId)
         {
+            var obj = HttpContext.Session.GetString("CurrentOrder");
+            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+
             Shop shop = new Shop();
             shop.ShopId = ShopId;
             shop.GetInfoShop(_shopDAL);
-
-            var obj = HttpContext.Session.GetString("CurrentOrder");
-            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
             orderDicoViewModels.Order.shop = shop;
 
