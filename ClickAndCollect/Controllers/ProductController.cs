@@ -38,6 +38,10 @@ namespace ClickAndCollect.Controllers
         public IActionResult AddProduct(int NumProduct, int Nbr)
         {
 
+            if(Nbr <= 0 )
+            {
+                return Redirect("Index");
+            }
             if(HttpContext.Session.GetString("OrderExist") == "false")
             {
                 HttpContext.Session.SetString("OrderExist", "True");

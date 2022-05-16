@@ -65,7 +65,7 @@ namespace ClickAndCollect.Controllers
                 }
 
             }
-            return View("View/Products/Index");
+            return Redirect("/Product/Index");
         }
 
         public IActionResult LogOut()

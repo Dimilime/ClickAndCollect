@@ -16,7 +16,7 @@ namespace ClickAndCollect.Models
         public Dictionary<Product, int> DictionaryProducts { get; set; }
         private Customer customer { get; set; }
         private TimeSlot timeSlot { get; set; }
-        private Shop shop { get; set; }
+        public Shop shop { get; set; }
 
         public Order()
         {
