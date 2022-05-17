@@ -1,6 +1,11 @@
 ﻿@model List<Product>
 
-<div class="alert-success">@TempData["AccountCreate"]</div>
+<div class="alert-success">
+    @TempData["AccountCreate"] 
+</div>
+<div class="alert-danger">
+    @TempData["Minimum"]
+</div>
 
 <div class="text-center">
     <table class="table">

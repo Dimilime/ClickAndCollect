@@ -27,6 +27,7 @@ namespace ClickAndCollect.Controllers
 
             if (orderDicoViewModels.Dictionary.Count == 0)
             {
+                TempData["BasketEmpty"] = "Votre panier est vide :(";
                 return Redirect("/Product/Basket");
             }
 
