@@ -64,7 +64,7 @@ namespace ClickAndCollect.DAL
                         Product produit = new Product();
                         produit.NumProduct = reader.GetInt32("NumProduct");
                         produit.Name = reader.GetString("Name");
-                        produit.Prix = (float)reader.GetDouble("Prix");
+                        produit.Prix = (float)reader.GetDouble("Price");
                         produit.Category = reader.GetString("Category");
                         produits.Add(produit);
                     }
