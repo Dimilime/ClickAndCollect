@@ -40,6 +40,7 @@ namespace ClickAndCollect.Controllers
 
             if(Nbr <= 0)
             {
+                TempData["Minimum"] = "Vous devez ajouter minimum 1 article !";
                 return Redirect("Index");
             }
 
