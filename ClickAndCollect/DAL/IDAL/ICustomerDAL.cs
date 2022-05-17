@@ -8,9 +8,9 @@ namespace ClickAndCollect.DAL
 {
     public interface ICustomerDAL
     {
-        public bool AddCustomer(Customer c);
+        public bool Register(Customer c);
 
-        public bool EmailCustomerExists(Customer c);
+        public bool CheckIfEmailCustomerExists(Customer c);
 
     }
 }

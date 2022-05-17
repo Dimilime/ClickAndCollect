@@ -16,7 +16,7 @@ namespace ClickAndCollect.Models
         public OrderPicker(string ln, string fn, string e, string p, Shop s)
             : base(ln, fn, e, p)
         {
-            shop = s;
+
         }
 
         public void ViewOrders()

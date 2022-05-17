@@ -1,16 +1,35 @@
-﻿@model List<Product>
+﻿@model ClickAndCollect.ViewModels.ProductNbrViewModels
 
 <div class="text-center">
     <table class="table">
         <tr>
             <th>Nom</th>
-        </tr>
-        @foreach (Product p in Model)
-        {
-            <tr>
-                <td>@p.Name</td>
+            <th>Prix</th>
+
+            @if ((string)TempData["State"] == "connected")
+            {
+                <th>Quantité</th>
+            }
             </tr>
+        @{
+
+            foreach (Product p in Model.Product)
+            {
+                <tr>
+                    <td>@p.Name</td>
+                    <td>@p.Prix</td>
+
+                    @if ((string)TempData["State"] == "connected")
+                    {
+                        <form asp-controller="Product" asp-action="AddProduct" asp-route-NumProduct="@p.NumProduct" method="post">
+                            <td><input asp-for="Nbr" /></td>
+                            <td><input type="submit" /></td>
+                        </form>
+                    }
+                </tr>
+            }
         }
+
     </table>
 
 </div>

@@ -17,18 +17,9 @@ namespace ClickAndCollect.Models
 
         public Customer() { }
 
-        public Customer (string ln, string fn, string e, string p, DateTime d, int pn)
-            :base(ln,fn,e,p)
-        {
-            doB = d;
-            phoneNumber = pn;
-            orders = new List<Order>();
-            
-        }
-
         [Display(Name = "Date de naissance")]
         [DataType(DataType.Date)]
-        //[Range(typeof(DateTime), "01/01/1900", "31/12/2006", ErrorMessage ="La date est incorrect !")] probleme ???
+        //[Range(typeof(DateTime), "01/01/1900", "31/12/2006", ErrorMessage ="La date est incorrect !")] probleme !!!
         [Required(ErrorMessage ="La date de naisse est obligatoire !")]
         public DateTime DoB
         {
@@ -47,12 +38,12 @@ namespace ClickAndCollect.Models
 
         public bool Register(ICustomerDAL customerDAL)
         {
-            return customerDAL.AddCustomer(this);
+            return customerDAL.Register(this);
         }
 
-        public bool VerifierMailCustomer(ICustomerDAL customerDAL)
+        public bool CheckIfEmailCustomerExists(ICustomerDAL customerDAL)
         {
-            return customerDAL.EmailCustomerExists(this);
+            return customerDAL.CheckIfEmailCustomerExists(this);
         }
 
 

@@ -6,11 +6,13 @@
 
   <ItemGroup>
     <Folder Include="Views\OrderPicker\" />
+    <Folder Include="Views\Order\" />
     <Folder Include="Views\TimeSlot\" />
     <Folder Include="Views\Shop\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ClickAndCollect.DAL;
+using ClickAndCollect.DAL.IDAL;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,9 +10,11 @@ namespace ClickAndCollect.Models
 {
     public class Product
     {
-        private string name;
-        private string category;
-        private List<Order> orders;
+        public int NumProduct { get; set; }
+        public string Name { get; set; }
+        public string Category { get; set; }
+        public float Prix { get; set; }
+        private List<Order> Orders { get; set; }
 
         public Product()
         {
@@ -23,27 +27,26 @@ namespace ClickAndCollect.Models
             category = c;
             orders = new List<Order>();
         }
-        
+
         public string Name
         {
             get { return name; }
             set { name = value; }
         }
+
+        public static List<Product> GetProducts(IProductDAL productDAL, Product produit)
+        {
+            return productDAL.GetProducts(produit);
+        }
         
-        public string Category
+        public static List<Product> GetCategorys(IProductDAL productDAL)
         {
-            get { return category; }
-            set { category = value; }
+            return productDAL.GetCategorys();
         }
 
-        public static void GetProducts()
+        public Product GetInfoProduct(IProductDAL productDAL)
         {
-
-        }
-
-        public void AddToList()
-        {
-
+            return productDAL.GetInfoProduct(this);
         }
     }
 }

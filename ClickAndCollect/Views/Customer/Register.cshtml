@@ -1,5 +1,7 @@
 ﻿@model Customer
 
+<div class="alert-danger">@TempData["EmailExists"]</div>
+
 <form asp-controller="Customer" asp-action="Register" method="post">
 
     <div class="form-group">
@@ -37,7 +39,6 @@
         <input asp-for="PhoneNumber" />
         <span asp-validation-for="PhoneNumber"></span>
     </div>
-
 
     <input type="submit" />
 </form>

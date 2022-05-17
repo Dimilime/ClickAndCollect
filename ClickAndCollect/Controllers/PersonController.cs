@@ -32,18 +32,22 @@ namespace ClickAndCollect.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Authenticate(Person person)
         {
-            if (person.VerifierCompte(_personDAL) == true)
+            if (person.CheckIfAccountExists(_personDAL) == true)
             {
-                person.GetUser(_personDAL);
+                person.GetAllFromUser(_personDAL);
 
-                if (person.Type == "Customer")
+                if (person.Type == "Customer") //faire un is
                 {
                     if(string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
                     {
                         HttpContext.Session.SetInt32("Id", person.Id);
-                        return Redirect("/Products/Index");
+                        HttpContext.Session.SetString("State", "connected");
+                        HttpContext.Session.SetString("OrderExist", "false");
+                        TempData["State"] = HttpContext.Session.GetString("State");
+                        return Redirect("/Product/Index");
                     }
                 }
                 if (person.Type == "OrderPicker")
@@ -51,6 +55,9 @@ namespace ClickAndCollect.Controllers
                     if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
                     {
                         HttpContext.Session.SetInt32("Id", person.Id);
+                        HttpContext.Session.SetString("State", "connected");
+                        TempData["State"] = HttpContext.Session.GetString("State");
+                        
                         return Redirect("/OrderPicker/Orders");
                     }
                 }
@@ -59,24 +66,23 @@ namespace ClickAndCollect.Controllers
                     if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
                     {
                         HttpContext.Session.SetInt32("Id", person.Id);
+                        HttpContext.Session.SetString("State", "connected");
+                        TempData["State"] = HttpContext.Session.GetString("State");
+                        
                         return View("Views/Cashier/Success");
                     }
                 }
 
             }
-            return View("Error");
+            TempData["ErrorAuthenticate"] = "L'email ou le mot de passe est incorrecte!";
+            return View();
         }
 
         public IActionResult LogOut()
         {
             HttpContext.Session.Clear();
-            return Redirect("/Person/HomePage");
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            TempData["State"] = "Disconnect";
+            return Redirect("/Product/Index");
         }
 
     }

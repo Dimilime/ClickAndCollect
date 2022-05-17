@@ -32,10 +32,11 @@ namespace ClickAndCollect.DAL
                 {
                     while (reader.Read())
                     {
-                        Product p = new Product();
-                        p.Name = null;
-                        p.Category = reader.GetString("Category");
-                        categorys.Add(p);
+                        Product produit = new Product();
+                        produit.Name = null;
+                        produit.Prix = 0;
+                        produit.Category = reader.GetString("Category");
+                        categorys.Add(produit);
                     }
                 }
             }
@@ -46,7 +47,7 @@ namespace ClickAndCollect.DAL
         public List<Product> GetProducts(Product product)
         {
 
-            List<Product> ps = new List<Product>();
+            List<Product> produits = new List<Product>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -60,15 +61,42 @@ namespace ClickAndCollect.DAL
                 {
                     while (reader.Read())
                     {
-                        Product p = new Product();
-                        p.Name = reader.GetString("Name");
-                        p.Category = reader.GetString("Category");
-                        ps.Add(p);
+                        Product produit = new Product();
+                        produit.NumProduct = reader.GetInt32("NumProduct");
+                        produit.Name = reader.GetString("Name");
+                        produit.Prix = (float)reader.GetDouble("Price");
+                        produit.Category = reader.GetString("Category");
+                        produits.Add(produit);
                     }
                 }
             }
+            return produits;
+        }
 
-            return ps;
+        public Product GetInfoProduct(Product product)
+        {
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Products WHERE NumProduct = @NumProduct", connection);
+
+                cmd.Parameters.AddWithValue("NumProduct", product.NumProduct);
+
+                connection.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        product.NumProduct = reader.GetInt32("NumProduct");
+                        product.Name = reader.GetString("Name");
+                        product.Prix = (float)reader.GetDouble("Prix");
+                        product.Category = reader.GetString("Category");
+                    }
+                }
+
+                return product;
+            }
         }
     }
 }

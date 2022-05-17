@@ -18,7 +18,7 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
-        public bool EmailCustomerExists(Customer c)
+        public bool CheckIfEmailCustomerExists(Customer customer)
         {
             bool result = false;
 
@@ -26,9 +26,8 @@ namespace ClickAndCollect.DAL
             {
                 SqlCommand cmd = new SqlCommand("SELECT * FROM Person WHERE EMAIL = @Email AND TYPE = 'Customer'", connection);
                 
+                cmd.Parameters.AddWithValue("Email", customer.Email);
                 
-                cmd.Parameters.Add("@Email", SqlDbType.VarChar);
-                cmd.Parameters["@Email"].Value=c.Email;
                 connection.Open();
                 
                 using (SqlDataReader reader = cmd.ExecuteReader())
@@ -43,7 +42,7 @@ namespace ClickAndCollect.DAL
             return result;
         }
 
-        public bool AddCustomer(Customer c)
+        public bool Register(Customer customer)
         {
             bool success = false;
             try
@@ -54,15 +53,14 @@ namespace ClickAndCollect.DAL
                     SqlCommand cmd = new SqlCommand("INSERT INTO Person (LastName, FirstName, Email, Password, Type) VALUES (@LastName, @FirstName, @Email, @Password, @Type)", connection);
                     SqlCommand cmd2 = new SqlCommand("INSERT INTO Customer(IdPerson, DoB, PhoneNumber) VALUES (ident_current('Person'),@Dob, @PhoneNumber)", connection);
 
-                    c.Type = "Customer";
-                    cmd.Parameters.AddWithValue("@LastName", c.LastName);
-                    cmd.Parameters.AddWithValue("@FirstName", c.FirstName);
-                    cmd.Parameters.AddWithValue("@Email", c.Email);
-                    cmd.Parameters.AddWithValue("@Password", c.Password);
-                    cmd.Parameters.AddWithValue("@Type", c.Type);
-                    cmd2.Parameters.AddWithValue("@DoB", c.DoB);
-                    cmd2.Parameters.AddWithValue("@PhoneNumber", c.PhoneNumber);
-
+                customer.Type = "Customer";
+                cmd.Parameters.AddWithValue("LastName", customer.LastName);
+                cmd.Parameters.AddWithValue("FirstName", customer.FirstName);
+                cmd.Parameters.AddWithValue("Email", customer.Email);
+                cmd.Parameters.AddWithValue("Password", customer.Password);
+                cmd.Parameters.AddWithValue("Type", customer.Type);
+                cmd2.Parameters.AddWithValue("DoB", customer.DoB);
+                cmd2.Parameters.AddWithValue("PhoneNumber", customer.PhoneNumber);
 
                     connection.Open();
                     int res = cmd.ExecuteNonQuery();
@@ -78,7 +76,6 @@ namespace ClickAndCollect.DAL
             }
             
             return success;
-
         }
     }
 }

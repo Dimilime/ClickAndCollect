@@ -26,24 +26,23 @@ namespace ClickAndCollect.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Register(Customer customer)
         {
             if(ModelState.IsValid)
             {
-                if(customer.VerifierMailCustomer(_customerDAL) != true)
+                if(customer.CheckIfEmailCustomerExists(_customerDAL) != true)
                 {
                     
                     if(customer.Register(_customerDAL) == true)
                     {
-                        return View("Views/Customer/Succes");
-                    }
-                    else
-                    {
-                        return View("View/Customer/Error");
+                        TempData["AccountCreate"] = "Votre compte a été cré !";
+                        return Redirect("/Product/Index");
                     }
 
                 }
-                return View("View/Customer/Error");
+                TempData["EmailExists"] = "L'adresse email a déjà un compte";
+                return View();
 
             }
             return View();

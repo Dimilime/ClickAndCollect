@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClickAndCollect.Models
 {
-    public class Person
+    public class Person //abstract !
     {
         public int Id { get; set; }
         private string lastName;
@@ -19,13 +19,6 @@ namespace ClickAndCollect.Models
         public Person()
         {
 
-        }
-        public Person (string ln, string fn, string e, string p)
-        {
-            lastName = ln;
-            firstName = fn;
-            email = e;
-            password = p;
         }
 
         [Display(Name = "Nom de famille")]
@@ -71,25 +64,14 @@ namespace ClickAndCollect.Models
             set { type = value; }
         }
 
-        public virtual void Authenticate(string email, string password)
+        public bool CheckIfAccountExists(IPersonDAL PersonDAL)
         {
-
+            return PersonDAL.CheckIfAccountExists(this);
         }
 
-        public bool VerifierCompte(IPersonDAL PersonDAL)
-        {
-            return PersonDAL.AccountExists(this);
-        }
-
-        public void GetUser(IPersonDAL personDAL)
+        public void GetAllFromUser(IPersonDAL personDAL)
         {
             personDAL.GetAllFromUser(this);
-        }
-
-
-        public void LogOut()
-        {
-
         }
 
     }
