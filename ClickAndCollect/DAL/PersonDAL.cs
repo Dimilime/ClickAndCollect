@@ -48,7 +48,8 @@ namespace ClickAndCollect.DAL
             {
                 
                 SqlCommand cmd = new SqlCommand("Select * from Person p full join Customer c on p.IdPerson = c.IdPerson where Email = @Email and Password = @Password", connection);
-
+                //soit gerer le type avec des requette (select que les customer, que les orderpicker ... et instancier chaque classe (customer, orderpicker ..)
+                //soit laisse le champ type mais gerer en instanciant les différentes classes ..
                 cmd.Parameters.AddWithValue("Email", p.Email);
                 cmd.Parameters.AddWithValue("Password", p.Password);
 

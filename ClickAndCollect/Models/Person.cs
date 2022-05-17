@@ -71,7 +71,7 @@ namespace ClickAndCollect.Models
             set { type = value; }
         }
 
-        public static void Authenticate(string email, string password)
+        public virtual void Authenticate(string email, string password)
         {
 
         }

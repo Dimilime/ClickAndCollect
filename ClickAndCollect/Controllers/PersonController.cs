@@ -51,7 +51,7 @@ namespace ClickAndCollect.Controllers
                     if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
                     {
                         HttpContext.Session.SetInt32("Id", person.Id);
-                        return View("View/Person/SuccessOrderPicker");
+                        return Redirect("/OrderPicker/Orders");
                     }
                 }
                 if (person.Type == "Cashier")
@@ -59,12 +59,12 @@ namespace ClickAndCollect.Controllers
                     if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
                     {
                         HttpContext.Session.SetInt32("Id", person.Id);
-                        return View("View/Person/SuccessCashier");
+                        return View("Views/Cashier/Success");
                     }
                 }
 
             }
-            return View("View/Person/Error");
+            return View("Error");
         }
 
         public IActionResult LogOut()

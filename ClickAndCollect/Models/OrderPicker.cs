@@ -7,8 +7,12 @@ namespace ClickAndCollect.Models
 {
     public class OrderPicker : Person
     {
-        private Shop shop;
-        
+        public Shop shop { get; set; }
+        public OrderPicker()
+        {
+
+        }
+
         public OrderPicker(string ln, string fn, string e, string p, Shop s)
             : base(ln, fn, e, p)
         {
@@ -17,7 +21,7 @@ namespace ClickAndCollect.Models
 
         public void ViewOrders()
         {
-
+            shop.GetOrders();
         }
 
         public void ViewOrderDetails()

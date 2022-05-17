@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace ClickAndCollect.Models
 {
-    public class Products
+    public class Product
     {
         private string name;
         private string category;
         private List<Order> orders;
 
-        public Products()
+        public Product()
         {
 
         }
 
-        public Products(string n, string c)
+        public Product(string n, string c)
         {
             name = n;
             category = c;
@@ -29,7 +29,7 @@ namespace ClickAndCollect.Models
             get { return name; }
             set { name = value; }
         }
-
+        
         public string Category
         {
             get { return category; }

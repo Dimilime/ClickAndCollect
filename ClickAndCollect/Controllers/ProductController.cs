@@ -8,23 +8,23 @@ using System.Threading.Tasks;
 
 namespace ClickAndCollect.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductController : Controller
     {
-        private readonly IProductsDAL _productsDAL;
+        private readonly IProductDAL _productDAL;
 
-        public ProductsController(IProductsDAL productsDAL)
+        public ProductController(IProductDAL productsDAL)
         {
-            _productsDAL = productsDAL;
+            _productDAL = productsDAL;
         }
         public IActionResult Index()
         {
-            List<Products> categorys = _productsDAL.GetCategorys();
+            List<Product> categorys = _productDAL.GetCategorys();
             return View(categorys);
         }
 
-        public IActionResult Details(Products p)
+        public IActionResult Details(Product p)
         {
-            List<Products> ps = _productsDAL.GetProducts(p);
+            List<Product> ps = _productDAL.GetProducts(p);
             return View(ps);
         }
 

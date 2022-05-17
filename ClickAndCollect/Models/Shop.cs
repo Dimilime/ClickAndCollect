@@ -7,23 +7,27 @@ namespace ClickAndCollect.Models
 {
     public class Shop
     {
-        private int postCode;
-        private List<Order> orders;
-        private List<Cashier> cashiers;
-        private List<OrderPicker> orderPickers;
-        private List<TimeSlot> timeSlots;
+        public int PostCode { get; set; }
+        public List<Order> Orders { get; set; }
+        public List<Cashier> Cashiers { get; set; }
+        public List<OrderPicker> OrderPickers{ get; set; }
+        public List<TimeSlot> TimeSlots{ get; set; }
 
+        public Shop()
+        {
+
+        }
         public Shop(int p, Cashier c, OrderPicker op, TimeSlot t)
         {
 
-            postCode = p;
-            orders = new List<Order>();
-            cashiers = new List<Cashier>();
-            cashiers.Add(c);
-            orderPickers = new List<OrderPicker>();
-            orderPickers.Add(op);
-            timeSlots = new List<TimeSlot>();
-            timeSlots.Add(t);
+            PostCode = p;
+            Orders = new List<Order>();
+            Cashiers = new List<Cashier>();
+            Cashiers.Add(c);
+            OrderPickers = new List<OrderPicker>();
+            OrderPickers.Add(op);
+            TimeSlots = new List<TimeSlot>();
+            TimeSlots.Add(t);
         }
 
         public void GetDailyCustomers()

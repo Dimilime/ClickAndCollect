@@ -7,5 +7,6 @@ namespace ClickAndCollect.DAL.IDAL
 {
     public interface IOrderPickerDAL
     {
+
     }
 }

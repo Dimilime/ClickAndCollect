@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 
 namespace ClickAndCollect.DAL
 {
-    public class ProductsDAL : IProductsDAL
+    public class ProductDAL : IProductDAL
     {
         private string connectionString;
 
-        public ProductsDAL(string connectionString)
+        public ProductDAL(string connectionString)
         {
             this.connectionString = connectionString;
         }
 
-        public List<Products> GetCategorys()
+        public List<Product> GetCategorys()
         {
-            List<Products> categorys = new List<Products>();
+            List<Product> categorys = new List<Product>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -32,7 +32,7 @@ namespace ClickAndCollect.DAL
                 {
                     while (reader.Read())
                     {
-                        Products p = new Products();
+                        Product p = new Product();
                         p.Name = null;
                         p.Category = reader.GetString("Category");
                         categorys.Add(p);
@@ -43,10 +43,10 @@ namespace ClickAndCollect.DAL
             return categorys;
         }
 
-        public List<Products> GetProducts(Products product)
+        public List<Product> GetProducts(Product product)
         {
 
-            List<Products> ps = new List<Products>();
+            List<Product> ps = new List<Product>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -60,7 +60,7 @@ namespace ClickAndCollect.DAL
                 {
                     while (reader.Read())
                     {
-                        Products p = new Products();
+                        Product p = new Product();
                         p.Name = reader.GetString("Name");
                         p.Category = reader.GetString("Category");
                         ps.Add(p);
