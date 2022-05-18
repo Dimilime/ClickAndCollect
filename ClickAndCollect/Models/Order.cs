@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ClickAndCollect.DAL.IDAL;
+using ClickAndCollect.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +9,7 @@ namespace ClickAndCollect.Models
 {
     public class Order
     {
+        public int OrderId { get; set; }
         public Boolean Ready { get; set; }
         public int NumberOfBoxUsed { get; set; }
         public int NumberOfBoxReturned { get; set; }
@@ -23,14 +26,9 @@ namespace ClickAndCollect.Models
             this.customer = customer;
         }
 
-        public void MakeOrder()
+        public bool MakeOrder(IOrderDAL orderDAL, OrderDicoViewModels orderDicoViewModels2)
         {
-
-        }
-
-        public void AddTimeSlot()
-        {
-
+            return orderDAL.MakeOrder(this, orderDicoViewModels2);
         }
 
         public double GetOrderAmount()

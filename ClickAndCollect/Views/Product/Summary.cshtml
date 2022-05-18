@@ -15,9 +15,12 @@
             <td>@Model.Order.timeSlot.Day.ToString("dd/MM/yyyy")</td>
             <td>@Model.Order.timeSlot.Start</td>
             <td>@Model.Order.timeSlot.End</td>
+
         </tr>
 
-            Total : @TempData["OrderAmount"] €
+        <a asp-controller="Order" asp-action="Validate">Valider</a>
+
+        Total : @TempData["OrderAmount"] €
 
     </table>
 
