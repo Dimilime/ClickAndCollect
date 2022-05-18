@@ -10,5 +10,6 @@ namespace ClickAndCollect.DAL.IDAL
     {
         public List<Shop> GetShops();
         public Shop GetInfoShop(Shop shop);
+        public List<TimeSlot> GetTimeSlots(Shop shop);
     }
 }

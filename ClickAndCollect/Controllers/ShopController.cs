@@ -20,7 +20,7 @@ namespace ClickAndCollect.Controllers
             _shopDAL = shopDAL;
         }
         
-        public IActionResult Index()
+        public IActionResult SelectShop()
         {
             var obj = HttpContext.Session.GetString("CurrentOrder");
             OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
@@ -35,14 +35,15 @@ namespace ClickAndCollect.Controllers
             return View(shops);
         }
 
-        public IActionResult Select(int ShopId)
+
+        public IActionResult SelectDay(int ShopId)
         {
             var obj = HttpContext.Session.GetString("CurrentOrder");
             OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
             Shop shop = new Shop();
             shop.ShopId = ShopId;
-            shop.GetInfoShop(_shopDAL);
+            shop = shop.GetInfoShop(_shopDAL);
 
             orderDicoViewModels.Order.shop = shop;
 
@@ -50,5 +51,43 @@ namespace ClickAndCollect.Controllers
 
             return View();
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SelectDay(TimeSlot ts)
+        {
+            if (ts.Day <= DateTime.Today)
+            {
+                TempData["Today"] = "La date de retrait ne peut pas être égal à la date d'aujourd'hui ou une date antérieur !!";
+                return View();
+            }
+
+            var obj = HttpContext.Session.GetString("CurrentOrder");
+            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+
+            TimeSlot timeSlotJour = ts;
+
+            orderDicoViewModels.Order.timeSlot = timeSlotJour;
+
+            HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
+
+            return Redirect("SelectCanva");
+        }
+
+        public IActionResult SelectCanva()
+        {
+            var obj = HttpContext.Session.GetString("CurrentOrder");
+            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+
+            Shop shop = orderDicoViewModels.Order.shop;
+            
+            List<TimeSlot> timeSlots = Shop.GetTimeSlots(_shopDAL, shop);
+
+            HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
+
+            return View(timeSlots);
+        }
+
     }
 }

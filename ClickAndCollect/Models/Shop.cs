@@ -51,5 +51,10 @@ namespace ClickAndCollect.Models
             return shopDAL.GetInfoShop(this);
         }
 
+        public static List<TimeSlot> GetTimeSlots(IShopDAL shopDAL, Shop shop)
+        {
+            return shopDAL.GetTimeSlots(shop);
+        }
+
     }
 }

@@ -1,0 +1,27 @@
+﻿@model ClickAndCollect.ViewModels.OrderDicoViewModels
+
+<div class="text-center">
+    <table class="table">
+        <tr>
+            <th>Lieu</th>
+            <th>Jour</th>
+            <th>Heure de debut</th>
+            <th>Heure de fin</th>
+        </tr>
+
+        <tr>
+
+            <td>@Model.Order.shop.PostCode</td>
+            <td>@Model.Order.timeSlot.Day.ToString("dd/MM/yyyy")</td>
+            <td>@Model.Order.timeSlot.Start</td>
+            <td>@Model.Order.timeSlot.End</td>
+
+        </tr>
+
+        <a asp-controller="Order" asp-action="Validate">Valider</a>
+
+        Total : @TempData["OrderAmount"] €
+
+    </table>
+
+</div>

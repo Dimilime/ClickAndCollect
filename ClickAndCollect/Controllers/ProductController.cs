@@ -48,7 +48,11 @@ namespace ClickAndCollect.Controllers
             {
                 HttpContext.Session.SetString("OrderExist", "True");
 
-                Order order = new Order();
+                int id = (int)HttpContext.Session.GetInt32("Id");
+                Customer customer = new Customer();
+                customer.Id = id;
+
+                Order order = new Order(customer);
 
                 Dictionary<int, int> dictionary = new Dictionary<int, int>();
                 dictionary.Add(NumProduct, Nbr);
@@ -76,7 +80,7 @@ namespace ClickAndCollect.Controllers
                 HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
 
             }
-
+            TempData["Add"] = "L'ajout a été réalisé avec succès !";
             return Redirect("Index");
         }
 
@@ -97,7 +101,7 @@ namespace ClickAndCollect.Controllers
             {
                 Product p = new Product();
                 p.NumProduct = key;
-                p.GetInfoProduct(_productDAL);
+                p = p.GetInfoProduct(_productDAL);
 
                 int Nbr = orderDicoViewModels.Dictionary[key];
 
@@ -124,7 +128,31 @@ namespace ClickAndCollect.Controllers
             return Redirect("Basket");
         }
 
+        public IActionResult Summary()
+        {
+            var obj = HttpContext.Session.GetString("CurrentOrder");
+            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+            
+            orderDicoViewModels.Order.DictionaryProducts = new Dictionary<Product, int>();
+
+            foreach (int key in orderDicoViewModels.Dictionary.Keys)
+            {
+                Product p = new Product();
+                p.NumProduct = key;
+                p = p.GetInfoProduct(_productDAL);
+
+                int Nbr = orderDicoViewModels.Dictionary[key];
+
+                orderDicoViewModels.Order.DictionaryProducts.Add(p, Nbr);
+
+            }
+
+            double SoldePanier = orderDicoViewModels.Order.GetOrderAmount();
+
+            TempData["OrderAmount"] = SoldePanier;
+
+
+            return View(orderDicoViewModels);
+        }
     }
-
-
 }

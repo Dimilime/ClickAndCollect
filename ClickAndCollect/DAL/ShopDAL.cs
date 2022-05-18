@@ -21,50 +21,102 @@ namespace ClickAndCollect.DAL
         public Shop GetInfoShop(Shop shop)
         {
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Shop WHERE ShopId = @ShopId", connection);
-
-                cmd.Parameters.AddWithValue("ShopId", shop.ShopId);
-
-                connection.Open();
-
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    while (reader.Read())
-                    {
-                        shop.ShopId = reader.GetInt32("ShopId");
-                        shop.PostCode = reader.GetInt32("PostCode");
-                    }
-                }
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM Shop WHERE ShopId = @ShopId", connection);
 
-                return shop;
+                    cmd.Parameters.AddWithValue("ShopId", shop.ShopId);
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            shop.ShopId = reader.GetInt32("ShopId");
+                            shop.PostCode = reader.GetInt32("PostCode");
+                        }
+                    }
+
+                    return shop;
+                }
             }
+            catch(Exception)
+            {
+                return null;
+            }
+            
         }
 
         public List<Shop> GetShops()
         {
             List<Shop> shops = new List<Shop>();
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Shop", connection);
-
-                connection.Open();
-
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    while (reader.Read())
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM Shop", connection);
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        Shop shop = new Shop();
-                        shop.ShopId = reader.GetInt32("ShopId");
-                        shop.PostCode = reader.GetInt32("PostCode");
-                        shops.Add(shop);
+                        while (reader.Read())
+                        {
+                            Shop shop = new Shop();
+                            shop.ShopId = reader.GetInt32("ShopId");
+                            shop.PostCode = reader.GetInt32("PostCode");
+                            shops.Add(shop);
+                        }
                     }
                 }
+
+                return shops;
+            }
+            catch(Exception)
+            {
+                return null;
             }
 
-            return shops;
+        }
+
+        public List<TimeSlot> GetTimeSlots(Shop shop)
+        {
+            List<TimeSlot> timeSlots = new List<TimeSlot>();
+
+            try 
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM Canva where ShopId = @ShopId", connection);
+
+                    cmd.Parameters.AddWithValue("ShopId", shop.ShopId);
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            TimeSlot timeSlot = new TimeSlot();
+                            timeSlot.IdCanva = reader.GetInt32("IdCanva");
+                            timeSlot.Start = (TimeSpan)reader.GetValue("Start");
+                            timeSlot.End = (TimeSpan)reader.GetValue("End");
+                            timeSlots.Add(timeSlot);
+                        }
+                    }
+                }
+
+                return timeSlots;
+            }
+            catch(Exception)
+            {
+                return null;
+            }
+  
         }
     }
 }
