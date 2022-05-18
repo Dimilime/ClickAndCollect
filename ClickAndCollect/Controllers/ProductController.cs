@@ -102,7 +102,7 @@ namespace ClickAndCollect.Controllers
             {
                 Product p = new Product();
                 p.NumProduct = key;
-                p.GetInfoProduct(_productDAL);
+                p = p.GetInfoProduct(_productDAL);
 
                 int Nbr = orderDicoViewModels.Dictionary[key];
 

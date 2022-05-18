@@ -24,15 +24,16 @@ namespace ClickAndCollect.Controllers
             return View();
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Authenticate(Person person)
         {
             if (person.CheckIfAccountExists(_personDAL) == true)
             {
-                person.GetAllFromUser(_personDAL);
+                person = person.GetAllFromUser(_personDAL);
 
-                if (person.Type == "Customer") //faire un is
+                if (person is Customer)
                 {
                     if(string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
                     {
@@ -43,7 +44,7 @@ namespace ClickAndCollect.Controllers
                         return Redirect("/Product/Index");
                     }
                 }
-                if (person.Type == "OrderPicker")
+                if (person is OrderPicker)
                 {
                     if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
                     {
@@ -53,7 +54,7 @@ namespace ClickAndCollect.Controllers
                         return View("View/Person/SuccessOrderPicker");
                     }
                 }
-                if (person.Type == "Cashier")
+                if (person is Cashier)
                 {
                     if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
                     {
