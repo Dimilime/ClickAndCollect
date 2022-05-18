@@ -132,6 +132,8 @@ namespace ClickAndCollect.Controllers
         {
             var obj = HttpContext.Session.GetString("CurrentOrder");
             OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+            
+            orderDicoViewModels.Order.DictionaryProducts = new Dictionary<Product, int>();
 
             foreach (int key in orderDicoViewModels.Dictionary.Keys)
             {
@@ -144,6 +146,10 @@ namespace ClickAndCollect.Controllers
                 orderDicoViewModels.Order.DictionaryProducts.Add(p, Nbr);
 
             }
+
+            double SoldePanier = orderDicoViewModels.Order.GetOrderAmount();
+
+            TempData["OrderAmount"] = SoldePanier;
 
             return View(orderDicoViewModels);
         }
