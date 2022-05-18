@@ -57,9 +57,9 @@ namespace ClickAndCollect.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult SelectDay(TimeSlot ts)
         {
-            if (ts.Day == DateTime.Today)
+            if (ts.Day <= DateTime.Today)
             {
-                TempData["Today"] = "La date de retrait ne peut pas être la date d'aujourd'hui !!";
+                TempData["Today"] = "La date de retrait ne peut pas être égal à la date d'aujourd'hui ou une date antérieur !!";
                 return View();
             }
 

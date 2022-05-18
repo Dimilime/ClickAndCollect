@@ -45,20 +45,7 @@ namespace ClickAndCollect.Controllers
 
             HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
 
-            return Redirect("summary");
-        }
-
-        public IActionResult summary()
-        {
-            var obj = HttpContext.Session.GetString("CurrentOrder");
-            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
-
-            
-
-
-
-
-            return View();
+            return Redirect("/Product/Summary");
         }
 
     }

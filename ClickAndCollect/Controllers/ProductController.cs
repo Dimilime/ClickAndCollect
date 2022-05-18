@@ -128,6 +128,26 @@ namespace ClickAndCollect.Controllers
             return Redirect("Basket");
         }
 
+        public IActionResult Summary()
+        {
+            var obj = HttpContext.Session.GetString("CurrentOrder");
+            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+
+            foreach (int key in orderDicoViewModels.Dictionary.Keys)
+            {
+                Product p = new Product();
+                p.NumProduct = key;
+                p = p.GetInfoProduct(_productDAL);
+
+                int Nbr = orderDicoViewModels.Dictionary[key];
+
+                orderDicoViewModels.Order.DictionaryProducts.Add(p, Nbr);
+
+            }
+
+            return View(orderDicoViewModels);
+        }
+
     }
 
 
