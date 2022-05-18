@@ -26,6 +26,8 @@ namespace ClickAndCollect.Controllers
             var obj = HttpContext.Session.GetString("CurrentOrder");
             OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
+            Shop shop = orderDicoViewModels.Order.shop;
+
             DateTime timeSlotJour = orderDicoViewModels.Order.timeSlot.Day;
 
             TimeSlot timeSlot = TimeSlot.GetTimeSlot(_timeSlotDAL, ts);
@@ -33,25 +35,28 @@ namespace ClickAndCollect.Controllers
 
             orderDicoViewModels.Order.timeSlot = timeSlot;
 
+            int nbr = orderDicoViewModels.Order.timeSlot.CheckIfAvalaible(_timeSlotDAL, shop);
+
+            if (nbr >= 10)
+            {
+                TempData["ErrorNbr"] = "Plus de place disponible !!";
+                return Redirect("/Shop/SelectCanva");
+            }
+
             HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
 
-            return Redirect("Validate");
+            return Redirect("summary");
         }
 
-        public IActionResult Validate()
+        public IActionResult summary()
         {
             var obj = HttpContext.Session.GetString("CurrentOrder");
             OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
-            Shop shop = orderDicoViewModels.Order.shop;
-            orderDicoViewModels.Order.timeSlot.shop = shop;
+            
 
-            int nbr = orderDicoViewModels.Order.timeSlot.CheckIfAvalaible(_timeSlotDAL, shop);
 
-            if ( nbr < 10)
-            {
-                return Redirect("/Order/SelectDay");
-            }
+
 
             return View();
         }

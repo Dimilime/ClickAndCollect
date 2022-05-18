@@ -48,9 +48,10 @@ namespace ClickAndCollect.DAL
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT count(ShopId) FROM TimeSlot WHERE Start = @Start and ShopId = @ShopId group by ShopId", connection);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM TimeSlot WHERE Start = @Start and Days = @Day and ShopId = @ShopId ", connection);
 
                 cmd.Parameters.AddWithValue("Start", timeSlot.Start);
+                cmd.Parameters.AddWithValue("Day", timeSlot.Day);
                 cmd.Parameters.AddWithValue("ShopId", shop.ShopId);
 
                 connection.Open();
