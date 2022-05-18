@@ -14,8 +14,8 @@ namespace ClickAndCollect.Models
         public static double ServiceFees { get; set; }
         public double BoxesFees { get; set; }
         public Dictionary<Product, int> DictionaryProducts { get; set; }
-        private Customer customer { get; set; }
-        private TimeSlot timeSlot { get; set; }
+        public Customer customer { get; set; }
+        public TimeSlot timeSlot { get; set; }
         public Shop shop { get; set; }
 
         public Order(Customer customer)

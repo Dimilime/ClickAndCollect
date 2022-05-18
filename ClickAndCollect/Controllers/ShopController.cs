@@ -35,7 +35,7 @@ namespace ClickAndCollect.Controllers
             return View(shops);
         }
 
-        public IActionResult SelectTimeSlot(int ShopId)
+        public IActionResult SelectCanva(int ShopId)
         {
             var obj = HttpContext.Session.GetString("CurrentOrder");
             OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
@@ -52,5 +52,6 @@ namespace ClickAndCollect.Controllers
 
             return View(timeSlots);
         }
+
     }
 }

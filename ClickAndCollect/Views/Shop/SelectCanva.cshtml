@@ -12,7 +12,7 @@
             <td>@timeSlot.Start</td>
             <td>@timeSlot.End</td>
 
-            @*<td><a asp-controller="Shop" asp-action="SelectTimeSlot" asp-route-ShopId="@shop.ShopId">Choisir</a></td>*@
+            <td><a asp-controller="TimeSlot" asp-action="GetCanva" asp-route-IdCanva="@timeSlot.IdCanva">Choisir</a></td>
         </tr>
         }
     </table>

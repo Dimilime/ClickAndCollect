@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClickAndCollect.DAL.IDAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,8 +11,7 @@ namespace ClickAndCollect.Models
         public int IdCanva { get; set; }
         private TimeSpan start;
         private TimeSpan end;
-        private int maxOrder;
-        private Shop shop;
+        public Shop shop { get; set; }
         private List<Order> orders;
 
         public TimeSlot()
@@ -32,11 +32,15 @@ namespace ClickAndCollect.Models
         }
 
 
-        public static void GetTimeSlots()
+        public static TimeSlot GetTimeSlot(ITimeSlotDAL timeSlotDAL, TimeSlot timeSlot)
         {
-
+            return timeSlotDAL.GetTimeSlot(timeSlot);
         }
 
+        public int CheckIfAvalaible(ITimeSlotDAL timeSlotDAL, Shop shop)
+        {
+            return timeSlotDAL.CheckIfAvalaible(this, shop);
+        }
         public void AddMaxOrder()
         {
 

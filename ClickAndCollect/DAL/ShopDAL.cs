@@ -86,7 +86,7 @@ namespace ClickAndCollect.DAL
                         TimeSlot timeSlot = new TimeSlot();
                         timeSlot.IdCanva = reader.GetInt32("IdCanva");
                         timeSlot.Start = (TimeSpan)reader.GetValue("Start");
-                        timeSlot.End = (TimeSpan)reader.GetValue("Start");
+                        timeSlot.End = (TimeSpan)reader.GetValue("End");
                         timeSlots.Add(timeSlot);
                     }
                 }
