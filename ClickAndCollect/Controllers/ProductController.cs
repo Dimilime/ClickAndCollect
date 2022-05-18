@@ -135,9 +135,6 @@ namespace ClickAndCollect.Controllers
             
             orderDicoViewModels.Order.DictionaryProducts = new Dictionary<Product, int>();
 
-            int longueurTableau = orderDicoViewModels.Dictionary.Count;
-            Product[] produits = new Product[longueurTableau];
-
             foreach (int key in orderDicoViewModels.Dictionary.Keys)
             {
                 Product p = new Product();
@@ -147,10 +144,6 @@ namespace ClickAndCollect.Controllers
                 int Nbr = orderDicoViewModels.Dictionary[key];
 
                 orderDicoViewModels.Order.DictionaryProducts.Add(p, Nbr);
-                for (int i=0; i<produits.Length; i++)
-                {
-                    produits[i] = p;
-                }
 
             }
 
@@ -158,7 +151,6 @@ namespace ClickAndCollect.Controllers
 
             TempData["OrderAmount"] = SoldePanier;
 
-            HttpContext.Session.SetString("Produits", JsonConvert.SerializeObject(produits));
 
             return View(orderDicoViewModels);
         }

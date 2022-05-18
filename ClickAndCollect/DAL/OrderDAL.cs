@@ -21,30 +21,39 @@ namespace ClickAndCollect.DAL
         public bool MakeOrder(Order order, OrderDicoViewModels orderDicoViewModels2)
         {
             bool success = false;
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                
-                SqlCommand cmd2 = new SqlCommand("INSERT INTO TimeSlot(Start, [End], ShopId, Days) VALUES (@Start, @End, @ShopId, @Days)", connection);
-                SqlCommand cmd3 = new SqlCommand("INSERT INTO [Order] (Ready, TimeSlotId, IdPerson) VALUES ('false', ident_current('TimeSlot'), @IdPerson)", connection);
-                SqlCommand cmd = new SqlCommand("INSERT INTO OrderProducts (OrderId, NumProduct, Quantity) VALUES (ident_current('Order'), @NumProduct, @Quantity)", connection);
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
 
-                
-                
-                //cmd.Parameters.AddWithValue("NumProduct", orderDicoViewModels2.Dictionary.K);
-                cmd.Parameters.AddWithValue("Quantity", orderDicoViewModels2.Dictionary.Values);
-                cmd2.Parameters.AddWithValue("Start", order.timeSlot.Start);
-                cmd2.Parameters.AddWithValue("End", order.timeSlot.End);
-                cmd2.Parameters.AddWithValue("ShopId", order.shop.ShopId);
-                cmd2.Parameters.AddWithValue("Days", order.timeSlot.Day);
-                cmd3.Parameters.AddWithValue("IdPerson", order.customer.Id);
+                    SqlCommand cmd2 = new SqlCommand("INSERT INTO TimeSlot(Start, [End], ShopId, Days) VALUES (@Start, @End, @ShopId, @Days)", connection);
+                    SqlCommand cmd3 = new SqlCommand("INSERT INTO [Order] (Ready, TimeSlotId, IdPerson) VALUES ('false', ident_current('TimeSlot'), @IdPerson)", connection);
+                    SqlCommand cmd = new SqlCommand("INSERT INTO OrderProducts (OrderId, NumProduct, Quantity) VALUES (ident_current('Order'), @NumProduct, @Quantity)", connection);
 
-                connection.Open();
-                int res = cmd.ExecuteNonQuery();
-                int res2 = cmd2.ExecuteNonQuery();
-                int res3 = cmd3.ExecuteNonQuery();
-                success = res > 0 && res2 > 0 && res3 > 0;
+
+
+                    //cmd.Parameters.AddWithValue("NumProduct", orderDicoViewModels2.Dictionary.K); probleme !!!
+                    cmd.Parameters.AddWithValue("Quantity", orderDicoViewModels2.Dictionary.Values);
+                    cmd2.Parameters.AddWithValue("Start", order.timeSlot.Start);
+                    cmd2.Parameters.AddWithValue("End", order.timeSlot.End);
+                    cmd2.Parameters.AddWithValue("ShopId", order.shop.ShopId);
+                    cmd2.Parameters.AddWithValue("Days", order.timeSlot.Day);
+                    cmd3.Parameters.AddWithValue("IdPerson", order.customer.Id);
+
+                    connection.Open();
+                    int res = cmd.ExecuteNonQuery();
+                    int res2 = cmd2.ExecuteNonQuery();
+                    int res3 = cmd3.ExecuteNonQuery();
+                    success = res > 0 && res2 > 0 && res3 > 0;
+                }
+
+                return success;
             }
-            return success;
+            catch(Exception)
+            {
+                return success;
+            }
+
         }
     }
 }

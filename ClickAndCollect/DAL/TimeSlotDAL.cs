@@ -20,51 +20,66 @@ namespace ClickAndCollect.DAL
 
         public TimeSlot GetTimeSlot(TimeSlot timeSlot)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Canva WHERE IdCanva = @IdCanva", connection);
-
-                cmd.Parameters.AddWithValue("IdCanva", timeSlot.IdCanva);
-
-                connection.Open();
-
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    while (reader.Read())
-                    {
-                        timeSlot.IdCanva = reader.GetInt32("IdCanva");
-                        timeSlot.Start = (TimeSpan)reader.GetValue("Start");
-                        timeSlot.End = (TimeSpan)reader.GetValue("End");
-                    }
-                }
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM Canva WHERE IdCanva = @IdCanva", connection);
 
-                return timeSlot;
+                    cmd.Parameters.AddWithValue("IdCanva", timeSlot.IdCanva);
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            timeSlot.IdCanva = reader.GetInt32("IdCanva");
+                            timeSlot.Start = (TimeSpan)reader.GetValue("Start");
+                            timeSlot.End = (TimeSpan)reader.GetValue("End");
+                        }
+                    }
+
+                    return timeSlot;
+                }
             }
+            catch(Exception)
+            {
+                return null;
+            }
+
         }
 
         public int CheckIfAvalaible(TimeSlot timeSlot, Shop shop)
         {
             int nbr = 0;
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try 
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM TimeSlot WHERE Start = @Start and Days = @Day and ShopId = @ShopId ", connection);
-
-                cmd.Parameters.AddWithValue("Start", timeSlot.Start);
-                cmd.Parameters.AddWithValue("Day", timeSlot.Day);
-                cmd.Parameters.AddWithValue("ShopId", shop.ShopId);
-
-                connection.Open();
-
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    while (reader.Read())
-                    {
-                        nbr = nbr + 1;
-                    }
-                }
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM TimeSlot WHERE Start = @Start and Days = @Day and ShopId = @ShopId ", connection);
 
-                return nbr;
+                    cmd.Parameters.AddWithValue("Start", timeSlot.Start);
+                    cmd.Parameters.AddWithValue("Day", timeSlot.Day);
+                    cmd.Parameters.AddWithValue("ShopId", shop.ShopId);
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            nbr = nbr + 1;
+                        }
+                    }
+
+                    return nbr;
+                }
+            }
+            catch(Exception)
+            {
+                return 0;
             }
         }
     }
