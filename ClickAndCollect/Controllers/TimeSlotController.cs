@@ -20,21 +20,25 @@ namespace ClickAndCollect.Controllers
             _timeSlotDAL = timeSlotDAL;
         }
 
-        public IActionResult GetCanva(TimeSlot ts)
+
+        public IActionResult GetCanva(TimeSlot ts)//Gerer l'afficher des dispo
         {
             var obj = HttpContext.Session.GetString("CurrentOrder");
             OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
+            DateTime timeSlotJour = orderDicoViewModels.Order.timeSlot.Day;
+
             TimeSlot timeSlot = TimeSlot.GetTimeSlot(_timeSlotDAL, ts);
+            timeSlot.Day = timeSlotJour;
 
             orderDicoViewModels.Order.timeSlot = timeSlot;
 
             HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
 
-            return Redirect("SelectTimeSlot");
+            return Redirect("Validate");
         }
 
-        public IActionResult SelectTimeSlot()
+        public IActionResult Validate()
         {
             var obj = HttpContext.Session.GetString("CurrentOrder");
             OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);

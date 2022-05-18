@@ -35,7 +35,8 @@ namespace ClickAndCollect.Controllers
             return View(shops);
         }
 
-        public IActionResult SelectCanva(int ShopId)
+
+        public IActionResult SelectDay(int ShopId)
         {
             var obj = HttpContext.Session.GetString("CurrentOrder");
             OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
@@ -44,9 +45,44 @@ namespace ClickAndCollect.Controllers
             shop.ShopId = ShopId;
             shop = shop.GetInfoShop(_shopDAL);
 
-            List<TimeSlot> timeSlots = Shop.GetTimeSlots(_shopDAL, shop);
-
             orderDicoViewModels.Order.shop = shop;
+
+            HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
+
+            return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SelectDay(TimeSlot ts)
+        {
+            if (ts.Day == DateTime.Today)
+            {
+                TempData["Today"] = "La date de retrait ne peut pas être la date d'aujourd'hui !!";
+                return View();
+            }
+
+            var obj = HttpContext.Session.GetString("CurrentOrder");
+            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+
+            TimeSlot timeSlotJour = ts;
+
+            orderDicoViewModels.Order.timeSlot = timeSlotJour;
+
+            HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
+
+            return Redirect("SelectCanva");
+        }
+
+        public IActionResult SelectCanva()
+        {
+            var obj = HttpContext.Session.GetString("CurrentOrder");
+            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+
+            Shop shop = orderDicoViewModels.Order.shop;
+            
+            List<TimeSlot> timeSlots = Shop.GetTimeSlots(_shopDAL, shop);
 
             HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
 

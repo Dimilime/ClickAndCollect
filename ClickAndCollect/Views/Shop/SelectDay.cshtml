@@ -1,0 +1,16 @@
+﻿@model TimeSlot
+
+<div class="alert-danger">
+    @TempData["Today"]
+</div>
+
+<form asp-controller="Shop" asp-action="SelectDay" method="post">
+
+    <div class="form-group">
+        <label asp-for="Day"></label>
+        <input asp-for="Day" />
+        <span asp-validation-for="Day"></span>
+    </div>
+
+    <input type="submit" />
+</form>
