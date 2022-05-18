@@ -34,7 +34,7 @@ namespace ClickAndCollect.DAL
                     {
                         Product produit = new Product();
                         produit.Name = null;
-                        produit.Prix = 0;
+                        produit.Price = 0;
                         produit.Category = reader.GetString("Category");
                         categorys.Add(produit);
                     }
@@ -64,7 +64,7 @@ namespace ClickAndCollect.DAL
                         Product produit = new Product();
                         produit.NumProduct = reader.GetInt32("NumProduct");
                         produit.Name = reader.GetString("Name");
-                        produit.Prix = (float)reader.GetDouble("Prix");
+                        produit.Price = (float)reader.GetDouble("Price");
                         produit.Category = reader.GetString("Category");
                         produits.Add(produit);
                     }
@@ -90,7 +90,7 @@ namespace ClickAndCollect.DAL
                     {
                         product.NumProduct = reader.GetInt32("NumProduct");
                         product.Name = reader.GetString("Name");
-                        product.Prix = (float)reader.GetDouble("Prix");
+                        product.Price = (float)reader.GetDouble("Price");
                         product.Category = reader.GetString("Category");
                     }
                 }

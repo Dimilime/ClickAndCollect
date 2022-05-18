@@ -13,7 +13,7 @@ namespace ClickAndCollect.Models
         public int NumProduct { get; set; }
         public string Name { get; set; }
         public string Category { get; set; }
-        public float Prix { get; set; }
+        public float Price { get; set; }
         private List<Order> Orders { get; set; }
 
         public Product()

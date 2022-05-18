@@ -48,6 +48,11 @@ namespace ClickAndCollect.Controllers
             {
                 HttpContext.Session.SetString("OrderExist", "True");
 
+                //int id = (int)HttpContext.Session.GetInt32("Id");
+                //Customer customer = new Customer();
+                //customer.Id = id;
+                //customer.
+
                 Order order = new Order();
 
                 Dictionary<int, int> dictionary = new Dictionary<int, int>();

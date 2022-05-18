@@ -45,7 +45,7 @@ namespace ClickAndCollect.Models
             
             foreach (var item in DictionaryProducts)
             {
-                prix = item.Key.Prix * item.Value;
+                prix = item.Key.Price * item.Value;
                 total += prix;
             }
 
