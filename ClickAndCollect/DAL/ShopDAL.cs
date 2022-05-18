@@ -66,5 +66,33 @@ namespace ClickAndCollect.DAL
 
             return shops;
         }
+
+        public List<TimeSlot> GetTimeSlots(Shop shop)
+        {
+            List<TimeSlot> timeSlots = new List<TimeSlot>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Canva where ShopId = @ShopId", connection);
+
+                cmd.Parameters.AddWithValue("ShopId", shop.ShopId);
+
+                connection.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        TimeSlot timeSlot = new TimeSlot();
+                        timeSlot.IdCanva = reader.GetInt32("IdCanva");
+                        timeSlot.Start = (TimeSpan)reader.GetValue("Start");
+                        timeSlot.End = (TimeSpan)reader.GetValue("Start");
+                        timeSlots.Add(timeSlot);
+                    }
+                }
+            }
+
+            return timeSlots;
+        }
     }
 }

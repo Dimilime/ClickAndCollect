@@ -20,7 +20,7 @@ namespace ClickAndCollect.Controllers
             _shopDAL = shopDAL;
         }
         
-        public IActionResult Index()
+        public IActionResult SelectShop()
         {
             var obj = HttpContext.Session.GetString("CurrentOrder");
             OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
@@ -35,20 +35,22 @@ namespace ClickAndCollect.Controllers
             return View(shops);
         }
 
-        public IActionResult Select(int ShopId)
+        public IActionResult SelectTimeSlot(int ShopId)
         {
             var obj = HttpContext.Session.GetString("CurrentOrder");
             OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
             Shop shop = new Shop();
             shop.ShopId = ShopId;
-            shop.GetInfoShop(_shopDAL);
+            shop = shop.GetInfoShop(_shopDAL);
+
+            List<TimeSlot> timeSlots = Shop.GetTimeSlots(_shopDAL, shop);
 
             orderDicoViewModels.Order.shop = shop;
 
             HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
 
-            return View();
+            return View(timeSlots);
         }
     }
 }

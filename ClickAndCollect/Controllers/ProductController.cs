@@ -48,12 +48,11 @@ namespace ClickAndCollect.Controllers
             {
                 HttpContext.Session.SetString("OrderExist", "True");
 
-                //int id = (int)HttpContext.Session.GetInt32("Id");
-                //Customer customer = new Customer();
-                //customer.Id = id;
-                //customer.
+                int id = (int)HttpContext.Session.GetInt32("Id");
+                Customer customer = new Customer();
+                customer.Id = id;
 
-                Order order = new Order();
+                Order order = new Order(customer);
 
                 Dictionary<int, int> dictionary = new Dictionary<int, int>();
                 dictionary.Add(NumProduct, Nbr);
@@ -81,7 +80,7 @@ namespace ClickAndCollect.Controllers
                 HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
 
             }
-
+            TempData["Add"] = "L'ajout a été réalisé avec succès !";
             return Redirect("Index");
         }
 

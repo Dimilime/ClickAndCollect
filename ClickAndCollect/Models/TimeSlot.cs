@@ -7,8 +7,9 @@ namespace ClickAndCollect.Models
 {
     public class TimeSlot
     {
-        private DateTime start;
-        private DateTime end;
+        public int IdCanva { get; set; }
+        private TimeSpan start;
+        private TimeSpan end;
         private int maxOrder;
         private Shop shop;
         private List<Order> orders;
@@ -17,6 +18,19 @@ namespace ClickAndCollect.Models
         {
 
         }
+
+        public TimeSpan Start
+        {
+            get { return start; }
+            set { start = value; }
+        }
+
+        public TimeSpan End
+        {
+            get { return end; }
+            set { end = value; }
+        }
+
 
         public static void GetTimeSlots()
         {

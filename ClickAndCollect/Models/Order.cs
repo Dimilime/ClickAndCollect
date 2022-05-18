@@ -18,9 +18,9 @@ namespace ClickAndCollect.Models
         private TimeSlot timeSlot { get; set; }
         public Shop shop { get; set; }
 
-        public Order()
+        public Order(Customer customer)
         {
-
+            this.customer = customer;
         }
 
         public void MakeOrder()
