@@ -14,7 +14,6 @@ namespace ClickAndCollect.Models
         public string Name { get; set; }
         public string Category { get; set; }
         public float Price { get; set; }
-        private List<Order> Orders { get; set; }
 
         public Product()
         {

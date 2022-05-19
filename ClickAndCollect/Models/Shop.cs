@@ -10,10 +10,8 @@ namespace ClickAndCollect.Models
     {
         public int ShopId { get; set; }
         private int postCode;
-        private List<Order> orders;
         private List<Cashier> cashiers;
         private List<OrderPicker> orderPickers;
-        private List<TimeSlot> timeSlots;
 
         public Shop()
         {

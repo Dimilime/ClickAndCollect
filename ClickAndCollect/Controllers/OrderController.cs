@@ -32,7 +32,8 @@ namespace ClickAndCollect.Controllers
                 return Redirect("/Product/Index");
             }
 
-            return View();
+            TempData["ErrorOrder"] = "La commande n'a pas abouti !!";
+            return Redirect("/Product/Index");
         }
 
     }
