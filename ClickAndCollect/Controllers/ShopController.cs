@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ClickAndCollect.DAL.IDAL;
+using ClickAndCollect.Models;
+using ClickAndCollect.ViewModels;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +13,112 @@ namespace ClickAndCollect.Controllers
 {
     public class ShopController : Controller
     {
-        public IActionResult Index()
+        private readonly IShopDAL _shopDAL;
+
+        public ShopController(IShopDAL shopDAL)
         {
-            return View();
+            _shopDAL = shopDAL;
         }
+        
+        public IActionResult SelectShop()
+        {
+            try
+            {
+                var obj = HttpContext.Session.GetString("CurrentOrder");
+                OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+                if (orderDicoViewModels.Dictionary.Count == 0)
+                {
+                    TempData["BasketEmpty"] = "Votre panier est vide :(";
+                    return Redirect("/Product/Basket");
+                }
+
+                List<Shop> shops = Shop.GetShops(_shopDAL);
+                return View(shops);
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Erreur session";
+                return Redirect("/Product/Index");
+            }
+        }
+
+
+        public IActionResult SelectDay(int ShopId)
+        {
+            try
+            {
+                var obj = HttpContext.Session.GetString("CurrentOrder");
+                OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+
+                Shop shop = new Shop();
+                shop.ShopId = ShopId;
+                shop = shop.GetInfoShop(_shopDAL);
+
+                orderDicoViewModels.Order.shop = shop;
+
+                HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
+
+                return View();
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Erreur session";
+                return Redirect("/Product/Index");
+            }
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SelectDay(TimeSlot ts)
+        {
+            if (ts.Day <= DateTime.Today)
+            {
+                TempData["Today"] = "La date de retrait ne peut pas être égal à la date d'aujourd'hui ou une date antérieur !!";
+                return View();
+            }
+
+            try
+            {
+                var obj = HttpContext.Session.GetString("CurrentOrder");
+                OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+
+                TimeSlot timeSlotJour = ts;
+
+                orderDicoViewModels.Order.timeSlot = timeSlotJour;
+
+                HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
+
+                return Redirect("SelectCanva");
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Erreur session";
+                return Redirect("/Product/Index");
+            }
+        }
+
+        public IActionResult SelectCanva()
+        {
+            try
+            {
+                var obj = HttpContext.Session.GetString("CurrentOrder");
+                OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+
+                Shop shop = orderDicoViewModels.Order.shop;
+
+                List<TimeSlot> timeSlots = Shop.GetTimeSlots(_shopDAL, shop);
+
+                HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
+
+                return View(timeSlots);
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Erreur session";
+                return Redirect("/Product/Index");
+            }
+        }
+
     }
 }

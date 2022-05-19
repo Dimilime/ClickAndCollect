@@ -1,7 +1,10 @@
-﻿using ClickAndCollect.Models;
+﻿using ClickAndCollect.DAL;
+using ClickAndCollect.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,14 +12,69 @@ namespace ClickAndCollect.Controllers
 {
     public class PersonController : Controller
     {
-        public IActionResult HomePage()
+        private readonly IPersonDAL _personDAL;
+
+        public PersonController(IPersonDAL personDAL)
+        {
+            _personDAL = personDAL;
+        }
+        
+        public IActionResult Authenticate()
         {
             return View();
         }
 
-        public IActionResult Connexion()
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Authenticate(Person person)
         {
-            return View();
+            if (person.CheckIfAccountExists(_personDAL) == true)
+            {
+                person = person.GetAllFromUser(_personDAL);
+
+                if (person is Customer)
+                {
+                    if(string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
+                    {
+                        HttpContext.Session.SetInt32("Id", person.Id);
+                        HttpContext.Session.SetString("State", "connected");
+                        HttpContext.Session.SetString("OrderExist", "false");
+                        TempData["State"] = HttpContext.Session.GetString("State");
+                        return Redirect("/Product/Index");
+                    }
+                }
+                if (person is OrderPicker)
+                {
+                    if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
+                    {
+                        HttpContext.Session.SetInt32("Id", person.Id);
+                        HttpContext.Session.SetString("State", "connected");
+                        TempData["State"] = HttpContext.Session.GetString("State");
+                        return View("View/Person/SuccessOrderPicker");
+                    }
+                }
+                if (person is Cashier)
+                {
+                    if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
+                    {
+                        HttpContext.Session.SetInt32("Id", person.Id);
+                        HttpContext.Session.SetString("State", "connected");
+                        TempData["State"] = HttpContext.Session.GetString("State");
+                        return View("View/Person/SuccessCashier");
+                    }
+                }
+
+            }
+            return Redirect("/Product/Index");
         }
+
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.Clear();
+            TempData["State"] = "Disconnect";
+            return Redirect("/Product/Index");
+        }
+
     }
 }

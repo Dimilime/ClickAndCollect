@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace ClickAndCollect.DAL.IDAL
 {
-    public interface ITimeSlotDAL
+    public interface IProductDAL
     {
-        public TimeSlot GetTimeSlot(TimeSlot timeSlot);
-        public int CheckIfAvalaible(TimeSlot timeSlot, Shop shop);
+        public List<Product> GetProducts(Product p);
+        public List<Product> GetCategories();
+        public Product GetInfoProduct(Product p);
     }
 }

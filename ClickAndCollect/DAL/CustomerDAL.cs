@@ -17,61 +17,68 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
-        public Boolean EmailExists(Customer c)
+        public bool CheckIfEmailCustomerExists(Customer customer)
         {
             bool result = false;
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Person WHERE EMAIL = @Email AND TYPE = 'Customer'", connection);
-                
-                cmd.Parameters.AddWithValue("Email", c.Email);
-                
-                connection.Open();
-                
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    while (reader.Read())
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM Person WHERE EMAIL = @Email AND TYPE = 'Customer'", connection);
+
+                    cmd.Parameters.AddWithValue("Email", customer.Email);
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        result = true;
+                        while (reader.Read())
+                        {
+                            result = true;
+                        }
                     }
                 }
+
+                return result;
+            }
+            catch(Exception)
+            {
+                return result;
             }
 
-            return result;
         }
 
-        public bool CheckAccount(Customer c)
+        public bool Register(Customer customer)
         {
-            bool result = false;
+            bool success = false;
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("INSERT INTO Person (LastName, FirstName, Email, Password, Type) VALUES (@LastName, @FirstName, @Email, @Password, @Type)", connection);
+                    SqlCommand cmd2 = new SqlCommand("INSERT INTO Customer(IdPerson, DoB, PhoneNumber) VALUES (ident_current('Person'),@Dob, @PhoneNumber)", connection);
 
+                    string type = "Customer";
+                    cmd.Parameters.AddWithValue("LastName", customer.LastName);
+                    cmd.Parameters.AddWithValue("FirstName", customer.FirstName);
+                    cmd.Parameters.AddWithValue("Email", customer.Email);
+                    cmd.Parameters.AddWithValue("Password", customer.Password);
+                    cmd.Parameters.AddWithValue("Type", type);
+                    cmd2.Parameters.AddWithValue("DoB", customer.DoB);
+                    cmd2.Parameters.AddWithValue("PhoneNumber", customer.PhoneNumber);
+
+                    connection.Open();
+                    int res = cmd.ExecuteNonQuery();
+                    int res2 = cmd2.ExecuteNonQuery();
+                    success = res > 0 && res2 > 0;
+                }
+                return success;
             }
-
-            return result;
-        }
-
-        public void AddCustomer(Customer c)
-        {
-            using(SqlConnection connection = new SqlConnection(connectionString))
+            catch (Exception)
             {
-                c.Type = "Customer";
-
-                SqlCommand cmd = new SqlCommand("INSERT INTO Person (LastName, FirstName, Email, Password, Type) VALUES (@LastName, @FirstName, @Email, @Password, @Type)", connection);
-                SqlCommand cmd2 = new SqlCommand("INSERT INTO Customer(IdPerson,DoB, PhoneNumber) VALUES (@IdPerson, @Dob, @PhoneNumber)", connection);
-                
-                cmd.Parameters.AddWithValue("LastName", c.LastName);
-                cmd.Parameters.AddWithValue("FirstName", c.FirstName);
-                cmd.Parameters.AddWithValue("Email", c.Email);
-                cmd.Parameters.AddWithValue("Password", c.Password);
-                cmd.Parameters.AddWithValue("Type", c.Type);
-                cmd2.Parameters.AddWithValue("IdPerson", c.IdPerson);
-                cmd2.Parameters.AddWithValue("DoB", c.DoB);
-                cmd2.Parameters.AddWithValue("PhoneNumber", c.PhoneNumber);
-
-                connection.Open();
+                return success;
             }
 
         }

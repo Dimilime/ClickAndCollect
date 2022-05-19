@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ClickAndCollect.DAL.IDAL;
+using ClickAndCollect.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,95 +9,49 @@ namespace ClickAndCollect.Models
 {
     public class Order
     {
-        private Boolean ready;
-        private int numberOfBoxUsed;
-        private int numberOfBoxReturned;
-        private Boolean receipt;
-        private static double serviceFees;
-        private double aDeposit;
-        private Dictionary<Products, int> product;
-        private Customer customer;
-        private TimeSlot timeSlot;
-        private Shop shop;
+        public int OrderId { get; set; }
+        public Boolean Ready { get; set; }
+        public int NumberOfBoxUsed { get; set; }
+        public int NumberOfBoxReturned { get; set; }
+        public Boolean Receipt { get; set; }
+        public static double ServiceFees { get; set; }
+        public double BoxesFees { get; set; }
+        public Dictionary<Product, int> DictionaryProducts { get; set; }
+        public Customer customer { get; set; }
+        public TimeSlot timeSlot { get; set; }
+        public Shop shop { get; set; }
 
-        public Order(Customer c)
+        public Order(Customer customer)
         {
-            customer = c;
-            product = new Dictionary<Products, int>();
+            this.customer = customer;
         }
 
-        public void ViewProducts()
+        public static List<OrderTimeSlotOrderProductViewModel> GetOrders (IOrderDAL orderDAL, Customer customer)
         {
-
+            return orderDAL.GetOrders(customer);
+        }
+        public bool MakeOrder(IOrderDAL orderDAL, OrderDicoViewModels orderDicoViewModels2)
+        {
+            return orderDAL.MakeOrder(this, orderDicoViewModels2);
         }
 
-        public void AddProduct()
+        public double GetOrderAmount()
         {
-
+            return CalculAmount();
         }
 
-        public void MakeOrder()
+        private double CalculAmount()
         {
-
-        }
-
-        public void AddTimeSlot()
-        {
-
-        }
-
-        public void AddPickUpPoint()
-        {
-
-        }
-
-        public void GetOrderAmount()
-        {
-
-        }
-
-        private void CalculAmount()
-        {
-
-        }
-
-        public void GetDetails()
-        {
-
-        }
-
-        public void ModifyReady()
-        {
-
-        }
-
-        public void EnterNumberOfBoxUsed()
-        {
-
-        }
-
-        public void EnterNumberOfBoxesReturned()
-        {
-
-        }
-
-        public void ModifyReceipt()
-        {
+            double prix;
+            double total = 0;
             
-        }
+            foreach (var item in DictionaryProducts)
+            {
+                prix = item.Key.Price * item.Value;
+                total += prix;
+            }
 
-        public static void GetAllShopOrders()
-        {
-
-        }
-        public void CustomerToList()
-        {
-
-        }
-        
-        public static void GetCustomerList()
-        {
-
+            return total;
         }
     }
 }

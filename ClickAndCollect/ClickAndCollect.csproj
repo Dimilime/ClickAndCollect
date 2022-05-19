@@ -5,13 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Views\Cashier\" />
+    <Folder Include="Views\OrderPicker\" />
     <Folder Include="Views\TimeSlot\" />
-    <Folder Include="Views\Shop\" />
-    <Folder Include="Views\Products\" />
-    <Folder Include="Views\Order\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 

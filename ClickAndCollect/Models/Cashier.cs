@@ -10,37 +10,10 @@ namespace ClickAndCollect.Models
 
         private Shop shop;
 
-        public Cashier(string ln, string fn, string e, string p, Shop s)
-            : base(ln, fn, e, p)
-        {
-            shop = s;
-        }
-
-        public override void LogOut()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AccesDailyCustomers()
+        public Cashier()
         {
 
         }
-
-        public void EnterBoxesReturned()
-        {
-
-        }
-
-        public void ViewAmountOrder()
-        {
-
-        }
-
-        public void ValidateReceipt()
-        {
-
-        }
-
 
     }
 }
