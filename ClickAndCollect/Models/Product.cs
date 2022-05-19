@@ -25,9 +25,9 @@ namespace ClickAndCollect.Models
             return productDAL.GetProducts(produit);
         }
         
-        public static List<Product> GetCategorys(IProductDAL productDAL)
+        public static List<Product> GetCategories(IProductDAL productDAL)
         {
-            return productDAL.GetCategorys();
+            return productDAL.GetCategories();
         }
 
         public Product GetInfoProduct(IProductDAL productDAL)

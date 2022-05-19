@@ -19,6 +19,53 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
+        public List<OrderTimeSlotOrderProductViewModel> GetOrders(Customer customer)
+        {
+            List<OrderTimeSlotOrderProductViewModel> orderTimeSlotOrderProductViewModel = new List<OrderTimeSlotOrderProductViewModel>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand
+                        ("select o.OrderId, o.Receipt, t.Days, op.NumProduct, op.Quantity from [Order] o " +
+                        "full join TimeSlot t on o.TimeSlotId = t.TimeSlotId " +
+                        "full join OrderProducts op on o.OrderId = op.OrderId " +
+                        "where o.IdPerson = @IdPerson", connection);
+
+                    cmd.Parameters.AddWithValue("IdPerson", customer.Id);
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Order order = new Order(customer);
+                            TimeSlot timeSlot = new TimeSlot();
+                            Dictionary<int, int> dictonary = new Dictionary<int, int>();
+                            OrderTimeSlotOrderProductViewModel orderTimeSlotOrderProductViewModel1 = new OrderTimeSlotOrderProductViewModel(order, timeSlot, dictonary);
+                            
+                            orderTimeSlotOrderProductViewModel1.Order.OrderId = reader.GetInt32("OrderId");
+                            //orderTimeSlotOrderProductViewModel1.Order.Receipt = (bool)reader.GetValue("Receipt");
+                            orderTimeSlotOrderProductViewModel1.TimeSlot.Day = (DateTime)reader.GetValue("Days");
+
+                            orderTimeSlotOrderProductViewModel.Add(orderTimeSlotOrderProductViewModel1);
+
+                            //orderTimeSlotOrderProductViewModel.OrderProduct.Keys = reader.GetValue("NumProduct");
+                            //orderTimeSlotOrderProductViewModel.OrderProduct.Values = reader.GetValue("Quantity");
+                        }
+                    }
+                }
+
+                return orderTimeSlotOrderProductViewModel;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public bool MakeOrder(Order order, OrderDicoViewModels orderDicoViewModels2)
         {
             bool success = false;
@@ -48,8 +95,6 @@ namespace ClickAndCollect.DAL
 
                     foreach (KeyValuePair<int, int> kvp in orderDicoViewModels2.Dictionary)
                     {
-
-
                         cmd.Parameters.AddWithValue("OrderId", order.OrderId);
                         cmd.Parameters.AddWithValue("NumProduct", kvp.Key);
                         cmd.Parameters.AddWithValue("Quantity", kvp.Value);

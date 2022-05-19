@@ -36,5 +36,16 @@ namespace ClickAndCollect.Controllers
             return Redirect("/Product/Index");
         }
 
+        public IActionResult History()
+        {
+            int Id = (int)HttpContext.Session.GetInt32("Id");
+            Customer customer = new Customer();
+            customer.Id = Id;
+
+            List<OrderTimeSlotOrderProductViewModel> orders = Order.GetOrders(_orderDAL, customer);
+
+            return View(orders);
+        }
+
     }
 }

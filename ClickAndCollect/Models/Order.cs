@@ -26,6 +26,10 @@ namespace ClickAndCollect.Models
             this.customer = customer;
         }
 
+        public static List<OrderTimeSlotOrderProductViewModel> GetOrders (IOrderDAL orderDAL, Customer customer)
+        {
+            return orderDAL.GetOrders(customer);
+        }
         public bool MakeOrder(IOrderDAL orderDAL, OrderDicoViewModels orderDicoViewModels2)
         {
             return orderDAL.MakeOrder(this, orderDicoViewModels2);

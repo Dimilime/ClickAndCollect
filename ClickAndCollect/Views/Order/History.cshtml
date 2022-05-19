@@ -1,0 +1,23 @@
+﻿@model List<ClickAndCollect.ViewModels.OrderTimeSlotOrderProductViewModel>
+
+<div class="text-center">
+    <table class="table">
+        <tr>
+            <th>Référence de la commande</th>
+            <th>Jour de la commande</th>
+        </tr>
+            @{
+                foreach (var o in Model)
+                {
+                <tr>
+                    <th>@o.Order.OrderId</th>
+                    @*<th>@o.Order.Receipt</th>*@
+                    <th>@o.TimeSlot.Day.ToString("dd/MM/yyyy")</th>
+                </tr>
+                }
+            }
+
+
+        </table>
+
+</div>

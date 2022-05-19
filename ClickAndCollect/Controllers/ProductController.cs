@@ -21,8 +21,8 @@ namespace ClickAndCollect.Controllers
         }
         public IActionResult Index()
         {
-            List<Product> categorys = Product.GetCategorys(_productDAL); //ies pour categories
-            return View(categorys);
+            List<Product> categories = Product.GetCategories(_productDAL); 
+            return View(categories);
         }
 
         public IActionResult Details(Product produit)
