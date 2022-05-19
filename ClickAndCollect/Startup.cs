@@ -28,7 +28,7 @@ namespace ClickAndCollect
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.IdleTimeout = TimeSpan.FromMinutes(1);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });

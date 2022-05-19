@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClickAndCollect.DAL;
-using ClickAndCollect.DAL.IDAL;
 using ClickAndCollect.Models;
 using Microsoft.AspNetCore.Http;
 
@@ -14,13 +13,18 @@ namespace ClickAndCollect.Controllers
     public class OrderPickerController : Controller
     {
         private readonly IOrderPickerDAL _orderPickerDAL;
+        private readonly IOrderPickerDAL _shopDAL;
         public OrderPickerController(IOrderPickerDAL orderPickerDAL)
         {
             _orderPickerDAL = orderPickerDAL;
         }
         public IActionResult Orders()
         {
-            return Redirect("/order/OrdersList");
+            OrderPicker orderPicker = new OrderPicker();
+            orderPicker.Id = (int)HttpContext.Session.GetInt32("Id");
+            orderPicker.Shop.GetInfoShop(_shopDal);
+            List<Order> orders = orderPicker.ViewOrders(_orderPickerDAL);
+            return View(orders);
         }
         public IActionResult OrderDetails(int id)
         {

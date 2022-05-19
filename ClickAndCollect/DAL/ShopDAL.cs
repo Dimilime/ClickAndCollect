@@ -18,6 +18,11 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
+        public List<Order> GetOrders( Shop shop)
+        {
+            List<Order> orders = new List<Order>();
+            return orders;
+        }
         public Shop GetInfoShop(Shop shop)
         {
 
@@ -26,6 +31,29 @@ namespace ClickAndCollect.DAL
                 SqlCommand cmd = new SqlCommand("SELECT * FROM Shop WHERE ShopId = @ShopId", connection);
 
                 cmd.Parameters.AddWithValue("ShopId", shop.ShopId);
+
+                connection.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        shop.ShopId = reader.GetInt32("ShopId");
+                        shop.PostCode = reader.GetInt32("PostCode");
+                    }
+                }
+
+                return shop;
+            }
+        }
+        public Shop GetInfoShop(Person person)
+        {
+            Shop shop= new Shop();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM Shop WHERE ShopId = (select ShopId from OrderPicker where IdPerson=@IdPerson)", connection);
+
+                cmd.Parameters.AddWithValue("IdPerson", person.Id);
 
                 connection.Open();
 

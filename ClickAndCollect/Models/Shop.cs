@@ -1,4 +1,5 @@
-﻿using ClickAndCollect.DAL.IDAL;
+﻿using ClickAndCollect.DAL;
+using ClickAndCollect.DAL.IDAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,15 +16,13 @@ namespace ClickAndCollect.Models
         public List<OrderPicker> OrderPickers{ get; set; }
         public List<TimeSlot> TimeSlots{ get; set; }
 
+        
         public Shop()
         {
-
-        }
-
-        public int PostCode
-        {
-            get { return postCode; }
-            set { postCode = value; }
+            Orders = new List<Order>();
+            Cashiers = new List<Cashier>();
+            OrderPickers = new List<OrderPicker>();
+            TimeSlots = new List<TimeSlot>();
         }
 
         public void GetDailyCustomers()
@@ -31,14 +30,14 @@ namespace ClickAndCollect.Models
 
         }
 
-        public void GetOrders()
+        public void GetOrders( IOrderDAL orderDAL)
         {
-
+            Orders = orderDAL.GetOrders(this);
         }
 
         public void GetOrderById()
         {
-
+            
         }
 
         public static List<Shop> GetShops(IShopDAL shopDAL)
