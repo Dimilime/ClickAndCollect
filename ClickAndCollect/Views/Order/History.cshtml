@@ -10,9 +10,9 @@
                 foreach (var o in Model)
                 {
                 <tr>
-                    <th>@o.Order.OrderId</th>
-                    @*<th>@o.Order.Receipt</th>*@
-                    <th>@o.TimeSlot.Day.ToString("dd/MM/yyyy")</th>
+                    <td>@o.Order.OrderId</td>
+                    @*<td>@o.Order.Receipt</td>*@
+                    <td>@o.TimeSlot.Day.ToString("dd/MM/yyyy")</td>
                 </tr>
                 }
             }

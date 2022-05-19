@@ -77,25 +77,25 @@ namespace ClickAndCollect.DAL
                     SqlCommand cmd2 = new SqlCommand("INSERT INTO TimeSlot(Start, [End], ShopId, Days) VALUES (@Start, @End, @ShopId, @Days)", connection);
                     SqlCommand cmd3 = new SqlCommand("INSERT INTO [Order] (Ready, TimeSlotId, IdPerson) VALUES ('false', ident_current('TimeSlot'), @IdPerson)", connection);
 
-                    using (SqlConnection connection2 = new SqlConnection(connectionString))
-                    {
-                        SqlCommand cmd4 = new SqlCommand("SELECT TOP 1 OrderId FROM[Order] ORDER BY OrderId DESC", connection2);
-                        connection2.Open();
+                    //using (SqlConnection connection2 = new SqlConnection(connectionString))
+                    //{
+                    //    SqlCommand cmd4 = new SqlCommand("SELECT TOP 1 OrderId FROM[Order] ORDER BY OrderId DESC", connection2);
+                    //    connection2.Open();
 
-                        using (SqlDataReader reader = cmd4.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                order.OrderId = reader.GetInt32("OrderId") + 1;
-                            }
-                        }
-                    }
+                    //    using (SqlDataReader reader = cmd4.ExecuteReader())
+                    //    {
+                    //        while (reader.Read())
+                    //        {
+                    //            order.OrderId = reader.GetInt32("OrderId") + 1;
+                    //        }
+                    //    }
+                    //}
 
-                    SqlCommand cmd = new SqlCommand("INSERT INTO OrderProducts (OrderId, NumProduct, Quantity) VALUES ( @OrderId, @NumProduct, @Quantity)", connection);
+                    SqlCommand cmd = new SqlCommand("INSERT INTO OrderProducts (OrderId, NumProduct, Quantity) VALUES ( ident_current('[Order]'), @NumProduct, @Quantity)", connection);
 
                     foreach (KeyValuePair<int, int> kvp in orderDicoViewModels2.Dictionary)
                     {
-                        cmd.Parameters.AddWithValue("OrderId", order.OrderId);
+                        //cmd.Parameters.AddWithValue("OrderId", order.OrderId);
                         cmd.Parameters.AddWithValue("NumProduct", kvp.Key);
                         cmd.Parameters.AddWithValue("Quantity", kvp.Value);
                     }
