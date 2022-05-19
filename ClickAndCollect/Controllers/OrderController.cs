@@ -22,18 +22,27 @@ namespace ClickAndCollect.Controllers
 
         public IActionResult Validate()
         {
-            var obj = HttpContext.Session.GetString("CurrentOrder");
-            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
-            OrderDicoViewModels orderDicoViewModels2 = orderDicoViewModels;
-
-            if (orderDicoViewModels.Order.MakeOrder(_orderDAL, orderDicoViewModels2) == true)
+            try
             {
-                TempData["SuccessOrder"] = "Felicitation ta commande a été validé !";
+                var obj = HttpContext.Session.GetString("CurrentOrder");
+                OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+                OrderDicoViewModels orderDicoViewModels2 = orderDicoViewModels;
+
+                if (orderDicoViewModels.Order.MakeOrder(_orderDAL, orderDicoViewModels2) == true)
+                {
+                    TempData["SuccessOrder"] = "Felicitation ta commande a été validé !";
+                    return Redirect("/Product/Index");
+                }
+
+                TempData["ErrorOrder"] = "La commande n'a pas abouti !!";
+                return Redirect("/Product/Index");
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Erreur session";
                 return Redirect("/Product/Index");
             }
 
-            TempData["ErrorOrder"] = "La commande n'a pas abouti !!";
-            return Redirect("/Product/Index");
         }
 
         public IActionResult History()
