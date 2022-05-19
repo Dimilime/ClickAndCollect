@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace ClickAndCollect.DAL.IDAL
 {
-    public interface IOrderDAL
+    public interface IProductDAL
     {
-        Order GetOrder(int id);
-        List<Order> GetOrders();
+        public List<Product> GetProducts(Product p);
+        public List<Product> GetCategorys();
+        public Product GetInfoProduct(Product p);
     }
 }

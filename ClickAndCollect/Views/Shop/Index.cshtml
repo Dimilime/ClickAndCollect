@@ -1,0 +1,17 @@
+﻿@model List<Shop>
+
+<div class="text-center">
+    <table class="table">
+        <tr>
+            <th>Code postal</th>
+        </tr>
+        @foreach (Shop shop in Model)
+        {
+            <tr>
+                <td>@shop.PostCode</td>
+                <td><a asp-controller="Shop" asp-action="Select" asp-route-ShopId="@shop.ShopId">Choisir</a></td>
+            </tr>
+        }
+    </table>
+
+</div>

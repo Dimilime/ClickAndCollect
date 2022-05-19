@@ -13,13 +13,9 @@ namespace ClickAndCollect.Models
         private Shop shop;
         private List<Order> orders;
 
-        public TimeSlot(DateTime s, DateTime e, int m, Shop shop)
+        public TimeSlot()
         {
-            start = s;
-            end = e;
-            maxOrder = m;
-            this.shop = shop;
-            orders = new List<Order>();
+
         }
 
         public static void GetTimeSlots()

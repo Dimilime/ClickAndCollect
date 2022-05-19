@@ -6,12 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace ClickAndCollect.Controllers
 {
     public class CustomerController : Controller
     {
         private readonly ICustomerDAL _customerDAL;
+        
 
         public CustomerController(ICustomerDAL customerDAL)
         {
@@ -24,18 +26,23 @@ namespace ClickAndCollect.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Register(Customer customer)
         {
             if(ModelState.IsValid)
             {
-                if(customer.VerifierMail(_customerDAL) != true)
+                if(customer.CheckIfEmailCustomerExists(_customerDAL) != true)
                 {
                     
-                    customer.Register(_customerDAL);
-                    return View("Views/Customer/Succes");
+                    if(customer.Register(_customerDAL) == true)
+                    {
+                        TempData["AccountCreate"] = "Votre compte a été cré !";
+                        return Redirect("/Product/Index");
+                    }
 
                 }
-                return View("View/Customer/Error");
+                TempData["EmailExists"] = "L'adresse email a déjà un compte";
+                return View();
 
             }
             return View();

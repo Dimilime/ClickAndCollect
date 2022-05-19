@@ -10,30 +10,17 @@ namespace ClickAndCollect.Models
     public class Customer : Person
     {
         private DateTime doB;
-        private int phoneNumber;
-        public static int nbr = 1007; //A CHANGER AVANT DE RENDRE LE PROJET !!!!!!
+        private int phoneNumber;   
         private int idPerson;
         private List<Order> orders;
+        public int OrderId { get; set; }
 
-        public Customer() //verifier si peut faire un this
-        {
-            nbr = nbr + 1;
-            IdPerson = nbr;
-
-        }
-        public Customer (string ln, string fn, string e, string p, DateTime d, int pn)
-            :base(ln,fn,e,p)
-        {
-            doB = d;
-            phoneNumber = pn;
-            orders = new List<Order>();
-            nbr = nbr + 1;
-            IdPerson = nbr;
-        }
+        public Customer() { }
 
         [Display(Name = "Date de naissance")]
+        [DataType(DataType.Date)]
+        //[Range(typeof(DateTime), "01/01/1900", "31/12/2006", ErrorMessage ="La date est incorrect !")] probleme !!!
         [Required(ErrorMessage ="La date de naisse est obligatoire !")]
-        [DataType(DataType.Date, ErrorMessage ="La date de naisse est invalide !")]
         public DateTime DoB
         {
             get { return doB; }
@@ -49,27 +36,16 @@ namespace ClickAndCollect.Models
             set { phoneNumber = value; }
         }
 
-        public int IdPerson
+        public bool Register(ICustomerDAL customerDAL)
         {
-            get { return idPerson; }
-            set { idPerson = value; }
+            return customerDAL.Register(this);
         }
 
-
-        public override void LogOut()
+        public bool CheckIfEmailCustomerExists(ICustomerDAL customerDAL)
         {
-            throw new NotImplementedException();
+            return customerDAL.CheckIfEmailCustomerExists(this);
         }
 
-        public void Register(ICustomerDAL customerDAL)
-        {
-            customerDAL.AddCustomer(this);
-        }
-
-        public bool VerifierMail(ICustomerDAL customerDAL)
-        {
-            return customerDAL.EmailExists(this);
-        }
 
     }
 }

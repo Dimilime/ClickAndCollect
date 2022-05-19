@@ -1,0 +1,24 @@
+﻿@model List<Product>
+
+<div class="alert-success">
+    @TempData["AccountCreate"] 
+</div>
+<div class="alert-danger">
+    @TempData["Minimum"]
+</div>
+
+<div class="text-center">
+    <table class="table">
+        <tr>
+            Categorie
+        </tr>
+        @foreach (Product product in Model)
+        {
+    <tr>
+        <td>@product.Category</td>
+        <td><a asp-controller="Product" asp-action="Details" asp-route-category="@product.Category">details</a></td>
+    </tr>
+        }
+    </table>
+
+</div>
