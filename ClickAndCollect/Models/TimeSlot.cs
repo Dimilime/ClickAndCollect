@@ -14,7 +14,6 @@ namespace ClickAndCollect.Models
         private TimeSpan end;
         private DateTime day;
         public Shop shop { get; set; }
-        private List<Order> orders;
 
         public TimeSlot()
         {
@@ -49,11 +48,8 @@ namespace ClickAndCollect.Models
 
         public int CheckIfAvalaible(ITimeSlotDAL timeSlotDAL, Shop shop)
         {
+            this.shop = shop;
             return timeSlotDAL.CheckIfAvalaible(this, shop);
-        }
-        public void AddMaxOrder()
-        {
-
         }
     }
 }

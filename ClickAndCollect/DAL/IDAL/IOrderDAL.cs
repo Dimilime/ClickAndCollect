@@ -10,5 +10,6 @@ namespace ClickAndCollect.DAL.IDAL
     public interface IOrderDAL
     {
         public bool MakeOrder(Order order, OrderDicoViewModels orderDicoViewModels2);
+        public List<OrderTimeSlotOrderProductViewModel> GetOrders(Customer customer);
     }
 }

@@ -22,34 +22,49 @@ namespace ClickAndCollect.Controllers
         
         public IActionResult SelectShop()
         {
-            var obj = HttpContext.Session.GetString("CurrentOrder");
-            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
-
-            if (orderDicoViewModels.Dictionary.Count == 0)
+            try
             {
-                TempData["BasketEmpty"] = "Votre panier est vide :(";
-                return Redirect("/Product/Basket");
-            }
+                var obj = HttpContext.Session.GetString("CurrentOrder");
+                OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+                if (orderDicoViewModels.Dictionary.Count == 0)
+                {
+                    TempData["BasketEmpty"] = "Votre panier est vide :(";
+                    return Redirect("/Product/Basket");
+                }
 
-            List<Shop> shops = Shop.GetShops(_shopDAL);
-            return View(shops);
+                List<Shop> shops = Shop.GetShops(_shopDAL);
+                return View(shops);
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Erreur session";
+                return Redirect("/Product/Index");
+            }
         }
 
 
         public IActionResult SelectDay(int ShopId)
         {
-            var obj = HttpContext.Session.GetString("CurrentOrder");
-            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+            try
+            {
+                var obj = HttpContext.Session.GetString("CurrentOrder");
+                OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
-            Shop shop = new Shop();
-            shop.ShopId = ShopId;
-            shop = shop.GetInfoShop(_shopDAL);
+                Shop shop = new Shop();
+                shop.ShopId = ShopId;
+                shop = shop.GetInfoShop(_shopDAL);
 
-            orderDicoViewModels.Order.shop = shop;
+                orderDicoViewModels.Order.shop = shop;
 
-            HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
+                HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
 
-            return View();
+                return View();
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Erreur session";
+                return Redirect("/Product/Index");
+            }
         }
 
 
@@ -63,30 +78,46 @@ namespace ClickAndCollect.Controllers
                 return View();
             }
 
-            var obj = HttpContext.Session.GetString("CurrentOrder");
-            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+            try
+            {
+                var obj = HttpContext.Session.GetString("CurrentOrder");
+                OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
-            TimeSlot timeSlotJour = ts;
+                TimeSlot timeSlotJour = ts;
 
-            orderDicoViewModels.Order.timeSlot = timeSlotJour;
+                orderDicoViewModels.Order.timeSlot = timeSlotJour;
 
-            HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
+                HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
 
-            return Redirect("SelectCanva");
+                return Redirect("SelectCanva");
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Erreur session";
+                return Redirect("/Product/Index");
+            }
         }
 
         public IActionResult SelectCanva()
         {
-            var obj = HttpContext.Session.GetString("CurrentOrder");
-            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+            try
+            {
+                var obj = HttpContext.Session.GetString("CurrentOrder");
+                OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
-            Shop shop = orderDicoViewModels.Order.shop;
-            
-            List<TimeSlot> timeSlots = Shop.GetTimeSlots(_shopDAL, shop);
+                Shop shop = orderDicoViewModels.Order.shop;
 
-            HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
+                List<TimeSlot> timeSlots = Shop.GetTimeSlots(_shopDAL, shop);
 
-            return View(timeSlots);
+                HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
+
+                return View(timeSlots);
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Erreur session";
+                return Redirect("/Product/Index");
+            }
         }
 
     }

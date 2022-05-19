@@ -18,7 +18,7 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
-        public List<Product> GetCategorys()
+        public List<Product> GetCategories()
         {
             List<Product> categorys = new List<Product>();
 

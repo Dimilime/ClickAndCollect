@@ -18,10 +18,13 @@
 
         </tr>
 
-        <a asp-controller="Order" asp-action="Validate">Valider</a>
-
-        Total : @TempData["OrderAmount"] €
-
     </table>
 
+    Total : @TempData["OrderAmount"] €
+
 </div>
+
+<div class="text-lg-right">
+    <a asp-controller="Order" asp-action="Validate">Valider</a>
+</div>
+

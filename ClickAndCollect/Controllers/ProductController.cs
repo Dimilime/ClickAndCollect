@@ -21,8 +21,8 @@ namespace ClickAndCollect.Controllers
         }
         public IActionResult Index()
         {
-            List<Product> categorys = Product.GetCategorys(_productDAL); //ies pour categories
-            return View(categorys);
+            List<Product> categories = Product.GetCategories(_productDAL); 
+            return View(categories);
         }
 
         public IActionResult Details(Product produit)
@@ -37,122 +37,153 @@ namespace ClickAndCollect.Controllers
 
         public IActionResult AddProduct(int NumProduct, int Nbr)
         {
-
-            if(Nbr <= 0)
+            if (Nbr <= 0)
             {
                 TempData["Minimum"] = "Vous devez ajouter minimum 1 article !";
                 return Redirect("Index");
             }
-
-            if(HttpContext.Session.GetString("OrderExist") == "false")
+            try
             {
-                HttpContext.Session.SetString("OrderExist", "True");
-
-                int id = (int)HttpContext.Session.GetInt32("Id");
-                Customer customer = new Customer();
-                customer.Id = id;
-
-                Order order = new Order(customer);
-
-                Dictionary<int, int> dictionary = new Dictionary<int, int>();
-                dictionary.Add(NumProduct, Nbr);
-
-                OrderDicoViewModels orderDicoViewModels = new OrderDicoViewModels(order, dictionary);
-                HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
-
-            }
-            else
-            {
-                var obj = HttpContext.Session.GetString("CurrentOrder");
-                OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj); 
-
-                if (orderDicoViewModels.Dictionary.ContainsKey(NumProduct))
+                if (HttpContext.Session.GetString("OrderExist") == "false")
                 {
-                    int oldNbr = orderDicoViewModels.Dictionary[NumProduct];
-                    int newNbr = oldNbr + Nbr;
-                    orderDicoViewModels.Dictionary[NumProduct] = newNbr;
+                    HttpContext.Session.SetString("OrderExist", "True");
+
+                    int id = (int)HttpContext.Session.GetInt32("Id");
+                    Customer customer = new Customer();
+                    customer.Id = id;
+
+                    Order order = new Order(customer);
+
+                    Dictionary<int, int> dictionary = new Dictionary<int, int>();
+                    dictionary.Add(NumProduct, Nbr);
+
+                    OrderDicoViewModels orderDicoViewModels = new OrderDicoViewModels(order, dictionary);
+                    HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
+
                 }
                 else
                 {
-                    orderDicoViewModels.Dictionary.Add(NumProduct, Nbr);
+                    var obj = HttpContext.Session.GetString("CurrentOrder");
+                    OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+
+                    if (orderDicoViewModels.Dictionary.ContainsKey(NumProduct))
+                    {
+                        int oldNbr = orderDicoViewModels.Dictionary[NumProduct];
+                        int newNbr = oldNbr + Nbr;
+                        orderDicoViewModels.Dictionary[NumProduct] = newNbr;
+                    }
+                    else
+                    {
+                        orderDicoViewModels.Dictionary.Add(NumProduct, Nbr);
+                    }
+
+                    HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
+
                 }
-
-                HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
-
+                TempData["Add"] = "L'ajout a été réalisé avec succès !";
+                return Redirect("Index");
             }
-            TempData["Add"] = "L'ajout a été réalisé avec succès !";
-            return Redirect("Index");
+            catch (Exception)
+            {
+                TempData["Error"] = "Erreur session";
+                return Redirect("/Product/Index");
+            }
+
         }
 
         public IActionResult Basket()
         {
-            var obj = HttpContext.Session.GetString("CurrentOrder");
-
-            if(obj is null)
+            try
             {
-                TempData["BasketEmpty"] = "Votre panier est vide :(";
-                return View("BasketEmpty");
+                var obj = HttpContext.Session.GetString("CurrentOrder");
+
+                if (obj is null)
+                {
+                    TempData["BasketEmpty"] = "Votre panier est vide :(";
+                    return View("BasketEmpty");
+                }
+
+                OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+                orderDicoViewModels.Order.DictionaryProducts = new Dictionary<Product, int>();
+
+                foreach (int key in orderDicoViewModels.Dictionary.Keys)
+                {
+                    Product p = new Product();
+                    p.NumProduct = key;
+                    p = p.GetInfoProduct(_productDAL);
+
+                    int Nbr = orderDicoViewModels.Dictionary[key];
+
+                    orderDicoViewModels.Order.DictionaryProducts.Add(p, Nbr);
+
+                }
+
+                double SoldePanier = orderDicoViewModels.Order.GetOrderAmount();
+
+                TempData["OrderAmount"] = SoldePanier;
+
+                return View(orderDicoViewModels);
             }
-
-            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
-            orderDicoViewModels.Order.DictionaryProducts = new Dictionary<Product, int>();
-
-            foreach (int key in orderDicoViewModels.Dictionary.Keys)
+            catch (Exception)
             {
-                Product p = new Product();
-                p.NumProduct = key;
-                p = p.GetInfoProduct(_productDAL);
-
-                int Nbr = orderDicoViewModels.Dictionary[key];
-
-                orderDicoViewModels.Order.DictionaryProducts.Add(p, Nbr);
-
+                TempData["Error"] = "Erreur session";
+                return Redirect("/Product/Index");
             }
-
-            double SoldePanier = orderDicoViewModels.Order.GetOrderAmount();
-
-            TempData["OrderAmount"] = SoldePanier;
-
-            return View(orderDicoViewModels);
         }
 
         public IActionResult Delete(int Key)
         {
-            var obj = HttpContext.Session.GetString("CurrentOrder");
-            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+            try
+            {
+                var obj = HttpContext.Session.GetString("CurrentOrder");
+                OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
-            orderDicoViewModels.Dictionary.Remove(Key);
+                orderDicoViewModels.Dictionary.Remove(Key);
 
-            HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
+                HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
 
-            return Redirect("Basket");
+                return Redirect("Basket");
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Erreur session";
+                return Redirect("/Product/Index");
+            }
         }
 
         public IActionResult Summary()
         {
-            var obj = HttpContext.Session.GetString("CurrentOrder");
-            OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
-            
-            orderDicoViewModels.Order.DictionaryProducts = new Dictionary<Product, int>();
-
-            foreach (int key in orderDicoViewModels.Dictionary.Keys)
+            try
             {
-                Product p = new Product();
-                p.NumProduct = key;
-                p = p.GetInfoProduct(_productDAL);
+                var obj = HttpContext.Session.GetString("CurrentOrder");
+                OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
-                int Nbr = orderDicoViewModels.Dictionary[key];
+                orderDicoViewModels.Order.DictionaryProducts = new Dictionary<Product, int>();
 
-                orderDicoViewModels.Order.DictionaryProducts.Add(p, Nbr);
+                foreach (int key in orderDicoViewModels.Dictionary.Keys)
+                {
+                    Product p = new Product();
+                    p.NumProduct = key;
+                    p = p.GetInfoProduct(_productDAL);
 
+                    int Nbr = orderDicoViewModels.Dictionary[key];
+
+                    orderDicoViewModels.Order.DictionaryProducts.Add(p, Nbr);
+
+                }
+
+                double SoldePanier = orderDicoViewModels.Order.GetOrderAmount();
+
+                TempData["OrderAmount"] = SoldePanier;
+
+
+                return View(orderDicoViewModels);
             }
-
-            double SoldePanier = orderDicoViewModels.Order.GetOrderAmount();
-
-            TempData["OrderAmount"] = SoldePanier;
-
-
-            return View(orderDicoViewModels);
+            catch (Exception)
+            {
+                TempData["Error"] = "Erreur session";
+                return Redirect("/Product/Index");
+            }
         }
     }
 }

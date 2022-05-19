@@ -11,7 +11,6 @@ namespace ClickAndCollect.Models
     {
         private DateTime doB;
         private int phoneNumber;
-        private List<Order> orders;
 
         public Customer() { }
 

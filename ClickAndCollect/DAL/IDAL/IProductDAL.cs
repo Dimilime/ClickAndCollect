@@ -9,7 +9,7 @@ namespace ClickAndCollect.DAL.IDAL
     public interface IProductDAL
     {
         public List<Product> GetProducts(Product p);
-        public List<Product> GetCategorys();
+        public List<Product> GetCategories();
         public Product GetInfoProduct(Product p);
     }
 }
