@@ -14,24 +14,5 @@ namespace ClickAndCollect.Models
 
         }
 
-        public void ViewOrders()
-        {
-
-        }
-
-        public void ViewOrderDetails()
-        {
-
-        }
-
-        public void ValidateOrder()
-        {
-
-        }
-
-        public void EnterBoxesUsed()
-        {
-
-        }
     }
 }

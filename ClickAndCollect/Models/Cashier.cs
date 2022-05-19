@@ -15,26 +15,5 @@ namespace ClickAndCollect.Models
 
         }
 
-        public void AccesDailyCustomers()
-        {
-
-        }
-
-        public void EnterBoxesReturned()
-        {
-
-        }
-
-        public void ViewAmountOrder()
-        {
-
-        }
-
-        public void ValidateReceipt()
-        {
-
-        }
-
-
     }
 }

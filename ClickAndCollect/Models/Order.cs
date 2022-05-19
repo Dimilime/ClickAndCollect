@@ -53,44 +53,5 @@ namespace ClickAndCollect.Models
 
             return total;
         }
-
-        public void GetDetails()
-        {
-
-        }
-
-        public void ModifyReady()
-        {
-
-        }
-
-        public void EnterNumberOfBoxUsed()
-        {
-
-        }
-
-        public void EnterNumberOfBoxesReturned()
-        {
-
-        }
-
-        public void ModifyReceipt()
-        {
-            
-        }
-
-        public static void GetAllShopOrders()
-        {
-
-        }
-        public void CustomerToList()
-        {
-
-        }
-        
-        public static void GetCustomerList()
-        {
-
-        }
     }
 }

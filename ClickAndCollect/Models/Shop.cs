@@ -24,20 +24,6 @@ namespace ClickAndCollect.Models
             set { postCode = value; }
         }
 
-        public void GetDailyCustomers()
-        {
-
-        }
-
-        public void GetOrders()
-        {
-
-        }
-
-        public void GetOrderById()
-        {
-
-        }
 
         public static List<Shop> GetShops(IShopDAL shopDAL)
         {
