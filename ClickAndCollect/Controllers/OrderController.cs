@@ -27,8 +27,8 @@ namespace ClickAndCollect.Controllers
                 var obj = HttpContext.Session.GetString("CurrentOrder");
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
                 OrderDicoViewModels orderDicoViewModels2 = orderDicoViewModels;
-
-                if (orderDicoViewModels.Order.MakeOrder(_orderDAL, orderDicoViewModels2) == true)
+                bool result = orderDicoViewModels.Order.MakeOrder(_orderDAL, orderDicoViewModels2); 
+                if (result == true)
                 {
                     TempData["SuccessOrder"] = "Felicitation ta commande a été validé !";
                     return Redirect("/Product/Index");
