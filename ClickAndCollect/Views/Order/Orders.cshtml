@@ -1,18 +1,20 @@
 ﻿@model List<Order>
-<p>Listes des commandes du lendemain</p>
+<h2>Listes des commandes du lendemain</h2>
 <table class="table">
     <tr>
         <th>Identifiant commande</th>   
         <th>Date d'enlèvement</th>
-        <th>Prêt?</th>
+        <th>Créneau</th>
+        <th>Commande prête</th>
     </tr>
     @foreach (var order in Model)
     {
     <tr>
         <td>@order.OrderId</td>
-        <td>@order.DateOfReceipt</td>
-        <td>@order.Ready</td>
-        <td><a asp-controller="OrderPicker" asp-action="OrderDetails" asp-route-id="@order.OrderId">Voir</a></td>
+        <td>@order.TimeSlot.Day.ToString("dd/MM/yyyy")</td>
+        <td>@order.TimeSlot.Start - @order.TimeSlot.End</td>
+        <td>@(order.Ready?"Oui":"Non")</td>
+        <td><a asp-controller="OrderPicker" asp-action="OrderDetails" asp-route-id="@order.OrderId">Details</a></td>
     </tr>
     }
 </table>

@@ -22,8 +22,8 @@ namespace ClickAndCollect.DAL
         {
             OrderPicker orderPicker = new OrderPicker();
             Shop shop = new Shop();
-            //try
-            //{
+            try
+            {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     string sql = "select * from OrderPicker op inner join Person p on p.IdPerson=op.IdPerson where op.IdPerson=@Id;";
@@ -49,12 +49,12 @@ namespace ClickAndCollect.DAL
                     }
                 }
                 return orderPicker;
-            //}
-            //catch (Exception)
-            //{
+            }
+            catch (Exception)
+            {
 
-               // return null;
-            //}
+                return null;
+            }
             
         }
     }

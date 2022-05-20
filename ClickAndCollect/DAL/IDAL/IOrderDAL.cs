@@ -12,7 +12,7 @@ namespace ClickAndCollect.DAL.IDAL
         public bool MakeOrder(Order order, OrderDicoViewModels orderDicoViewModels2);
         public List<OrderTimeSlotOrderProductViewModel> GetOrders(Customer customer);
         public bool InsertOrderProductWithQuantity(int OrderId, int NumProduct, int Quantity);
-        Order GetOrder(int id);
-        List<Order> GetOrders(Shop shop);
+        public Order GetOrder(int id, OrderPicker orderPicker);
+        public List<Order> GetOrders(OrderPicker orderPicker);
     }
 }

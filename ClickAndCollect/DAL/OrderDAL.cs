@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ClickAndCollect.DAL
 {
-    public class OrderDAL: IOrderDAL
+    public class OrderDAL : IOrderDAL
     {
         private string connectionString;
 
@@ -45,7 +45,7 @@ namespace ClickAndCollect.DAL
                             TimeSlot timeSlot = new TimeSlot();
                             Dictionary<int, int> dictonary = new Dictionary<int, int>();
                             OrderTimeSlotOrderProductViewModel orderTimeSlotOrderProductViewModel1 = new OrderTimeSlotOrderProductViewModel(order, timeSlot, dictonary);
-                            
+
                             orderTimeSlotOrderProductViewModel1.Order.OrderId = reader.GetInt32("OrderId");
                             //orderTimeSlotOrderProductViewModel1.Order.Receipt = (bool)reader.GetValue("Receipt");
                             orderTimeSlotOrderProductViewModel1.TimeSlot.Day = (DateTime)reader.GetValue("Days");
@@ -78,15 +78,15 @@ namespace ClickAndCollect.DAL
                     //1er insert
                     connection.Open();
                     SqlCommand cmd2 = new SqlCommand("INSERT INTO TimeSlot(Start, [End], ShopId, Days) VALUES (@Start, @End, @ShopId, @Days)", connection);
-                    cmd2.Parameters.AddWithValue("Start", order.timeSlot.Start);
-                    cmd2.Parameters.AddWithValue("End", order.timeSlot.End);
-                    cmd2.Parameters.AddWithValue("ShopId", order.shop.ShopId);
-                    cmd2.Parameters.AddWithValue("Days", order.timeSlot.Day);
+                    cmd2.Parameters.AddWithValue("Start", order.TimeSlot.Start);
+                    cmd2.Parameters.AddWithValue("End", order.TimeSlot.End);
+                    cmd2.Parameters.AddWithValue("ShopId", order.Shop.ShopId);
+                    cmd2.Parameters.AddWithValue("Days", order.TimeSlot.Day);
                     res2 = cmd2.ExecuteNonQuery();
 
                     //2eme insert 
                     SqlCommand cmd3 = new SqlCommand("INSERT INTO [Order] (Ready, TimeSlotId, IdPerson) VALUES ('false', ident_current('TimeSlot'), @IdPerson)", connection);
-                    cmd3.Parameters.AddWithValue("IdPerson", order.customer.Id);
+                    cmd3.Parameters.AddWithValue("IdPerson", order.Customer.Id);
                     res3 = cmd3.ExecuteNonQuery();
 
                     //recuperation Id
@@ -101,26 +101,26 @@ namespace ClickAndCollect.DAL
                 }
 
                 //3ème insert
-                bool res4=false;
+                bool res4 = false;
                 foreach (KeyValuePair<int, int> kvp in orderDicoViewModels2.Dictionary)
-                {            
+                {
                     res4 = InsertOrderProductWithQuantity(order.OrderId, kvp.Key, kvp.Value);
                 }
-     
-                success = res4 ==true && res2 > 0 && res3 > 0;
+
+                success = res4 == true && res2 > 0 && res3 > 0;
 
                 return success;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return success;
             }
         }
 
 
-        public bool InsertOrderProductWithQuantity(int OrderId, int NumProduct, int Quantity )
+        public bool InsertOrderProductWithQuantity(int OrderId, int NumProduct, int Quantity)
         {
-            int res=0;
+            int res = 0;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand("INSERT INTO OrderProducts (OrderId, NumProduct, Quantity) VALUES ( @OrderId, @NumProduct, @Quantity)", connection);
@@ -130,41 +130,18 @@ namespace ClickAndCollect.DAL
                 connection.Open();
                 res = cmd.ExecuteNonQuery();
             }
-            return res >0;
+            return res > 0;
         }
-    }
-
-}
-
-        public Order GetOrder(int id)
+        public Order GetOrder(int id, OrderPicker orderPicker)
         {
-            /*
-            Customer customer = new();
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Order WHERE OrderId = @Id'", connection);
-
-                cmd.Parameters["@Id"].Value = id;
-                connection.Open();
-
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-
-                        Order order = new Order();
-                        order.Customer =
-                    }
-                }
-            }*/
             Order order = new Order();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string sql1 = "select IdPerson, o.OrderId, NumProduct, Quantity  from [Order] o inner join OrderProducts op on o.OrderId = op.OrderId";
                 string sql2 = $"select IdPerson, o.OrderId, p.Name , Quantity from Products p inner join ({sql1}) o on p.NumProduct =o.NumProduct;";
                 SqlCommand cmd = new SqlCommand(sql2, connection);
-                
+
                 cmd.Parameters["@Id"].Value = id;
                 connection.Open();
 
@@ -172,32 +149,30 @@ namespace ClickAndCollect.DAL
                 {
                     while (reader.Read())
                     {
-                        
-                        
-                        
-                        
+
+
+
+
                     }
                 }
-                
+
             }
             return order;
-            
-            
 
-            
         }
 
-        public List<Order> GetOrders(Shop shop)
+        public List<Order> GetOrders(OrderPicker orderPicker)
         {
             List<Order> orders = new List<Order>();
-            try
-            {
+            //try
+            //{
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string sql1 = "select TimeSlotId from TimeSlot where ShopId = @shopId";
-                    string sql = $"select OrderId,DateOfReceipt, Ready FROM [Order] where TimeSlotId in {sql1};";
+
+                    string sql = "select o.OrderId, o.Ready, t.Days, t.Start, t.[End] from [Order] o full join TimeSlot t on o.TimeSlotId = t.TimeSlotId " +
+                    "where o.TimeSlotId in (select TimeSlotId from TimeSlot where ShopId = @shopId) and Days = Convert(varchar(10),GETDATE()+1,103)";
                     SqlCommand cmd = new SqlCommand(sql, connection);
-                    cmd.Parameters.AddWithValue("shopId", shop.ShopId);
+                    cmd.Parameters.AddWithValue("shopId", orderPicker.Shop.ShopId);
                     connection.Open();
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -205,22 +180,31 @@ namespace ClickAndCollect.DAL
                         while (reader.Read())
                         {
                             Order order = new Order();
-                            order.OrderId = reader.GetInt32("OrderId"); 
+                            order.OrderId = reader.GetInt32("OrderId");
                             order.Ready = reader.GetBoolean("Ready");
-                            order.DateOfReceipt = reader.GetDateTime("DateOfReceipt");
+                            order.TimeSlot = new TimeSlot();
+                            order.TimeSlot.Start = (TimeSpan)reader.GetValue("Start");
+                            order.TimeSlot.End = (TimeSpan)reader.GetValue("End");
+                            order.TimeSlot.Day = reader.GetDateTime("Days");
+                            order.TimeSlot.Shop = orderPicker.Shop;
                             orders.Add(order);
                         }
-                    
+
                     }
                 }
                 return orders;
-            }
-            catch (Exception)
-            {
+            //}
+            //catch (Exception)
+            //{
 
-                return null;
-            }
-            
+            //    return null;
+            //}
+
         }
     }
 }
+
+
+    
+    
+

@@ -85,7 +85,7 @@ namespace ClickAndCollect.Controllers
 
                 TimeSlot timeSlotJour = ts;
 
-                orderDicoViewModels.Order.timeSlot = timeSlotJour;
+                orderDicoViewModels.Order.TimeSlot = timeSlotJour;
 
                 HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
 
@@ -105,7 +105,7 @@ namespace ClickAndCollect.Controllers
                 var obj = HttpContext.Session.GetString("CurrentOrder");
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
-                Shop shop = orderDicoViewModels.Order.shop;
+                Shop shop = orderDicoViewModels.Order.Shop;
 
                 List<TimeSlot> timeSlots = Shop.GetTimeSlots(_shopDAL, shop);
 
@@ -120,21 +120,8 @@ namespace ClickAndCollect.Controllers
             }
         }
 
-            return View();
-        }
-        public IActionResult GetOrders (Person person)
-        {
-            if(person is OrderPicker)
-            {
-                OrderPicker orderPicker = person as OrderPicker;
-                orderPicker.Shop = Shop.GetInfoShop(_shopDAL, orderPicker);
-                return RedirectToAction("Orders", "Order", orderPicker);
-            }
-            else if( person is Cashier)
-            {
 
-            }
-            return View();
-        }
+        
+        
     }
 }

@@ -58,7 +58,6 @@ namespace ClickAndCollect.Controllers
                         HttpContext.Session.SetInt32("Id", person.Id);
                         HttpContext.Session.SetString("State", "connected");
                         TempData["State"] = HttpContext.Session.GetString("State");
-                        
                         return Redirect("/OrderPicker/Orders");
                     }
                 }

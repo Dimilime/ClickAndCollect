@@ -12,7 +12,6 @@ namespace ClickAndCollect.Models
     {
         public int OrderId { get; set; }
         [Display(Name = "Date d'enlèvement")]
-        public DateTime DateOfReceipt { get; set; }
         public Boolean Ready { get; set; }
         public int NumberOfBoxUsed { get; set; }
         public int NumberOfBoxReturned { get; set; }
@@ -20,8 +19,8 @@ namespace ClickAndCollect.Models
         public static double ServiceFees { get; set; } = 5.95;
         public double BoxesFees { get; set; } = 5.95;
         public Dictionary<Product, int> DictionaryProducts { get; set; }
-        private Customer Customer { get; set; }
-        private TimeSlot TimeSlot { get; set; }
+        public Customer Customer { get; set; }
+        public TimeSlot TimeSlot { get; set; }
         public Shop Shop { get; set; }
 
         public Order()
@@ -30,12 +29,11 @@ namespace ClickAndCollect.Models
         }
         public Order(Customer customer)
         {
-            this.customer = customer;
+            this.Customer = customer;
             DictionaryProducts = new Dictionary<Product, int>();
         }
         public Order(DateTime dOreceipt, Customer customer, Shop shop, TimeSlot timeSlot)
         {
-            DateOfReceipt = dOreceipt;
             Customer = customer;
             Shop = shop;
             TimeSlot = timeSlot;
@@ -70,13 +68,13 @@ namespace ClickAndCollect.Models
             return total;
 
         }
-        public static Order GetDetails(int id,IOrderDAL orderDAL)
+        public static Order GetDetails(int id,IOrderDAL orderDAL, OrderPicker orderPicker)
         {
-            return orderDAL.GetOrder(id);
+            return orderDAL.GetOrder(id,orderPicker);
         }
-        public static List<Order> GetOrders(IOrderDAL orderDAL, Shop shop)
+        public static List<Order> GetOrders(IOrderDAL orderDAL, OrderPicker orderPicker)
         {
-            return orderDAL.GetOrders(shop); 
+            return orderDAL.GetOrders(orderPicker); 
         }
         public void ModifyReady()
         {

@@ -33,10 +33,10 @@ namespace ClickAndCollect.Models
 
         }
 
-        public void GetOrders( IOrderDAL orderDAL)
-        {
-            Orders = orderDAL.GetOrders(this);
-        }
+        //public void GetOrders( IOrderDAL orderDAL)
+        //{
+        //    Orders = orderDAL.GetOrders(this);
+        //}
 
         public void GetOrderById()
         {
@@ -51,9 +51,10 @@ namespace ClickAndCollect.Models
         public Shop GetInfoShop(IShopDAL shopDAL)
         {
             return shopDAL.GetInfoShop(this);
-        }public static Shop GetInfoShop(IShopDAL shopDAL, Person person)
+        }
+        public static Shop GetInfoShop(IShopDAL shopDAL, Shop shop)
         {
-            return shopDAL.GetInfoShop(person);
+            return shopDAL.GetInfoShop(shop);
         }
 
         public static List<TimeSlot> GetTimeSlots(IShopDAL shopDAL, Shop shop)
