@@ -19,9 +19,9 @@ namespace ClickAndCollect.Models
         }
 
         
-        public List<Order> ViewOrders(IOrderPickerDAL orderPickerDal)
+        public static OrderPicker GetOrderPicker(IOrderPickerDAL orderPickerDAL,int id)
         {
-            return orderPickerDal.ViewOrders(this);
+            return orderPickerDAL.GetOrderPicker(id);
         }
 
         public void ViewOrderDetails()

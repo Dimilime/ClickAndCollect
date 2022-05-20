@@ -44,10 +44,24 @@ namespace ClickAndCollect.Controllers
             shop.ShopId = ShopId;
             shop.GetInfoShop(_shopDAL);
 
-            orderDicoViewModels.Order.shop = shop;
+            orderDicoViewModels.Order.Shop = shop;
 
             HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
 
+            return View();
+        }
+        public IActionResult GetOrders (Person person)
+        {
+            if(person is OrderPicker)
+            {
+                OrderPicker orderPicker = person as OrderPicker;
+                orderPicker.Shop = Shop.GetInfoShop(_shopDAL, orderPicker);
+                return RedirectToAction("Orders", "Order", orderPicker);
+            }
+            else if( person is Cashier)
+            {
+
+            }
             return View();
         }
     }

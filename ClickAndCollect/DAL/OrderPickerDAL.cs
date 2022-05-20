@@ -17,34 +17,45 @@ namespace ClickAndCollect.DAL
         {
             this.connectionString = connectionString;
         }
-
-        public List<Order> ViewOrders(OrderPicker orderPicker)
+        
+        public OrderPicker GetOrderPicker(int id)
         {
+            OrderPicker orderPicker = new OrderPicker();
             Shop shop = new Shop();
-            
-            List<Order> orders = new List<Order>();
-            
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                string sql = "select OrderId,DateOfReceipt, Ready FROM [Order] ;";
-                SqlCommand cmd = new SqlCommand(sql, connection);
-
-                connection.Open();
-
-                using (SqlDataReader reader = cmd.ExecuteReader())
+            //try
+            //{
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    while (reader.Read())
+                    string sql = "select * from OrderPicker op inner join Person p on p.IdPerson=op.IdPerson where op.IdPerson=@Id;";
+                    SqlCommand cmd = new SqlCommand(sql, connection);
+                    cmd.Parameters.AddWithValue("Id", id);
+                    connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        Order order = new Order();
-                        order.OrderId = reader.GetInt32("OrderId"); 
-                        order.Ready = reader.GetBoolean("Ready");
-                        order.DateOfReceipt = reader.GetDateTime("DateOfReceipt");
-                        orders.Add(order);
+                        while (reader.Read())
+                        {
+
+                            orderPicker.Id = reader.GetInt32("IdPerson");
+                            orderPicker.LastName = reader.GetString("LastName");
+                            orderPicker.FirstName = reader.GetString("FirstName");
+                            orderPicker.Email = reader.GetString("Email");
+                            orderPicker.Password = reader.GetString("Password");
+                            shop.ShopId= reader.GetInt32("ShopId");
+                            orderPicker.Shop= shop;
+                            
+                        }
+
                     }
-                    
                 }
-            }
-            return orders;
+                return orderPicker;
+            //}
+            //catch (Exception)
+            //{
+
+               // return null;
+            //}
+            
         }
     }
 }

@@ -13,18 +13,17 @@ namespace ClickAndCollect.Controllers
     public class OrderPickerController : Controller
     {
         private readonly IOrderPickerDAL _orderPickerDAL;
-        private readonly IOrderPickerDAL _shopDAL;
-        public OrderPickerController(IOrderPickerDAL orderPickerDAL)
+        
+        public OrderPickerController(IOrderPickerDAL orderPickerDAL, IShopDAL shopDAL)
         {
             _orderPickerDAL = orderPickerDAL;
         }
         public IActionResult Orders()
         {
-            OrderPicker orderPicker = new OrderPicker();
-            orderPicker.Id = (int)HttpContext.Session.GetInt32("Id");
-            orderPicker.Shop.GetInfoShop(_shopDal);
-            List<Order> orders = orderPicker.ViewOrders(_orderPickerDAL);
-            return View(orders);
+            int id = (int)HttpContext.Session.GetInt32("Id");
+            OrderPicker orderPicker = OrderPicker.GetOrderPicker(_orderPickerDAL, id);
+            return RedirectToAction("GetOrders","Shop",orderPicker);
+            
         }
         public IActionResult OrderDetails(int id)
         {

@@ -8,6 +8,6 @@ namespace ClickAndCollect.DAL.IDAL
 {
     public interface IOrderPickerDAL
     {
-        public List<Order> ViewOrders(OrderPicker orderPicker);
+        public OrderPicker GetOrderPicker(int id);
     }
 }

@@ -48,6 +48,9 @@ namespace ClickAndCollect.Models
         public Shop GetInfoShop(IShopDAL shopDAL)
         {
             return shopDAL.GetInfoShop(this);
+        }public static Shop GetInfoShop(IShopDAL shopDAL, Person person)
+        {
+            return shopDAL.GetInfoShop(person);
         }
 
     }

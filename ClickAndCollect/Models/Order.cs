@@ -69,9 +69,9 @@ namespace ClickAndCollect.Models
         {
             return orderDAL.GetOrder(id);
         }
-        public static List<Order> GetOrders(IOrderDAL orderDAL)
+        public static List<Order> GetOrders(IOrderDAL orderDAL, Shop shop)
         {
-            return orderDAL.GetOrders(); 
+            return orderDAL.GetOrders(shop); 
         }
         public void ModifyReady()
         {

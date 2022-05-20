@@ -19,15 +19,11 @@ namespace ClickAndCollect.Controllers
         public OrderController(IOrderDAL orderDAL, IShopDAL shopDAL, ICustomerDAL customerDAL)
         {
             _orderDAL = orderDAL;
-            _shopDAL = shopDAL;
-            _customerDAL = customerDAL;
         }
-        public IActionResult Orders()
+        public IActionResult Orders(OrderPicker orderPicker)
         {
-
-            int idOrderPicker = (int)HttpContext.Session.GetInt32("Id");
-            
-            return View(orders);
+            orderPicker.Shop.Orders = Order.GetOrders(_orderDAL, orderPicker.Shop);
+            return View(orderPicker.Shop.Orders);
         }
         public IActionResult Details(int id)
         {
