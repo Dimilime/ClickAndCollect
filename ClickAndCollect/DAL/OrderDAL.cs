@@ -28,10 +28,10 @@ namespace ClickAndCollect.DAL
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     SqlCommand cmd = new SqlCommand
-                        ("select o.OrderId, o.Receipt, t.Days, op.NumProduct, op.Quantity from [Order] o " +
+                        ("select o.OrderId from [Order] o " +
                         "full join TimeSlot t on o.TimeSlotId = t.TimeSlotId " +
                         "full join OrderProducts op on o.OrderId = op.OrderId " +
-                        "where o.IdPerson = @IdPerson", connection);
+                        "where o.IdPerson = @IdPerson group by o.OrderId", connection);
 
                     cmd.Parameters.AddWithValue("IdPerson", customer.Id);
 
@@ -48,7 +48,7 @@ namespace ClickAndCollect.DAL
                             
                             orderTimeSlotOrderProductViewModel1.Order.OrderId = reader.GetInt32("OrderId");
                             //orderTimeSlotOrderProductViewModel1.Order.Receipt = (bool)reader.GetValue("Receipt");
-                            orderTimeSlotOrderProductViewModel1.TimeSlot.Day = (DateTime)reader.GetValue("Days");
+                            //orderTimeSlotOrderProductViewModel1.TimeSlot.Day = (DateTime)reader.GetValue("Days");
 
                             orderTimeSlotOrderProductViewModel.Add(orderTimeSlotOrderProductViewModel1);
 
