@@ -69,31 +69,40 @@ namespace ClickAndCollect.DAL
             
         }
 
-        public List<Order> GetOrders()
+        public List<Order> GetOrders(Shop shop)
         {
             List<Order> orders = new List<Order>();
-            
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                string sql = "select OrderId,DateOfReceipt, Ready FROM [Order] ;";
-                SqlCommand cmd = new SqlCommand(sql, connection);
-
-                connection.Open();
-
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    while (reader.Read())
+                    string sql1 = "select TimeSlotId from TimeSlot where ShopId = @shopId";
+                    string sql = $"select OrderId,DateOfReceipt, Ready FROM [Order] where TimeSlotId in {sql1};";
+                    SqlCommand cmd = new SqlCommand(sql, connection);
+                    cmd.Parameters.AddWithValue("shopId", shop.ShopId);
+                    connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        Order order = new();
-                        order.OrderID = reader.GetInt32("OrderId"); 
-                        order.Ready = reader.GetBoolean("Ready");
-                        order.DateOfReceipt = reader.GetDateTime("DateOfReceipt");
-                        orders.Add(order);
-                    }
+                        while (reader.Read())
+                        {
+                            Order order = new Order();
+                            order.OrderId = reader.GetInt32("OrderId"); 
+                            order.Ready = reader.GetBoolean("Ready");
+                            order.DateOfReceipt = reader.GetDateTime("DateOfReceipt");
+                            orders.Add(order);
+                        }
                     
+                    }
                 }
+                return orders;
             }
-            return orders;
+            catch (Exception)
+            {
+
+                return null;
+            }
+            
         }
     }
 }

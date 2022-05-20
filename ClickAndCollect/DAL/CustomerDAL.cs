@@ -53,14 +53,14 @@ namespace ClickAndCollect.DAL
                     SqlCommand cmd = new SqlCommand("INSERT INTO Person (LastName, FirstName, Email, Password, Type) VALUES (@LastName, @FirstName, @Email, @Password, @Type)", connection);
                     SqlCommand cmd2 = new SqlCommand("INSERT INTO Customer(IdPerson, DoB, PhoneNumber) VALUES (ident_current('Person'),@Dob, @PhoneNumber)", connection);
 
-                customer.Type = "Customer";
-                cmd.Parameters.AddWithValue("LastName", customer.LastName);
-                cmd.Parameters.AddWithValue("FirstName", customer.FirstName);
-                cmd.Parameters.AddWithValue("Email", customer.Email);
-                cmd.Parameters.AddWithValue("Password", customer.Password);
-                cmd.Parameters.AddWithValue("Type", customer.Type);
-                cmd2.Parameters.AddWithValue("DoB", customer.DoB);
-                cmd2.Parameters.AddWithValue("PhoneNumber", customer.PhoneNumber);
+                    customer.Type = "Customer";
+                    cmd.Parameters.AddWithValue("LastName", customer.LastName);
+                    cmd.Parameters.AddWithValue("FirstName", customer.FirstName);
+                    cmd.Parameters.AddWithValue("Email", customer.Email);
+                    cmd.Parameters.AddWithValue("Password", customer.Password);
+                    cmd.Parameters.AddWithValue("Type", customer.Type);
+                    cmd2.Parameters.AddWithValue("DoB", customer.DoB);
+                    cmd2.Parameters.AddWithValue("PhoneNumber", customer.PhoneNumber);
 
                     connection.Open();
                     int res = cmd.ExecuteNonQuery();
@@ -69,9 +69,8 @@ namespace ClickAndCollect.DAL
 
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-
                 return false;
             }
             

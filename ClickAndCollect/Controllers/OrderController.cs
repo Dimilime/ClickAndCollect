@@ -1,6 +1,7 @@
 ﻿using ClickAndCollect.DAL;
 using ClickAndCollect.DAL.IDAL;
 using ClickAndCollect.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -13,15 +14,16 @@ namespace ClickAndCollect.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderDAL _orderDAL;
-        public OrderController(IOrderDAL orderDAL)
+        private readonly IShopDAL _shopDAL;
+        private readonly ICustomerDAL _customerDAL;
+        public OrderController(IOrderDAL orderDAL, IShopDAL shopDAL, ICustomerDAL customerDAL)
         {
             _orderDAL = orderDAL;
         }
-        public IActionResult OrdersList()
+        public IActionResult Orders(OrderPicker orderPicker)
         {
-            List<Order> orders = Order.GetOrders(_orderDAL);
-            
-            return View(orders);
+            orderPicker.Shop.Orders = Order.GetOrders(_orderDAL, orderPicker.Shop);
+            return View(orderPicker.Shop.Orders);
         }
         public IActionResult Details(int id)
         {

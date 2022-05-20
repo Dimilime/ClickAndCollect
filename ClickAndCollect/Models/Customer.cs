@@ -19,7 +19,7 @@ namespace ClickAndCollect.Models
 
         [Display(Name = "Date de naissance")]
         [DataType(DataType.Date)]
-        //[Range(typeof(DateTime), "01/01/1900", "31/12/2006", ErrorMessage ="La date est incorrect !")] probleme !!!
+        [Range(typeof(DateTime), "01/01/1900", "31/12/2006", ErrorMessage ="La date est incorrect !")]
         [Required(ErrorMessage ="La date de naisse est obligatoire !")]
         public DateTime DoB
         {

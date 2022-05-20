@@ -9,6 +9,6 @@ namespace ClickAndCollect.DAL.IDAL
     public interface IOrderDAL
     {
         Order GetOrder(int id);
-        List<Order> GetOrders();
+        List<Order> GetOrders(Shop shop);
     }
 }

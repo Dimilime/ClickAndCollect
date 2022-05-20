@@ -9,10 +9,10 @@
     @foreach (var order in Model)
     {
     <tr>
-        <td>@order.OrderID</td>
+        <td>@order.OrderId</td>
         <td>@order.DateOfReceipt</td>
         <td>@order.Ready</td>
-        <td><a asp-controller="OrderPicker" asp-action="OrderDetails" asp-route-id="@order.OrderID">Voir</a></td>
+        <td><a asp-controller="OrderPicker" asp-action="OrderDetails" asp-route-id="@order.OrderId">Voir</a></td>
     </tr>
     }
 </table>

@@ -21,19 +21,6 @@ namespace ClickAndCollect.Models
 
         }
 
-        public Product(string n, string c)
-        {
-            name = n;
-            category = c;
-            orders = new List<Order>();
-        }
-
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-
         public static List<Product> GetProducts(IProductDAL productDAL, Product produit)
         {
             return productDAL.GetProducts(produit);
