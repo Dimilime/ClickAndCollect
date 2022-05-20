@@ -59,10 +59,9 @@ namespace ClickAndCollect.Controllers
             }
             catch (Exception)
             {
-                TempData["ErrorSession"] = "Reconnectez vous pour voir l'historique!";
-                return View("Views/Person/Authenticate.cshtml");
+                TempData["Error"] = "Erreur session";
+                return Redirect("/Product/Index");
             }
-            
         }
 
     }
