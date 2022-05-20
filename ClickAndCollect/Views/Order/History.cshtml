@@ -4,7 +4,7 @@
     <table class="table">
         <tr>
             <th>Référence de la commande</th>
-            <th>Jour de la commande</th>
+            @*<th>Jour de la commande</th>*@
         </tr>
             @{
                 foreach (var o in Model)
@@ -12,7 +12,7 @@
                 <tr>
                     <td>@o.Order.OrderId</td>
                     @*<td>@o.Order.Receipt</td>*@
-                    <td>@o.TimeSlot.Day.ToString("dd/MM/yyyy")</td>
+                    @*<td>@o.TimeSlot.Day.ToString("dd/MM/yyyy")</td>*@
                 </tr>
                 }
             }
