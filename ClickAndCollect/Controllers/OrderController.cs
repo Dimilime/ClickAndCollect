@@ -33,6 +33,50 @@ namespace ClickAndCollect.Controllers
                 ViewData["Error"] = "Commande introuvable!";
             }
             return View(order);
+
+        public IActionResult Validate()
+        {
+            try
+            {
+                var obj = HttpContext.Session.GetString("CurrentOrder");
+                OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
+                OrderDicoViewModels orderDicoViewModels2 = orderDicoViewModels;
+                bool result = orderDicoViewModels.Order.MakeOrder(_orderDAL, orderDicoViewModels2); 
+                if (result == true)
+                {
+                    TempData["SuccessOrder"] = "Felicitation ta commande a été validé !";
+                    return Redirect("/Product/Index");
+                }
+
+                TempData["ErrorOrder"] = "La commande n'a pas abouti !!";
+                return Redirect("/Product/Index");
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Erreur session";
+                return Redirect("/Product/Index");
+            }
+
+        }
+
+        public IActionResult History()
+        {
+            try
+            {
+                int Id = (int)HttpContext.Session.GetInt32("Id");
+                Customer customer = new Customer();
+                customer.Id = Id;
+
+                List<OrderTimeSlotOrderProductViewModel> orders = Order.GetOrders(_orderDAL, customer);
+
+                return View(orders);
+            }
+            catch (Exception)
+            {
+                TempData["ErrorSession"] = "Reconnectez vous pour voir l'historique!";
+                return View("Views/Person/Authenticate.cshtml");
+            }
+            
         }
 
     }

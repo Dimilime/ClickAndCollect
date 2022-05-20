@@ -16,17 +16,19 @@
                 <tr>
                     <td>@d.Key.Name</td>
                     <td>@d.Value</td>
-                    <td>@d.Key.Prix</td>
+                    <td>@d.Key.Price</td>
                     <td><a asp-controller="Product" asp-action="Delete" asp-route-Key="@d.Key.NumProduct">Supprimer</a></td>
                 </tr>
             }
         }
 
-        Total : @TempData["OrderAmount"] €
-
     </table>
 
+    Total : @TempData["OrderAmount"] €
+
 </div>
-<div class="align-text-bottom">
-    <a asp-controller="Shop" asp-action="Index">Valider</a>
+    
+
+<div class="text-lg-right">
+    <a asp-controller="Shop" asp-action="SelectShop">Valider</a>
 </div>

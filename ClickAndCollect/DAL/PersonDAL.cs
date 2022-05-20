@@ -22,66 +22,105 @@ namespace ClickAndCollect.DAL
         {
             bool result = false;
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Person WHERE EMAIL = @Email AND PASSWORD = @Password", connection);
-
-                cmd.Parameters.AddWithValue("Email", p.Email);
-                cmd.Parameters.AddWithValue("Password", p.Password);
-
-                connection.Open();
-
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    while (reader.Read())
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM Person WHERE EMAIL = @Email AND PASSWORD = @Password", connection);
+
+                    cmd.Parameters.AddWithValue("Email", p.Email);
+                    cmd.Parameters.AddWithValue("Password", p.Password);
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        result = true;
+                        while (reader.Read())
+                        {
+                            result = true;
+                        }
                     }
                 }
+                return result;
             }
-            return result;
+            catch (Exception)
+            {
+                return result;
+            }
+
         }
 
         public Person GetAllFromUser(Person p)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try 
             {
-                
-                SqlCommand cmd = new SqlCommand("Select * from Person p full join Customer c on p.IdPerson = c.IdPerson where Email = @Email and Password = @Password", connection);
-                //soit gerer le type avec des requette (select que les customer, que les orderpicker ... et instancier chaque classe (customer, orderpicker ..)
-                //soit laisse le champ type mais gerer en instanciant les différentes classes ..
-                cmd.Parameters.AddWithValue("Email", p.Email);
-                cmd.Parameters.AddWithValue("Password", p.Password);
-
-                connection.Open();
-
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    while (reader.Read())
+
+                    string type;
+
+                    SqlCommand cmd = new SqlCommand("Select * from Person p full join Customer c on p.IdPerson = c.IdPerson where Email = @Email and Password = @Password", connection);
+
+                    cmd.Parameters.AddWithValue("Email", p.Email);
+                    cmd.Parameters.AddWithValue("Password", p.Password);
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        p.Id = reader.GetInt32("IdPerson");
-                        p.LastName = reader.GetString("LastName");
-                        p.FirstName = reader.GetString("FirstName");
-                        p.Email = reader.GetString("Email");
-                        p.Password = reader.GetString("Password");
-                        p.Type = reader.GetString("Type");
-                        if(p.Type == "Customer")
+                        while (reader.Read())
                         {
-                            Customer c = new Customer();
-                            c.Id = p.Id;
-                            c.LastName = p.LastName;
-                            c.FirstName = p.FirstName;
-                            c.Email = p.Email;
-                            c.Password = p.Password;
-                            c.Type = p.Type;
-                            c.DoB = reader.GetDateTime("DoB");
-                            c.PhoneNumber = reader.GetInt32("PhoneNumber");
-                             return c;
+                            p.Id = reader.GetInt32("IdPerson");
+                            p.LastName = reader.GetString("LastName");
+                            p.FirstName = reader.GetString("FirstName");
+                            p.Email = reader.GetString("Email");
+                            p.Password = reader.GetString("Password");
+                            type = reader.GetString("Type");
+
+                            if (type == "Customer")
+                            {
+                                Customer c = new Customer();
+                                c.Id = p.Id;
+                                c.LastName = p.LastName;
+                                c.FirstName = p.FirstName;
+                                c.Email = p.Email;
+                                c.Password = p.Password;
+                                c.DoB = reader.GetDateTime("DoB");
+                                c.PhoneNumber = reader.GetInt32("PhoneNumber");
+                                return c;
+                            }
+
+                            if (type == "OrderPicker")
+                            {
+                                OrderPicker o = new OrderPicker();
+                                o.Id = reader.GetInt32("IdPerson");
+                                o.LastName = reader.GetString("LastName");
+                                o.FirstName = reader.GetString("FirstName");
+                                o.Email = reader.GetString("Email");
+                                o.Password = reader.GetString("Password");
+                                return o;
+                            }
+
+                            if (type == "Cashier")
+                            {
+                                Cashier c = new Cashier();
+                                c.Id = reader.GetInt32("IdPerson");
+                                c.LastName = reader.GetString("LastName");
+                                c.FirstName = reader.GetString("FirstName");
+                                c.Email = reader.GetString("Email");
+                                c.Password = reader.GetString("Password");
+                                return c;
+                            }
                         }
                     }
+                    return null;
                 }
-                return p;
             }
+            catch(Exception)
+            {
+                return null;
+            }
+           
         }
     }
 }

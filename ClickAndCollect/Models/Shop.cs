@@ -10,7 +10,10 @@ namespace ClickAndCollect.Models
     public class Shop
     {
         public int ShopId { get; set; }
-        public int PostCode { get; set; }
+        private int postCode;
+        private List<Cashier> cashiers;
+        private List<OrderPicker> orderPickers;
+        public int PostCode { get => postCode; set => postCode=value; }
         public List<Order> Orders { get; set; }
         public List<Cashier> Cashiers { get; set; }
         public List<OrderPicker> OrderPickers{ get; set; }
@@ -51,6 +54,11 @@ namespace ClickAndCollect.Models
         }public static Shop GetInfoShop(IShopDAL shopDAL, Person person)
         {
             return shopDAL.GetInfoShop(person);
+        }
+
+        public static List<TimeSlot> GetTimeSlots(IShopDAL shopDAL, Shop shop)
+        {
+            return shopDAL.GetTimeSlots(shop);
         }
 
     }

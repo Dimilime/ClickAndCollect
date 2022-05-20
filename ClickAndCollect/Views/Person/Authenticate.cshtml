@@ -1,14 +1,23 @@
 ﻿@model Person
 
+@if (TempData["ErrorSession"] != null)
+{
+    <span>@TempData["ErrorSession"]</span>
+}
+
 <form asp-controller="Person" asp-action="Authenticate" method="post">
-    <label asp-for="Email"></label>
-    <input asp-for="Email" />
-    <span asp-validation-for="Email"></span>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email"></span>
+    </div>
 
-    <label asp-for="Password"></label>
-    <input asp-for="Password" />
-    <span asp-validation-for="Password"></span>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" />
+        <span asp-validation-for="Password"></span>
+    </div>
 
-    <input type="submit" />
+        <input type="submit" />
 
 </form>

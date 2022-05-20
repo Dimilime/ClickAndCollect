@@ -1,4 +1,5 @@
 ﻿using ClickAndCollect.DAL.IDAL;
+using ClickAndCollect.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -27,6 +28,11 @@ namespace ClickAndCollect.Models
         {
             DictionaryProducts = new Dictionary<Product, int>();
         }
+        public Order(Customer customer)
+        {
+            this.customer = customer;
+            DictionaryProducts = new Dictionary<Product, int>();
+        }
         public Order(DateTime dOreceipt, Customer customer, Shop shop, TimeSlot timeSlot)
         {
             DateOfReceipt = dOreceipt;
@@ -36,14 +42,13 @@ namespace ClickAndCollect.Models
             DictionaryProducts = new Dictionary<Product, int>();
         }
 
-        public void MakeOrder()
+        public static List<OrderTimeSlotOrderProductViewModel> GetOrders (IOrderDAL orderDAL, Customer customer)
         {
-
+            return orderDAL.GetOrders(customer);
         }
-
-        public void AddTimeSlot()
+        public bool MakeOrder(IOrderDAL orderDAL, OrderDicoViewModels orderDicoViewModels2)
         {
-
+            return orderDAL.MakeOrder(this, orderDicoViewModels2);
         }
 
         public double GetOrderAmount()
@@ -58,7 +63,7 @@ namespace ClickAndCollect.Models
 
             foreach (var item in DictionaryProducts)
             {
-                prix = item.Key.Prix * item.Value;
+                prix = item.Key.Price * item.Value;
                 total += prix;
             }
 
