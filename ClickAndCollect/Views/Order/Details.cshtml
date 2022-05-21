@@ -1,0 +1,24 @@
+﻿@model List<ClickAndCollect.ViewModels.OrderTimeSlotOrderProductViewModel>
+
+<div class="text-center">
+    <table class="table">
+        <tr>
+            <th>Date de la commande</th>
+            <th>Heure de debut</th>
+            <th>Heure de fin</th>
+        </tr>
+        @{
+            foreach (var o in Model)
+            {
+                <tr>
+                    <td>@o.TimeSlot.Day.ToString("dd/MM/yyyy")</td>
+                    <td>@o.TimeSlot.Start</td>
+                    <td>@o.TimeSlot.End</td>
+                </tr>
+            }
+        }
+
+
+    </table>
+
+</div>
