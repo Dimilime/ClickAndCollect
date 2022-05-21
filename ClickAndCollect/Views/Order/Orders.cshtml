@@ -16,7 +16,7 @@
                 <td>@order.TimeSlot.Day.ToString("dd/MM/yyyy")</td>
                 <td>@order.TimeSlot.Start - @order.TimeSlot.End</td>
                 <td>@(order.Ready?"Oui":"Non")</td>
-                <td><a asp-controller="OrderPicker" asp-action="OrderDetails" asp-route-id="@order.OrderId">Details</a></td>
+                <td><a asp-controller="Order" asp-action="Details" asp-route-id="@order.OrderId">Details</a></td>
             </tr>
         }
     </table>

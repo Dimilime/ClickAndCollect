@@ -20,23 +20,13 @@ namespace ClickAndCollect.Controllers
         }
         public IActionResult Orders()
         {
-            TempData["OrderPickerId"] = (int)HttpContext.Session.GetInt32("Id");// get orderpicker id
-            int oPId = (int)TempData["OrderPickerId"];
+            int oPId = (int)HttpContext.Session.GetInt32("Id");// get orderpicker id
             OrderPicker orderPicker = OrderPicker.GetOrderPicker(_orderPickerDAL, oPId);
             int IdShop = orderPicker.Shop.ShopId;
             HttpContext.Session.SetInt32("IdShop", IdShop); 
             return RedirectToAction("Orders","Order",orderPicker);
             
         }
-        public IActionResult OrderDetails(int id)
-        {
-            int oPId = (int)TempData["OrderPickerId"];
-
-            OrderPicker orderPicker = OrderPicker.GetOrderPicker(_orderPickerDAL, oPId);
-            int IdShop = orderPicker.Shop.ShopId;
-            HttpContext.Session.SetInt32("IdShop", IdShop);
-            TempData["OrderId"] = id;
-            return RedirectToAction("Details", "Order", orderPicker);
-        }
+        
     }
 }

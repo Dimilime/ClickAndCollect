@@ -11,7 +11,7 @@ namespace ClickAndCollect.Models
     public class Order
     {
         public int OrderId { get; set; }
-        [Display(Name = "Date d'enlèvement")]
+        [Display(Name = "Prêt?")]
         public Boolean Ready { get; set; }
 
         [Display(Name = "Entrer le nombre de caisse")]
@@ -73,17 +73,17 @@ namespace ClickAndCollect.Models
             return total;
 
         }
-        public static Order GetDetails(int id,IOrderDAL orderDAL, OrderPicker orderPicker)
+        public static Order GetDetails(int id,IOrderDAL orderDAL)
         {
-            return orderDAL.GetOrder(id,orderPicker);
+            return orderDAL.GetOrder(id);
         }
         public static List<Order> GetOrders(IOrderDAL orderDAL, OrderPicker orderPicker)
         {
             return orderDAL.GetOrders(orderPicker); 
         }
-        public void ModifyReady()
+        public bool ModifyReady(IOrderDAL orderDAL)
         {
-
+            return orderDAL.OrderReady(this);
         }
 
         public void EnterNumberOfBoxUsed()

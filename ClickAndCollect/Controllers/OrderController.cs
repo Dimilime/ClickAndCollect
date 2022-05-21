@@ -24,8 +24,8 @@ namespace ClickAndCollect.Controllers
         }
         public IActionResult Orders(OrderPicker orderPicker)
         {
-            //try
-            //{
+            try
+            {
                 int IdShop = (int)HttpContext.Session.GetInt32("IdShop");
                 Shop shop = new Shop();
                 shop.ShopId = IdShop;
@@ -39,33 +39,47 @@ namespace ClickAndCollect.Controllers
                     ViewData["ErrorOrder"] = "Erreur liste de commande non trouvé!";
                 }
                 return View(orderPicker.Shop.Orders);
-            //}
-            //catch (Exception)
-            //{
-            //    TempData["ErrorIdShop"] = "Erreur reconnectez vous!";
-            //    return View("Views/Person/Authenticate.cshtml");
-            //}
-            
-        }
-        public IActionResult Details(OrderPicker orderPicker)
-        {
-            try
-            {
-                int IdShop = (int)HttpContext.Session.GetInt32("IdShop");
-                Shop shop = new Shop();
-                shop.ShopId = IdShop;
-                shop = Shop.GetInfoShop(_shopDAL, shop);
-                orderPicker.Shop = shop;
-
-                List<Order> orders = Order.GetOrders(_orderDAL, orderPicker);
-                orderPicker.Shop.Orders = orders;
-                return View(orderPicker.Shop.Orders.FirstOrDefault(o => o.OrderId == (int)TempData["OrderId"]));
             }
             catch (Exception)
             {
                 TempData["ErrorIdShop"] = "Erreur reconnectez vous!";
-                return View("/Person/Authenticate.cshtml");
+                return View("Views/Person/Authenticate.cshtml");
             }
+            
+        }
+        public IActionResult Details(int id)
+        {
+            Order order = Order.GetDetails(id, _orderDAL);
+            if (order == null)
+            {
+                ViewData["Error"] = "Commande introuvable!";
+            }
+            return View(order);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult OrderReady(Order order)
+        {
+            if (ModelState.IsValid)
+            {
+                if (order.ModifyReady(_orderDAL))
+                {
+                    if (order.Ready)
+                    {
+                        TempData["OrderValid"] = "Commande prête!";
+                    }
+                    else
+                    {
+                        TempData["OrderValid"] = "Attention! La commande n'est pas prête, veuillez indiquer que c'est prêt";
+                    }
+                    
+                }else
+                {
+                    TempData["OrderValid"] = "L'insertion s'est mal déroulé veuillez réessayer!";
+                }
+            }
+            return Redirect($"details/{order.OrderId}");
         }
         public IActionResult Validate()
         {

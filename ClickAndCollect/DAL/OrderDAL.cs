@@ -132,27 +132,30 @@ namespace ClickAndCollect.DAL
             }
             return res > 0;
         }
-        public Order GetOrder(int id, OrderPicker orderPicker)
+        public Order GetOrder(int id)
         {
 
             Order order = new Order();
+            order.OrderId = id;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql1 = "select IdPerson, o.OrderId, NumProduct, Quantity  from [Order] o inner join OrderProducts op on o.OrderId = op.OrderId";
-                string sql2 = $"select IdPerson, o.OrderId, p.Name , Quantity from Products p inner join ({sql1}) o on p.NumProduct =o.NumProduct;";
-                SqlCommand cmd = new SqlCommand(sql2, connection);
+                string sql = "select o.OrderId, o.Ready ,op.NumProduct, op.Quantity, p.Price,p.Name from [Order] o inner join OrderProducts op on op.OrderId=o.OrderId " +
+                "inner join Products p on p.NumProduct = op.NumProduct where o.OrderId=@Id";
+                SqlCommand cmd = new SqlCommand(sql, connection);
 
-                cmd.Parameters["@Id"].Value = id;
+                cmd.Parameters.AddWithValue("Id",id);
                 connection.Open();
 
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-
-
-
-
+                        Product product = new Product();
+                        product.NumProduct = reader.GetInt32("NumProduct");
+                        product.Name = reader.GetString("Name");
+                        product.Price = (float)reader.GetDouble("Price");
+                        order.DictionaryProducts.Add(product,reader.GetInt32("Quantity"));
+                        order.Ready = reader.GetBoolean("Ready");
                     }
                 }
 
@@ -169,10 +172,8 @@ namespace ClickAndCollect.DAL
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
 
-                    string sql = "select o.OrderId, o.Ready, t.Days, t.Start, t.[End], op.NumProduct, op.Quantity, p.Price, p.Name from [Order] o" +
-                    " inner join OrderProducts op on op.OrderId =o.OrderId inner join Products p on op.NumProduct = p.NumProduct " +
-                    "inner join TimeSlot t on o.TimeSlotId = t.TimeSlotId where o.TimeSlotId in (select TimeSlotId from TimeSlot where ShopId = @shopId) " +
-                    "and Days = Convert(varchar(10),GETDATE()+1,103)";
+                    string sql = "select o.OrderId, o.Ready, t.Days, t.Start, t.[End] from [Order] o inner join TimeSlot t on o.TimeSlotId = t.TimeSlotId " +
+                    "where o.TimeSlotId in (select TimeSlotId from TimeSlot where ShopId = @shopId) and Days =Convert(varchar(10),GETDATE()+1,103)";
                     SqlCommand cmd = new SqlCommand(sql, connection);
                     cmd.Parameters.AddWithValue("shopId", orderPicker.Shop.ShopId);
                     connection.Open();
@@ -188,12 +189,7 @@ namespace ClickAndCollect.DAL
                             order.TimeSlot.Start = (TimeSpan)reader.GetValue("Start");
                             order.TimeSlot.End = (TimeSpan)reader.GetValue("End");
                             order.TimeSlot.Day = reader.GetDateTime("Days");
-                            order.TimeSlot.Shop = orderPicker.Shop;
-                            Product product = new Product();
-                            product.NumProduct = reader.GetInt32("NumProduct");
-                            product.Name = reader.GetString("Name");
-                            product.Price =(float)reader.GetDouble("Price");
-                            order.DictionaryProducts.Add(product, reader.GetInt32("Quantity"));
+                            order.TimeSlot.Shop = orderPicker.Shop;  
                             orders.Add(order);
                         }
 
@@ -208,6 +204,30 @@ namespace ClickAndCollect.DAL
             }
 
         }
+
+        public bool OrderReady(Order order)
+        {
+
+            bool succes = false;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string sql = "UPDATE [Order] SET Ready = @ready, NumberOfBoxUsed = @nbBoxU WHERE OrderId = @Id";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+
+                cmd.Parameters.AddWithValue("Id", order.OrderId);
+                cmd.Parameters.AddWithValue("ready", order.Ready);
+                cmd.Parameters.AddWithValue("nbBoxU", order.NumberOfBoxUsed);
+                connection.Open();
+
+                succes =  cmd.ExecuteNonQuery() > 0;
+                
+            }
+            return succes;
+    
+        }
+
+
+
     }
 }
 
