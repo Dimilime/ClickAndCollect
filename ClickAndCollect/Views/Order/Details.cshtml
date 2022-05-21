@@ -17,12 +17,14 @@
                     <td>@produit.Value</td>
                 </tr>
             }
-            <tfoot>
-                <tr>
-                    <td><button>C'est prêt!</button></td>
-                </tr>
-            </tfoot>
+       
         </table>
+        <form asp-controller="" asp-action="" method="post">
+            <label asp-for="NumberOfBoxUsed"></label>
+            <input asp-for="NumberOfBoxUsed" />
+            <span asp-validation-for="NumberOfBoxUsed"></span>
+            <input type="submit" />
+        </form>
     }
     else
     {

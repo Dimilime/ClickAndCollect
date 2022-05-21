@@ -164,8 +164,8 @@ namespace ClickAndCollect.DAL
         public List<Order> GetOrders(OrderPicker orderPicker)
         {
             List<Order> orders = new List<Order>();
-            //try
-            //{
+            try
+            {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
 
@@ -200,12 +200,12 @@ namespace ClickAndCollect.DAL
                     }
                 }
                 return orders;
-            //}
-            //catch (Exception)
-            //{
+            }
+            catch (Exception)
+            {
 
-            //    return null;
-            //}
+               return null;
+            }
 
         }
     }

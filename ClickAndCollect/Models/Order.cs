@@ -13,7 +13,12 @@ namespace ClickAndCollect.Models
         public int OrderId { get; set; }
         [Display(Name = "Date d'enlèvement")]
         public Boolean Ready { get; set; }
+
+        [Display(Name = "Entrer le nombre de caisse")]
+        [Required(ErrorMessage = "Le nombre de caisse obligatoire !")]
         public int NumberOfBoxUsed { get; set; }
+        [Display(Name = "Entrer le nombre de caisse")]
+        [Required(ErrorMessage = "Le nombre de caisse obligatoire !")]
         public int NumberOfBoxReturned { get; set; }
         public Boolean Receipt { get; set; }
         public static double ServiceFees { get; set; } = 5.95;
