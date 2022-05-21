@@ -24,6 +24,31 @@ namespace ClickAndCollect.Controllers
         }
         public IActionResult Orders(OrderPicker orderPicker)
         {
+            //try
+            //{
+                int IdShop = (int)HttpContext.Session.GetInt32("IdShop");
+                Shop shop = new Shop();
+                shop.ShopId = IdShop;
+                shop = Shop.GetInfoShop(_shopDAL, shop);
+                orderPicker.Shop = shop;
+
+                List<Order> orders = Order.GetOrders(_orderDAL, orderPicker);
+                orderPicker.Shop.Orders = orders;
+                if(orderPicker.Shop.Orders == null)
+                {
+                    ViewData["ErrorOrder"] = "Erreur liste de commande non trouvé!";
+                }
+                return View(orderPicker.Shop.Orders);
+            //}
+            //catch (Exception)
+            //{
+            //    TempData["ErrorIdShop"] = "Erreur reconnectez vous!";
+            //    return View("Views/Person/Authenticate.cshtml");
+            //}
+            
+        }
+        public IActionResult Details(OrderPicker orderPicker)
+        {
             try
             {
                 int IdShop = (int)HttpContext.Session.GetInt32("IdShop");
@@ -34,23 +59,13 @@ namespace ClickAndCollect.Controllers
 
                 List<Order> orders = Order.GetOrders(_orderDAL, orderPicker);
                 orderPicker.Shop.Orders = orders;
-                return View(orderPicker.Shop.Orders);
+                return View(orderPicker.Shop.Orders.FirstOrDefault(o => o.OrderId == (int)TempData["OrderId"]));
             }
             catch (Exception)
             {
                 TempData["ErrorIdShop"] = "Erreur reconnectez vous!";
                 return View("/Person/Authenticate.cshtml");
             }
-            
-        }
-        public IActionResult Details(int id)
-        {
-            /*Order order = Order.GetDetails(id, _orderDAL, new OrderPicker());
-            if (order == null)
-            {
-                ViewData["Error"] = "Commande introuvable!";
-            }*/
-            return View();
         }
         public IActionResult Validate()
         {

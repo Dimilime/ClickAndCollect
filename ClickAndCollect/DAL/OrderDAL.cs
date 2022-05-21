@@ -169,8 +169,10 @@ namespace ClickAndCollect.DAL
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
 
-                    string sql = "select o.OrderId, o.Ready, t.Days, t.Start, t.[End] from [Order] o full join TimeSlot t on o.TimeSlotId = t.TimeSlotId " +
-                    "where o.TimeSlotId in (select TimeSlotId from TimeSlot where ShopId = @shopId) and Days = Convert(varchar(10),GETDATE()+1,103)";
+                    string sql = "select o.OrderId, o.Ready, t.Days, t.Start, t.[End], op.NumProduct, op.Quantity, p.Price, p.Name from [Order] o" +
+                    " inner join OrderProducts op on op.OrderId =o.OrderId inner join Products p on op.NumProduct = p.NumProduct " +
+                    "inner join TimeSlot t on o.TimeSlotId = t.TimeSlotId where o.TimeSlotId in (select TimeSlotId from TimeSlot where ShopId = @shopId) " +
+                    "and Days = Convert(varchar(10),GETDATE()+1,103)";
                     SqlCommand cmd = new SqlCommand(sql, connection);
                     cmd.Parameters.AddWithValue("shopId", orderPicker.Shop.ShopId);
                     connection.Open();
@@ -187,6 +189,11 @@ namespace ClickAndCollect.DAL
                             order.TimeSlot.End = (TimeSpan)reader.GetValue("End");
                             order.TimeSlot.Day = reader.GetDateTime("Days");
                             order.TimeSlot.Shop = orderPicker.Shop;
+                            Product product = new Product();
+                            product.NumProduct = reader.GetInt32("NumProduct");
+                            product.Name = reader.GetString("Name");
+                            product.Price =(float)reader.GetDouble("Price");
+                            order.DictionaryProducts.Add(product, reader.GetInt32("Quantity"));
                             orders.Add(order);
                         }
 

@@ -1,26 +1,32 @@
 ﻿@model Order
-@*
+
     @if (Model != null)
     {
-        <h1>Détails de la commande n°: @Model.OrderID</h1>
+        <h3>Détails de la commande n°: @Model.OrderId</h3>
         <table class="table">
             <tr>
-                <th>Nom du Produit : </th>
-                <td>@Model.</td>
+                <th>Numero du produit</th>
+                <th>Nom du Produit </th>
+                <th>Quantité</th>
             </tr>
-            <tr>
-                <th>Prix (€) : </th>
-                <td>@Model.Price</td>
-            </tr>
-            <tr>
-                <th>Type de produit : </th>
-                <td>@Model.Type</td>
-            </tr>
+            @foreach (var produit in Model.DictionaryProducts)
+            {
+                <tr>
+                    <td>@produit.Key.NumProduct</td>
+                    <td>@produit.Key.Name</td>
+                    <td>@produit.Value</td>
+                </tr>
+            }
+            <tfoot>
+                <tr>
+                    <td><button>C'est prêt!</button></td>
+                </tr>
+            </tfoot>
         </table>
     }
     else
     {
         <h1>Erreur</h1>
         <p>@ViewData["Error"]</p>
-    }*@
-<a asp-action="Index">Voir la liste des produits</a>
+    }
+<a asp-action="Orders">Retour</a>
