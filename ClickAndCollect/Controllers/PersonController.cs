@@ -55,7 +55,7 @@ namespace ClickAndCollect.Controllers
                 {
                     if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
                     {
-                        HttpContext.Session.SetInt32("Id", person.Id);
+                        HttpContext.Session.SetInt32("IdOp", person.Id);
                         HttpContext.Session.SetString("State", "connected");
                         TempData["State"] = HttpContext.Session.GetString("State");
                         return Redirect("/OrderPicker/Orders");
@@ -65,11 +65,11 @@ namespace ClickAndCollect.Controllers
                 {
                     if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
                     {
-                        HttpContext.Session.SetInt32("Id", person.Id);
+                        HttpContext.Session.SetInt32("IdC", person.Id);
                         HttpContext.Session.SetString("State", "connected");
                         TempData["State"] = HttpContext.Session.GetString("State");
                         
-                        return View("Views/Cashier/Success");
+                        return Redirect("/Cashier/DailyCustomer");
                     }
                 }
 

@@ -9,34 +9,31 @@ namespace ClickAndCollect.Models
 {
     public class Shop
     {
-        public int ShopId { get; set; }
+        
         private int postCode;
-        private List<Cashier> cashiers;
-        private List<OrderPicker> orderPickers;
+        private int shopId;
+        List<Customer> customers;
+        public List<Customer> Customers { get=>customers; set=>customers=value; }
+        public int ShopId { get =>shopId; set =>shopId=value; }
         public int PostCode { get => postCode; set => postCode=value; }
         public List<Order> Orders { get; set; }
-        public List<Cashier> Cashiers { get; set; }
-        public List<OrderPicker> OrderPickers{ get; set; }
-        public List<TimeSlot> TimeSlots{ get; set; }
+        //public List<Cashier> Cashiers { get; set; }
+        //public List<OrderPicker> OrderPickers{ get; set; }
+        //public List<TimeSlot> TimeSlots{ get; set; }
 
         
         public Shop()
         {
-            Orders = new List<Order>();
-            Cashiers = new List<Cashier>();
-            OrderPickers = new List<OrderPicker>();
-            TimeSlots = new List<TimeSlot>();
+            //Orders = new List<Order>();
+            //Cashiers = new List<Cashier>();
+            //OrderPickers = new List<OrderPicker>();
+            //TimeSlots = new List<TimeSlot>();
         }
 
         public void GetDailyCustomers()
         {
 
         }
-
-        //public void GetOrders( IOrderDAL orderDAL)
-        //{
-        //    Orders = orderDAL.GetOrders(this);
-        //}
 
         public void GetOrderById()
         {
@@ -48,13 +45,9 @@ namespace ClickAndCollect.Models
             return shopDAL.GetShops();
         }
 
-        public Shop GetInfoShop(IShopDAL shopDAL)
+        public static Shop GetInfoShop(IShopDAL shopDAL, int id)
         {
-            return shopDAL.GetInfoShop(this);
-        }
-        public static Shop GetInfoShop(IShopDAL shopDAL, Shop shop)
-        {
-            return shopDAL.GetInfoShop(shop);
+            return shopDAL.GetInfoShop(id);
         }
 
         public static List<TimeSlot> GetTimeSlots(IShopDAL shopDAL, Shop shop)

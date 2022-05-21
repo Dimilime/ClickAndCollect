@@ -20,7 +20,7 @@ namespace ClickAndCollect.Controllers
         }
         public IActionResult Orders()
         {
-            int oPId = (int)HttpContext.Session.GetInt32("Id");// get orderpicker id
+            int oPId = (int)HttpContext.Session.GetInt32("IdOp");// get orderpicker id
             OrderPicker orderPicker = OrderPicker.GetOrderPicker(_orderPickerDAL, oPId);
             int IdShop = orderPicker.Shop.ShopId;
             HttpContext.Session.SetInt32("IdShop", IdShop); 

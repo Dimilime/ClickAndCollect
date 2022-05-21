@@ -21,16 +21,14 @@ namespace ClickAndCollect.Controllers
         {
             _orderDAL = orderDAL;
             _shopDAL = shopDAL;
+            _customerDAL = customerDAL;
         }
         public IActionResult Orders(OrderPicker orderPicker)
         {
             try
             {
-                int IdShop = (int)HttpContext.Session.GetInt32("IdShop");
-                Shop shop = new Shop();
-                shop.ShopId = IdShop;
-                shop = Shop.GetInfoShop(_shopDAL, shop);
-                orderPicker.Shop = shop;
+                int idShop = (int)HttpContext.Session.GetInt32("IdShop");
+                orderPicker.Shop = Shop.GetInfoShop(_shopDAL, idShop);
 
                 List<Order> orders = Order.GetOrders(_orderDAL, orderPicker);
                 orderPicker.Shop.Orders = orders;
@@ -125,6 +123,60 @@ namespace ClickAndCollect.Controllers
             }
         }
 
-        
+        public IActionResult DailyCustomer(Cashier cashier)
+        {
+            int idShop = (int)HttpContext.Session.GetInt32("IdShop");
+            cashier.Shop = Shop.GetInfoShop(_shopDAL, idShop);
+            cashier.Shop.Orders= Order.GetOrders(_orderDAL,cashier);
+            cashier.Shop.Customers = new List<Customer>();
+            for (int i = 0; i < cashier.Shop.Orders.Count; i++)
+            {
+                cashier.Shop.Orders[i].Customer = Customer.GetInfoCustomer(_customerDAL, cashier.Shop.Orders[i].Customer.Id);
+            }
+            if (cashier.Shop.Orders == null)
+            {
+                ViewData["ErrorCustomer"] = "Erreur liste de client non trouvé!";
+            }
+
+            return View(cashier.Shop.Orders);
+
+        }
+        public IActionResult ValidateReceipt(int id)
+        {
+            Order order = Order.GetDetails(id, _orderDAL);
+            if (order == null)
+            {
+                ViewData["Error"] = "Commande introuvable!";
+            }
+            return View(order);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DailyCustomer(Order order)
+        {
+            if (ModelState.IsValid)
+            {
+                if (order.ModifyReceipt(_orderDAL))
+                {
+                    if (order.Receipt)
+                    {
+                        TempData["OrderValid"] = "Commande repris!";
+                    }
+                    else
+                    {
+                        TempData["OrderValid"] = "Attention! Veuillez indiquer la commande comme reprise";
+                    }
+
+                }
+                else
+                {
+                    TempData["OrderValid"] = "L'insertion s'est mal déroulé veuillez réessayer!";
+                }
+            }
+            return RedirectToAction(nameof(DailyCustomer));
+
+        }
+
+
     }
 }

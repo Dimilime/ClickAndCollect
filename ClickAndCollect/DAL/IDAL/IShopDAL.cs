@@ -9,7 +9,7 @@ namespace ClickAndCollect.DAL.IDAL
     public interface IShopDAL
     {
         public List<Shop> GetShops();
-        public Shop GetInfoShop(Shop shop);
+        public Shop GetInfoShop(int id);
         public List<TimeSlot> GetTimeSlots(Shop shop);
         
     }

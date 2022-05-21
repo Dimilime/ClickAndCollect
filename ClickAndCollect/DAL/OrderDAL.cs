@@ -1,4 +1,5 @@
 ﻿using ClickAndCollect.DAL.IDAL;
+using ClickAndCollect.Interface;
 using ClickAndCollect.Models;
 using ClickAndCollect.ViewModels;
 using System;
@@ -139,8 +140,8 @@ namespace ClickAndCollect.DAL
             order.OrderId = id;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = "select o.OrderId, o.Ready ,op.NumProduct, op.Quantity, p.Price,p.Name from [Order] o inner join OrderProducts op on op.OrderId=o.OrderId " +
-                "inner join Products p on p.NumProduct = op.NumProduct where o.OrderId=@Id";
+                string sql = "select o.OrderId, o.Receipt, o.NumberOfBoxUsed, o.NumberOfBoxReturned,o.Ready ,op.NumProduct, op.Quantity, p.Price,p.Name from [Order] o " +
+                "inner join OrderProducts op on op.OrderId=o.OrderId inner join Products p on p.NumProduct = op.NumProduct where o.OrderId=@Id";
                 SqlCommand cmd = new SqlCommand(sql, connection);
 
                 cmd.Parameters.AddWithValue("Id",id);
@@ -156,6 +157,9 @@ namespace ClickAndCollect.DAL
                         product.Price = (float)reader.GetDouble("Price");
                         order.DictionaryProducts.Add(product,reader.GetInt32("Quantity"));
                         order.Ready = reader.GetBoolean("Ready");
+                        order.Receipt = reader.GetBoolean("Receipt");
+                        order.NumberOfBoxUsed = reader.GetInt32("NumberOfBoxUsed");
+                        order.NumberOfBoxReturned = reader.GetInt32("NumberOfBoxReturned");
                     }
                 }
 
@@ -164,18 +168,23 @@ namespace ClickAndCollect.DAL
 
         }
 
-        public List<Order> GetOrders(OrderPicker orderPicker)
+        public List<Order> GetOrders(IEmployees employee)
         {
             List<Order> orders = new List<Order>();
+            int nb = 0;
+            if(employee is OrderPicker) 
+            {
+                nb = 1;
+            }
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
 
-                    string sql = "select o.OrderId, o.Ready, t.Days, t.Start, t.[End] from [Order] o inner join TimeSlot t on o.TimeSlotId = t.TimeSlotId " +
-                    "where o.TimeSlotId in (select TimeSlotId from TimeSlot where ShopId = @shopId) and Days =Convert(varchar(10),GETDATE()+1,103)";
+                    string sql = "select o.OrderId, o.IdPerson, o.Ready, t.Days, t.Start, t.[End] from [Order] o inner join TimeSlot t on o.TimeSlotId = t.TimeSlotId " +
+                    $"where o.TimeSlotId in (select TimeSlotId from TimeSlot where ShopId = @shopId) and Days = Convert(varchar(10),GETDATE()+{nb},103)";
                     SqlCommand cmd = new SqlCommand(sql, connection);
-                    cmd.Parameters.AddWithValue("shopId", orderPicker.Shop.ShopId);
+                    cmd.Parameters.AddWithValue("shopId", employee.Shop.ShopId);
                     connection.Open();
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -189,7 +198,10 @@ namespace ClickAndCollect.DAL
                             order.TimeSlot.Start = (TimeSpan)reader.GetValue("Start");
                             order.TimeSlot.End = (TimeSpan)reader.GetValue("End");
                             order.TimeSlot.Day = reader.GetDateTime("Days");
-                            order.TimeSlot.Shop = orderPicker.Shop;  
+                            order.TimeSlot.Shop = employee.Shop;
+                            order.Customer = new Customer();
+                            order.Customer.Id = reader.GetInt32("IdPerson");
+                            
                             orders.Add(order);
                         }
 
@@ -224,6 +236,27 @@ namespace ClickAndCollect.DAL
             }
             return succes;
     
+        }
+
+        public bool OrderReceipt(Order order)
+        {
+
+            bool succes = false;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string sql = "UPDATE [Order] SET Receipt = @receipt, NumberOfBoxReturned = @nbBoxR WHERE OrderId = @Id";
+                SqlCommand cmd = new SqlCommand(sql, connection);
+
+                cmd.Parameters.AddWithValue("Id", order.OrderId);
+                cmd.Parameters.AddWithValue("receipt", order.Receipt);
+                cmd.Parameters.AddWithValue("nbBoxR", order.NumberOfBoxReturned);
+                connection.Open();
+
+                succes = cmd.ExecuteNonQuery() > 0;
+
+            }
+            return succes;
+
         }
 
 

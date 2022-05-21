@@ -50,12 +50,9 @@ namespace ClickAndCollect.Controllers
                 var obj = HttpContext.Session.GetString("CurrentOrder");
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
-                Shop shop = new Shop();
-                shop.ShopId = ShopId;
-                shop = shop.GetInfoShop(_shopDAL);
+                Shop shop =  Shop.GetInfoShop(_shopDAL,ShopId);
 
-            orderDicoViewModels.Order.Shop = shop;
-
+                orderDicoViewModels.Order.Shop = shop;    
                 HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
 
                 return View();
@@ -74,7 +71,7 @@ namespace ClickAndCollect.Controllers
         {
             if (ts.Day <= DateTime.Today)
             {
-                TempData["Today"] = "La date de retrait ne peut pas être égal à la date d'aujourd'hui ou une date antérieur !!";
+                TempData["Today"] = "La date de retrait doit être une date futur!!";
                 return View();
             }
 
@@ -93,7 +90,7 @@ namespace ClickAndCollect.Controllers
             }
             catch (Exception)
             {
-                TempData["Error"] = "Erreur session";
+                TempData["Error"] = "Erreur session, reconnectez-vous!";
                 return Redirect("/Product/Index");
             }
         }
@@ -115,7 +112,7 @@ namespace ClickAndCollect.Controllers
             }
             catch (Exception)
             {
-                TempData["Error"] = "Erreur session";
+                TempData["Error"] = "Erreur session, reconnectez-vous!";
                 return Redirect("/Product/Index");
             }
         }

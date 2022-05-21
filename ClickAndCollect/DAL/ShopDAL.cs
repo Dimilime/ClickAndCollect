@@ -19,16 +19,16 @@ namespace ClickAndCollect.DAL
         }
 
        
-        public Shop GetInfoShop(Shop shop)
+        public Shop GetInfoShop(int id)
         {
-
+            Shop shop = new Shop();
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     SqlCommand cmd = new SqlCommand("SELECT * FROM Shop WHERE ShopId = @ShopId", connection);
 
-                    cmd.Parameters.AddWithValue("ShopId", shop.ShopId);
+                    cmd.Parameters.AddWithValue("ShopId",id);
 
                     connection.Open();
 
@@ -39,10 +39,9 @@ namespace ClickAndCollect.DAL
                             shop.ShopId = reader.GetInt32("ShopId");
                             shop.PostCode = reader.GetInt32("PostCode");
                         }
-                    }
-
-                    return shop;
+                    }     
                 }
+                return shop;
             }
             catch(Exception)
             {

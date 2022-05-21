@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ClickAndCollect.DAL.IDAL
+namespace ClickAndCollect.Interface
 {
-    public interface ICashierDAL
+    public interface IEmployees
     {
-        public Cashier GetCashier(int id);
+        public Shop Shop { get; set; }
     }
 }

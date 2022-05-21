@@ -40,7 +40,7 @@ namespace ClickAndCollect.Models
 
         [Display(Name ="Adresse email")]
         [Required(ErrorMessage ="L'adresse email est obligatoire !")]
-        [DataType(DataType.EmailAddress, ErrorMessage ="L'adresse email est invalide !")]
+        [EmailAddress (ErrorMessage ="L'adresse email est invalide !")]
         public string Email
         {
             get { return email; }

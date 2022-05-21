@@ -1,0 +1,33 @@
+﻿@model List<Order>
+
+@if (Model != null)
+{
+    <h2>Listes des clients du jour</h2>
+    <table class="table">
+        <tr>
+            <th>Identifiant client</th>
+            <th>Identifiant commande</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+        </tr>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.Customer.Id</td>
+                <td>@order.OrderId</td>
+                <td>@order.Customer.LastName</td>
+                <td>@order.Customer.FirstName</td>
+                <td><a asp-action="ValidateReceipt" asp-route-id="@order.OrderId">Voir montant total</a></td>
+            </tr>
+        }
+    </table>
+    
+}
+else
+{
+    <h1>Erreur</h1>
+    <p>@ViewData["ErrorOrder"]</p>
+}
+
+
+

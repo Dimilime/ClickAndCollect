@@ -28,7 +28,7 @@ namespace ClickAndCollect.Models
         
         [Display(Name = "Numéro de téléphone")]
         [Required(ErrorMessage ="Le numéro de téléphone est obligatoire !")]
-        [DataType(DataType.PhoneNumber, ErrorMessage ="Le numéro de téléphone est invalide !")]
+        [Phone (ErrorMessage ="Le numéro de téléphone est invalide !")]
         public int PhoneNumber
         {
             get { return phoneNumber; }
@@ -38,6 +38,10 @@ namespace ClickAndCollect.Models
         public bool Register(ICustomerDAL customerDAL)
         {
             return customerDAL.Register(this);
+        }
+        public static Customer GetInfoCustomer(ICustomerDAL customerDAL, int id)
+        {
+            return customerDAL.GetInfoCustomer(id);
         }
 
         public bool CheckIfEmailCustomerExists(ICustomerDAL customerDAL)
