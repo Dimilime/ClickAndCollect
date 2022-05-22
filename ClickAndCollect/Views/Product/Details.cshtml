@@ -6,7 +6,7 @@
             <th>Nom</th>
             <th>Prix</th>
 
-            @if ((string)TempData["State"] == "connected")
+            @if ((string)TempData["State"] == "connected" && (string)TempData["Type"] == "Customer")
             {
                 <th>Quantité</th>
             }
