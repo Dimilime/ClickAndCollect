@@ -122,49 +122,67 @@ namespace ClickAndCollect.DAL
         public bool InsertOrderProductWithQuantity(int OrderId, int NumProduct, int Quantity)
         {
             int res = 0;
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand("INSERT INTO OrderProducts (OrderId, NumProduct, Quantity) VALUES ( @OrderId, @NumProduct, @Quantity)", connection);
-                cmd.Parameters.AddWithValue("OrderId", OrderId);
-                cmd.Parameters.AddWithValue("NumProduct", NumProduct);
-                cmd.Parameters.AddWithValue("Quantity", Quantity);
-                connection.Open();
-                res = cmd.ExecuteNonQuery();
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("INSERT INTO OrderProducts (OrderId, NumProduct, Quantity) VALUES ( @OrderId, @NumProduct, @Quantity)", connection);
+                    cmd.Parameters.AddWithValue("OrderId", OrderId);
+                    cmd.Parameters.AddWithValue("NumProduct", NumProduct);
+                    cmd.Parameters.AddWithValue("Quantity", Quantity);
+                    connection.Open();
+                    res = cmd.ExecuteNonQuery();
+                }
+                return res > 0;
             }
-            return res > 0;
+            catch (Exception)
+            {
+
+                return false;
+            }
+           
         }
         public Order GetOrder(int id)
         {
 
             Order order = new Order();
             order.OrderId = id;
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                string sql = "select o.OrderId, o.Receipt, o.NumberOfBoxUsed, o.NumberOfBoxReturned,o.Ready ,op.NumProduct, op.Quantity, p.Price,p.Name from [Order] o " +
-                "inner join OrderProducts op on op.OrderId=o.OrderId inner join Products p on p.NumProduct = op.NumProduct where o.OrderId=@Id";
-                SqlCommand cmd = new SqlCommand(sql, connection);
-
-                cmd.Parameters.AddWithValue("Id",id);
-                connection.Open();
-
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    while (reader.Read())
-                    {
-                        Product product = new Product();
-                        product.NumProduct = reader.GetInt32("NumProduct");
-                        product.Name = reader.GetString("Name");
-                        product.Price = (float)reader.GetDouble("Price");
-                        order.DictionaryProducts.Add(product,reader.GetInt32("Quantity"));
-                        order.Ready = reader.GetBoolean("Ready");
-                        order.Receipt = reader.GetBoolean("Receipt");
-                        order.NumberOfBoxUsed = reader.GetInt32("NumberOfBoxUsed");
-                        order.NumberOfBoxReturned = reader.GetInt32("NumberOfBoxReturned");
-                    }
-                }
+                    string sql = "select o.OrderId, o.Receipt, o.NumberOfBoxUsed, o.NumberOfBoxReturned,o.Ready ,op.NumProduct, op.Quantity, p.Price,p.Name from [Order] o " +
+                    "inner join OrderProducts op on op.OrderId=o.OrderId inner join Products p on p.NumProduct = op.NumProduct where o.OrderId=@Id";
+                    SqlCommand cmd = new SqlCommand(sql, connection);
 
+                    cmd.Parameters.AddWithValue("Id",id);
+                    connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Product product = new Product();
+                            product.NumProduct = reader.GetInt32("NumProduct");
+                            product.Name = reader.GetString("Name");
+                            product.Price = (float)reader.GetDouble("Price");
+                            order.DictionaryProducts.Add(product,reader.GetInt32("Quantity"));
+                            order.Ready = reader.GetBoolean("Ready");
+                            order.Receipt = reader.GetBoolean("Receipt");
+                            order.NumberOfBoxUsed = reader.GetInt32("NumberOfBoxUsed");
+                            order.NumberOfBoxReturned = reader.GetInt32("NumberOfBoxReturned");
+                        }
+                    }
+
+                }
+                return order;
             }
-            return order;
+            catch (Exception)
+            {
+
+                return null;
+            }
+            
 
         }
 

@@ -128,7 +128,6 @@ namespace ClickAndCollect.Controllers
             int idShop = (int)HttpContext.Session.GetInt32("IdShop");
             cashier.Shop = Shop.GetInfoShop(_shopDAL, idShop);
             cashier.Shop.Orders= Order.GetOrders(_orderDAL,cashier);
-            cashier.Shop.Customers = new List<Customer>();
             for (int i = 0; i < cashier.Shop.Orders.Count; i++)
             {
                 cashier.Shop.Orders[i].Customer = Customer.GetInfoCustomer(_customerDAL, cashier.Shop.Orders[i].Customer.Id);

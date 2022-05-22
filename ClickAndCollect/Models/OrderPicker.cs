@@ -14,30 +14,11 @@ namespace ClickAndCollect.Models
         {
 
         }
-        public OrderPicker(Shop shop)
-        {
-            Shop = shop;
-        }
 
-        
         public static OrderPicker GetOrderPicker(IOrderPickerDAL orderPickerDAL,int id)
         {
             return orderPickerDAL.GetOrderPicker(id);
         }
 
-        public void ViewOrderDetails()
-        {
-
-        }
-
-        public void ValidateOrder()
-        {
-
-        }
-
-        public void EnterBoxesUsed()
-        {
-
-        }
     }
 }
