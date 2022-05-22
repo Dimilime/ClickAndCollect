@@ -281,9 +281,6 @@ namespace ClickAndCollect.DAL
             return succes;
 
         }
-
-
-
     }
 }
 
