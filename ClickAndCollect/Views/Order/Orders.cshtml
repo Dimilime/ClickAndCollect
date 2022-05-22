@@ -1,0 +1,31 @@
+﻿@model List<Order>
+@if (Model != null)
+{
+    <h2>Listes des commandes de demain</h2>
+    <table class="table">
+        <tr>
+            <th>Identifiant commande</th>
+            <th>Date d'enlèvement</th>
+            <th>Créneau</th>
+            <th>Commande prête</th>
+        </tr>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.OrderId</td>
+                <td>@order.TimeSlot.Day.ToString("dd/MM/yyyy")</td>
+                <td>@order.TimeSlot.Start - @order.TimeSlot.End</td>
+                <td>@(order.Ready?"Oui":"Non")</td>
+                <td><a asp-controller="Order" asp-action="Details" asp-route-id="@order.OrderId">Details</a></td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <h1>Erreur</h1>
+    <p>@ViewData["ErrorOrder"]</p>
+}
+
+
+

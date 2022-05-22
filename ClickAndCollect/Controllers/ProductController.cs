@@ -85,7 +85,7 @@ namespace ClickAndCollect.Controllers
             }
             catch (Exception)
             {
-                TempData["Error"] = "Erreur session";
+                TempData["Error"] = "Erreur session, reconnectez vous!";
                 return Redirect("/Product/Index");
             }
 
@@ -126,7 +126,7 @@ namespace ClickAndCollect.Controllers
             }
             catch (Exception)
             {
-                TempData["Error"] = "Erreur session";
+                TempData["Error"] = "Erreur session, reconnectez vous!";
                 return Redirect("/Product/Index");
             }
         }
@@ -146,7 +146,7 @@ namespace ClickAndCollect.Controllers
             }
             catch (Exception)
             {
-                TempData["Error"] = "Erreur session";
+                TempData["Error"] = "Erreur session, reconnectez vous!";
                 return Redirect("/Product/Index");
             }
         }
@@ -181,7 +181,7 @@ namespace ClickAndCollect.Controllers
             }
             catch (Exception)
             {
-                TempData["Error"] = "Erreur session";
+                TempData["Error"] = "Erreur session, reconnectez vous!";
                 return Redirect("/Product/Index");
             }
         }

@@ -10,23 +10,24 @@ namespace ClickAndCollect.Models
     public class Customer : Person
     {
         private DateTime doB;
-        private int phoneNumber;
+        private int phoneNumber;   
+        public int OrderId { get; set; }
 
         public Customer() { }
 
         [Display(Name = "Date de naissance")]
         [DataType(DataType.Date)]
-        //[Range(typeof(DateTime), "1-1-1900", "31-12-2006", ErrorMessage ="La date est incorrect !")] custom !!!!
+        //[Range(typeof(DateTime), "01/01/1900", "31/12/2006", ErrorMessage ="La date est incorrect !")] Fonctionne pas
         [Required(ErrorMessage ="La date de naisse est obligatoire !")]
         public DateTime DoB
         {
             get { return doB; }
             set { doB = value; }
         }
-        
+
         [Display(Name = "Numéro de téléphone")]
-        [Required(ErrorMessage ="Le numéro de téléphone est obligatoire !")]
-        [DataType(DataType.PhoneNumber, ErrorMessage ="Le numéro de téléphone est invalide !")]
+        [Required(ErrorMessage = "Le numéro de téléphone est obligatoire !")]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Le numéro de téléphone est invalide !")]
         public int PhoneNumber
         {
             get { return phoneNumber; }
@@ -36,6 +37,10 @@ namespace ClickAndCollect.Models
         public bool Register(ICustomerDAL customerDAL)
         {
             return customerDAL.Register(this);
+        }
+        public static Customer GetInfoCustomer(ICustomerDAL customerDAL, int id)
+        {
+            return customerDAL.GetInfoCustomer(id);
         }
 
         public bool CheckIfEmailCustomerExists(ICustomerDAL customerDAL)

@@ -6,7 +6,7 @@
             <th>Nom</th>
             <th>Prix</th>
 
-            @if ((string)TempData["State"] == "connected")
+            @if ((string)TempData["State"] == "connected" && (string)TempData["Type"] == "Customer")
             {
                 <th>Quantité</th>
             }
@@ -19,7 +19,7 @@
                     <td>@p.Name</td>
                     <td>@p.Price</td>
 
-                    @if ((string)TempData["State"] == "connected")
+                    @if ((string)TempData["State"] == "connected" &&(string)TempData["Type"] == "Customer")
                     {
                         <form asp-controller="Product" asp-action="AddProduct" asp-route-NumProduct="@p.NumProduct" method="post">
                             <td><input asp-for="Nbr" /></td>

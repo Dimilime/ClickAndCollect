@@ -6,6 +6,8 @@
     <title>@ViewData["Title"] - ClickAndCollect</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link type="image/png" sizes="16x16" rel="icon" href="https://img.icons8.com/stickers/100/000000/online-shop.png">
+    
 </head>
 <body>
     <header>
@@ -18,19 +20,33 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @{ 
+                        @{
                             TempData.Keep("State");
+                            TempData.Keep("Type");
 
-                            if ((string)TempData["State"] == "connected"){
-                            <partial name="_Connected" />
+                            if ((string)TempData["State"] == "connected")
+                            {
+                                <partial name="_Connected" />
+                            }
+                            if ((string)TempData["State"] == "connected" && (string)TempData["Type"] == "Customer")
+                            {
+                                <partial name="_ConnectedAsCustomer" />
+                            }
+                            if ((string)TempData["State"] == "connected" && (string)TempData["Type"] == "OrderPicker")
+                            {
+                                <partial name="_ConnectedAsOrderPicker" />
+                            }
+                            if ((string)TempData["State"] == "connected" && (string)TempData["Type"] == "Cashier")
+                            {
+                                <partial name="_ConnectedAsCashier" />
                             }
 
                             if ((string)TempData["State"] == "Disconnect" || (string)TempData["State"] is null)
                             {
                                 <partial name="_Disconnected" />
-                                }
-
                             }
+
+                        }
 
                     </ul>
                 </div>
