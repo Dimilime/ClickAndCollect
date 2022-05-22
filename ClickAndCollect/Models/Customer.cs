@@ -24,10 +24,10 @@ namespace ClickAndCollect.Models
             get { return doB; }
             set { doB = value; }
         }
-        
+
         [Display(Name = "Numéro de téléphone")]
-        [Required(ErrorMessage ="Le numéro de téléphone est obligatoire !")]
-        [Phone (ErrorMessage ="Le numéro de téléphone est invalide !")]
+        [Required(ErrorMessage = "Le numéro de téléphone est obligatoire !")]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Le numéro de téléphone est invalide !")]
         public int PhoneNumber
         {
             get { return phoneNumber; }
