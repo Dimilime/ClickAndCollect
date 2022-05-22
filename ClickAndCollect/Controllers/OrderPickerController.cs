@@ -20,11 +20,20 @@ namespace ClickAndCollect.Controllers
         }
         public IActionResult Orders()
         {
-            int oPId = (int)HttpContext.Session.GetInt32("IdOp");// get orderpicker id
-            OrderPicker orderPicker = OrderPicker.GetOrderPicker(_orderPickerDAL, oPId);
-            int IdShop = orderPicker.Shop.ShopId;
-            HttpContext.Session.SetInt32("IdShop", IdShop); 
-            return RedirectToAction("Orders","Order",orderPicker);
+            try
+            {
+                int oPId = (int)HttpContext.Session.GetInt32("IdOp");// get orderpicker id
+                OrderPicker orderPicker = OrderPicker.GetOrderPicker(_orderPickerDAL, oPId);
+                int IdShop = orderPicker.Shop.ShopId;
+                HttpContext.Session.SetInt32("IdShop", IdShop); 
+                return RedirectToAction("Orders","Order",orderPicker);
+            }
+            catch (Exception)
+            {
+                TempData["ErrorSession"] = "Erreur reconnectez vous!";
+                return Redirect("/Person/Authenticate");
+            }
+            
             
         }
         

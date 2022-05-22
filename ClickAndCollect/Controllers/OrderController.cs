@@ -41,7 +41,7 @@ namespace ClickAndCollect.Controllers
             catch (Exception)
             {
                 TempData["ErrorIdShop"] = "Erreur reconnectez vous!";
-                return View("Views/Person/Authenticate.cshtml");
+                return Redirect("/Person/Authenticate");
             }
             
         }
@@ -137,7 +137,10 @@ namespace ClickAndCollect.Controllers
             {
                 ViewData["ErrorCustomer"] = "Erreur liste de client non trouvé!";
             }
-
+            if(cashier.Shop.Orders.Count == 0)
+            {
+                ViewData["EmptyList"] = "Plus de client pour aujourd'hui !";
+            }
             return View(cashier.Shop.Orders);
 
         }
@@ -147,6 +150,10 @@ namespace ClickAndCollect.Controllers
             if (order == null)
             {
                 ViewData["Error"] = "Commande introuvable!";
+            }
+            if ((string)TempData["ReceiptValid"] == "Commande repris!")
+            {
+                ViewData["Total"] = order.GetOrderAmount();
             }
             return View(order);
         }
@@ -160,20 +167,24 @@ namespace ClickAndCollect.Controllers
                 {
                     if (order.Receipt)
                     {
-                        TempData["OrderValid"] = "Commande repris!";
+                        TempData["ReceiptValid"] = "Commande repris!";
                     }
                     else
                     {
-                        TempData["OrderValid"] = "Attention! Veuillez indiquer la commande comme reprise";
+                        TempData["ReceiptValid"] = "Attention! Veuillez indiquer la commande comme reprise";
                     }
 
                 }
                 else
                 {
-                    TempData["OrderValid"] = "L'insertion s'est mal déroulé veuillez réessayer!";
+                    TempData["ReceiptValid"] = "L'insertion s'est mal déroulé veuillez réessayer!";
                 }
             }
-            return RedirectToAction(nameof(DailyCustomer));
+            if (order == null)
+            {
+                ViewData["Error"] = "Commande introuvable!";
+            }
+            return Redirect($"ValidateReceipt/{order.OrderId}");
 
         }
 

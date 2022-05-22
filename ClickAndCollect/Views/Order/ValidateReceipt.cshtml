@@ -1,9 +1,14 @@
 ﻿@model Order
-@if (TempData["ReceiptValid"] != null && TempData["Total"] !=null)
+@if (TempData["ReceiptValid"] != null)
 {
     <span>@TempData["ReceiptValid"]</span>
-    <span>Montant total : @TempData["Total"] €</span>
+    
 }
+@if(ViewData["Total"] != null)
+{
+    <span>Montant total : @String.Format("{0:0.00}", ViewData["Total"]) €</span>
+}
+
 @if (Model != null)
 {
     @if (!Model.Receipt)

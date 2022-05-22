@@ -21,13 +21,20 @@ namespace ClickAndCollect.Controllers
 
     public IActionResult DailyCustomer()
         {
-            int cId = (int)HttpContext.Session.GetInt32("IdC");// get cashier id
-            Cashier cashier = Cashier.GetCashier(_cashierDAL, cId);
-            int idShop = cashier.Shop.ShopId;
-            HttpContext.Session.SetInt32("IdShop", idShop);
-            cashier.Shop= Shop.GetInfoShop(_shopDAL, idShop); //get his shop  
-            return RedirectToAction("DailyCustomer", "Order", cashier);
-
+            try
+            {
+                int cId = (int)HttpContext.Session.GetInt32("IdC");// get cashier id
+                Cashier cashier = Cashier.GetCashier(_cashierDAL, cId);
+                int idShop = cashier.Shop.ShopId;
+                HttpContext.Session.SetInt32("IdShop", idShop);
+                cashier.Shop= Shop.GetInfoShop(_shopDAL, idShop); //get his shop  
+                return RedirectToAction("DailyCustomer", "Order", cashier);
+            }
+            catch (Exception)
+            {
+                TempData["ErrorSession"] = "Erreur reconnectez vous!";
+                return Redirect("/Person/Authenticate");
+            }
         }
     }
 }

@@ -172,9 +172,14 @@ namespace ClickAndCollect.DAL
         {
             List<Order> orders = new List<Order>();
             int nb = 0;
-            if(employee is OrderPicker) 
+            string sql2 = "";
+            if (employee is OrderPicker) 
             {
                 nb = 1;
+            }
+            else
+            {
+                sql2 = "and Receipt=0";
             }
             try
             {
@@ -182,7 +187,7 @@ namespace ClickAndCollect.DAL
                 {
 
                     string sql = "select o.OrderId, o.IdPerson, o.Ready, t.Days, t.Start, t.[End] from [Order] o inner join TimeSlot t on o.TimeSlotId = t.TimeSlotId " +
-                    $"where o.TimeSlotId in (select TimeSlotId from TimeSlot where ShopId = @shopId) and Days = Convert(varchar(10),GETDATE()+{nb},103)";
+                    $"where o.TimeSlotId in (select TimeSlotId from TimeSlot where ShopId = @shopId) and Days = Convert(varchar(10),GETDATE()+{nb},103) {sql2}";
                     SqlCommand cmd = new SqlCommand(sql, connection);
                     cmd.Parameters.AddWithValue("shopId", employee.Shop.ShopId);
                     connection.Open();

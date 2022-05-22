@@ -16,11 +16,11 @@ namespace ClickAndCollect.Models
         [Display(Name = "Prêt?")]
         public Boolean Ready { get; set; }
 
-        [Display(Name = "Entrer le nombre de caisse")]
+        [Display(Name = "Entrer le nombre de caisse utilisé")]
         [Required(ErrorMessage = "Le nombre de caisse obligatoire !")]
         [Min(0,ErrorMessage ="Le nombre de caisse doit être plus grand ou égal à 0")]
         public int NumberOfBoxUsed { get; set; }
-        [Display(Name = "Entrer le nombre de caisse")]
+        [Display(Name = "Entrer le nombre de caisse retourné")]
         [Required(ErrorMessage = "Le nombre de caisse obligatoire !")]
         [Min(0, ErrorMessage = "Le nombre de caisse doit être plus grand ou égal à 0")]
         public int NumberOfBoxReturned { get; set; }
