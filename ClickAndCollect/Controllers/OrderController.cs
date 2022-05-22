@@ -30,6 +30,8 @@ namespace ClickAndCollect.Controllers
                 bool result = orderDicoViewModels.Order.MakeOrder(_orderDAL, orderDicoViewModels2); 
                 if (result == true)
                 {
+                    HttpContext.Session.SetString("CurrentOrder", "False");
+
                     TempData["SuccessOrder"] = "Felicitation ta commande a été validé !";
                     return Redirect("/Product/Index");
                 }
@@ -47,11 +49,31 @@ namespace ClickAndCollect.Controllers
 
         public IActionResult History()
         {
+            try
+            {
+                int Id = (int)HttpContext.Session.GetInt32("Id");
+                Customer customer = new Customer();
+                customer.Id = Id;
+
+                List<OrderTimeSlotOrderProductViewModel> orders = Order.GetOrders(_orderDAL, customer);
+
+                return View(orders);
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Erreur session";
+                return Redirect("/Product/Index");
+            }
+        }
+
+        public IActionResult Details (int OrderId)
+        {
             int Id = (int)HttpContext.Session.GetInt32("Id");
             Customer customer = new Customer();
             customer.Id = Id;
-
-            List<OrderTimeSlotOrderProductViewModel> orders = Order.GetOrders(_orderDAL, customer);
+            Order order = new Order(customer);
+            order.OrderId = OrderId;
+            List<OrderTimeSlotOrderProductViewModel> orders = Order.GetOrderById(_orderDAL, customer, order);
 
             return View(orders);
         }
