@@ -20,11 +20,6 @@ namespace ClickAndCollect.Controllers
             _personDAL = personDAL;
         }
         
-        public IActionResult HomePage()
-        {
-            return View();
-            
-        }
 
         public IActionResult Authenticate()
         {
@@ -47,6 +42,8 @@ namespace ClickAndCollect.Controllers
                         HttpContext.Session.SetInt32("Id", person.Id);
                         HttpContext.Session.SetString("State", "connected");
                         HttpContext.Session.SetString("OrderExist", "false");
+                        HttpContext.Session.SetString("Type", "Customer");
+                        TempData["Type"] = HttpContext.Session.GetString("Type");
                         TempData["State"] = HttpContext.Session.GetString("State");
                         return Redirect("/Product/Index");
                     }
@@ -57,6 +54,8 @@ namespace ClickAndCollect.Controllers
                     {
                         HttpContext.Session.SetInt32("IdOp", person.Id);
                         HttpContext.Session.SetString("State", "connected");
+                        HttpContext.Session.SetString("Type", "OrderPicker");
+                        TempData["Type"] = HttpContext.Session.GetString("Type");
                         TempData["State"] = HttpContext.Session.GetString("State");
                         return Redirect("/OrderPicker/Orders");
                     }
@@ -67,6 +66,8 @@ namespace ClickAndCollect.Controllers
                     {
                         HttpContext.Session.SetInt32("IdC", person.Id);
                         HttpContext.Session.SetString("State", "connected");
+                        HttpContext.Session.SetString("Type", "Cashier");
+                        TempData["Type"] = HttpContext.Session.GetString("Type");
                         TempData["State"] = HttpContext.Session.GetString("State");
                         
                         return Redirect("/Cashier/DailyCustomer");

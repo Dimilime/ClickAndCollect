@@ -11,14 +11,13 @@ namespace ClickAndCollect.Models
     {
         private DateTime doB;
         private int phoneNumber;   
-        private List<Order> orders;
         public int OrderId { get; set; }
 
         public Customer() { }
 
         [Display(Name = "Date de naissance")]
         [DataType(DataType.Date)]
-        [Range(typeof(DateTime), "01/01/1900", "31/12/2006", ErrorMessage ="La date est incorrect !")]
+        //[Range(typeof(DateTime), "01/01/1900", "31/12/2006", ErrorMessage ="La date est incorrect !")] Fonctionne pas
         [Required(ErrorMessage ="La date de naisse est obligatoire !")]
         public DateTime DoB
         {

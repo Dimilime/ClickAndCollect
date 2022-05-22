@@ -21,7 +21,6 @@ namespace ClickAndCollect.Models
             
         }
 
-   
         public static List<Shop> GetShops(IShopDAL shopDAL)
         {
             return shopDAL.GetShops();

@@ -48,10 +48,6 @@ namespace ClickAndCollect.Models
             return orderDAL.GetOrders(customer);
         }
 
-        public static List<OrderTimeSlotOrderProductViewModel> GetOrderById(IOrderDAL orderDAL, Customer customer, Order order)
-        {
-            return orderDAL.GetOrderById(customer,order);
-        }
         public bool MakeOrder(IOrderDAL orderDAL, OrderDicoViewModels orderDicoViewModels2)
         {
             return orderDAL.MakeOrder(this, orderDicoViewModels2);
@@ -96,9 +92,6 @@ namespace ClickAndCollect.Models
         public bool ModifyReceipt(IOrderDAL orderDAL)
         {
             return orderDAL.OrderReceipt(this);
-        }
-
-        
-        
+        }  
     }
 }
