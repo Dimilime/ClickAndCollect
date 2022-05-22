@@ -2,6 +2,7 @@
 using ClickAndCollect.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,6 +20,12 @@ namespace ClickAndCollect.Controllers
             _personDAL = personDAL;
         }
         
+        public IActionResult HomePage()
+        {
+            return View();
+            
+        }
+
         public IActionResult Authenticate()
         {
             return View();
@@ -48,25 +55,27 @@ namespace ClickAndCollect.Controllers
                 {
                     if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
                     {
-                        HttpContext.Session.SetInt32("Id", person.Id);
+                        HttpContext.Session.SetInt32("IdOp", person.Id);
                         HttpContext.Session.SetString("State", "connected");
                         TempData["State"] = HttpContext.Session.GetString("State");
-                        return View("View/Person/SuccessOrderPicker");
+                        return Redirect("/OrderPicker/Orders");
                     }
                 }
                 if (person is Cashier)
                 {
                     if (string.IsNullOrEmpty(HttpContext.Session.GetString("Id")))
                     {
-                        HttpContext.Session.SetInt32("Id", person.Id);
+                        HttpContext.Session.SetInt32("IdC", person.Id);
                         HttpContext.Session.SetString("State", "connected");
                         TempData["State"] = HttpContext.Session.GetString("State");
-                        return View("View/Person/SuccessCashier");
+                        
+                        return Redirect("/Cashier/DailyCustomer");
                     }
                 }
 
             }
-            return Redirect("/Product/Index");
+            TempData["ErrorAuthenticate"] = "L'email ou le mot de passe est incorrecte!";
+            return View();
         }
 
         public IActionResult LogOut()

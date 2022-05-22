@@ -1,5 +1,10 @@
 ﻿@model Person
 
+@if (TempData["ErrorSession"] != null)
+{
+    <span>@TempData["ErrorSession"]</span>
+}
+
 <form asp-controller="Person" asp-action="Authenticate" method="post">
     <div class="form-group">
         <label asp-for="Email"></label>

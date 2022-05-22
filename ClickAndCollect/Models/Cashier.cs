@@ -1,19 +1,29 @@
-﻿using System;
+﻿using ClickAndCollect.DAL.IDAL;
+using ClickAndCollect.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ClickAndCollect.Models
 {
-    public class Cashier : Person
+    public class Cashier : Person , IEmployees
     {
 
-        private Shop shop;
+        public Shop Shop { get; set; }
 
         public Cashier()
         {
 
         }
+        public Cashier(Shop shop)
+        {
+            Shop = shop;
+        }
 
+        public static Cashier GetCashier (ICashierDAL cashierDAL, int id)
+        {
+            return cashierDAL.GetCashier(id);
+        }
     }
 }
