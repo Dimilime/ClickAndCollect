@@ -28,16 +28,16 @@ namespace ClickAndCollect.Controllers
                 var obj = HttpContext.Session.GetString("CurrentOrder");
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
-                Shop shop = orderDicoViewModels.Order.shop;
+                Shop shop = orderDicoViewModels.Order.Shop;
 
-                DateTime timeSlotJour = orderDicoViewModels.Order.timeSlot.Day;
+                DateTime timeSlotJour = orderDicoViewModels.Order.TimeSlot.Day;
 
                 TimeSlot timeSlot = TimeSlot.GetTimeSlot(_timeSlotDAL, ts);
                 timeSlot.Day = timeSlotJour;
 
-                orderDicoViewModels.Order.timeSlot = timeSlot;
+                orderDicoViewModels.Order.TimeSlot = timeSlot;
 
-                int nbr = orderDicoViewModels.Order.timeSlot.CheckIfAvalaible(_timeSlotDAL, shop);
+                int nbr = orderDicoViewModels.Order.TimeSlot.CheckIfAvalaible(_timeSlotDAL, shop);
 
                 if (nbr >= 10)
                 {
