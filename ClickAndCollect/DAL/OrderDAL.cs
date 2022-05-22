@@ -132,6 +132,52 @@ namespace ClickAndCollect.DAL
             }
             return res >0;
         }
+
+        public List<OrderTimeSlotOrderProductViewModel> GetOrderById(Customer customer, Order order)
+        {
+            List<OrderTimeSlotOrderProductViewModel> orderTimeSlotOrderProductViewModel = new List<OrderTimeSlotOrderProductViewModel>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("select t.Days, t.Start, t.[End], op.NumProduct, op.Quantity " +
+                        "from [Order] o full join TimeSlot t on o.TimeSlotId = t.TimeSlotId full join OrderProducts op on o.OrderId = op.OrderId " +
+                        "where o.OrderId = @OrderId", connection);
+
+                    cmd.Parameters.AddWithValue("OrderId", order.OrderId);
+
+                    connection.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Order order1 = new Order(customer);
+                            TimeSlot timeSlot = new TimeSlot();
+                            Dictionary<int, int> dictonary = new Dictionary<int, int>();
+                            OrderTimeSlotOrderProductViewModel orderTimeSlotOrderProductViewModel1 = new OrderTimeSlotOrderProductViewModel(order1, timeSlot, dictonary);
+
+
+                            orderTimeSlotOrderProductViewModel1.TimeSlot.Day = (DateTime)reader.GetValue("Days");
+                            orderTimeSlotOrderProductViewModel1.TimeSlot.Start = (TimeSpan)reader.GetValue("Start");
+                            orderTimeSlotOrderProductViewModel1.TimeSlot.End = (TimeSpan)reader.GetValue("End");
+
+                            orderTimeSlotOrderProductViewModel.Add(orderTimeSlotOrderProductViewModel1);
+
+                            //orderTimeSlotOrderProductViewModel.OrderProduct.Keys = reader.GetValue("NumProduct");
+                            //orderTimeSlotOrderProductViewModel.OrderProduct.Values = reader.GetValue("Quantity");
+                        }
+                    }
+                }
+
+                return orderTimeSlotOrderProductViewModel;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 
 }
