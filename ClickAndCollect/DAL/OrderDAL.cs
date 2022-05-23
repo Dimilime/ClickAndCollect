@@ -199,13 +199,13 @@ namespace ClickAndCollect.DAL
             {
                 sql2 = "and Receipt=0";
             }
-            try
-            {
+            //try
+            //{
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
 
                     string sql = "select o.OrderId, o.IdPerson, o.Ready, t.Days, t.Start, t.[End] from [Order] o inner join TimeSlot t on o.TimeSlotId = t.TimeSlotId " +
-                    $"where o.TimeSlotId in (select TimeSlotId from TimeSlot where ShopId = @shopId) and Days = Convert(varchar,GETDATE()+{nb},23) {sql2}";
+                    $"where o.TimeSlotId in (select TimeSlotId from TimeSlot where ShopId = @shopId) and Days = Convert(varchar(10),GETDATE()+{nb},23) {sql2}";
                     SqlCommand cmd = new SqlCommand(sql, connection);
                     cmd.Parameters.AddWithValue("shopId", employee.Shop.ShopId);
                     connection.Open();
@@ -231,12 +231,12 @@ namespace ClickAndCollect.DAL
                     }
                 }
                 return orders;
-            }
-            catch (Exception)
-            {
+            //}
+            //catch (Exception)
+            //{
 
-               return null;
-            }
+            //   return null;
+            //}
 
         }
 
