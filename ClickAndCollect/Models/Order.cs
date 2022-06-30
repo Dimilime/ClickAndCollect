@@ -47,6 +47,7 @@ namespace ClickAndCollect.Models
         {
             return orderDAL.GetOrders(customer);
         }
+
         public bool MakeOrder(IOrderDAL orderDAL, OrderDicoViewModels orderDicoViewModels2)
         {
             return orderDAL.MakeOrder(this, orderDicoViewModels2);
@@ -91,9 +92,6 @@ namespace ClickAndCollect.Models
         public bool ModifyReceipt(IOrderDAL orderDAL)
         {
             return orderDAL.OrderReceipt(this);
-        }
-
-        
-        
+        }  
     }
 }

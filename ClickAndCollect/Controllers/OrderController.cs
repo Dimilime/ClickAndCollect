@@ -89,6 +89,8 @@ namespace ClickAndCollect.Controllers
                 bool result = orderDicoViewModels.Order.MakeOrder(_orderDAL, orderDicoViewModels2);
                 if (result == true)
                 {
+                    HttpContext.Session.SetString("CurrentOrder", "False");
+
                     TempData["SuccessOrder"] = "Felicitation ta commande a été validé !";
                     return Redirect("/Product/Index");
                 }
@@ -122,7 +124,7 @@ namespace ClickAndCollect.Controllers
                 return Redirect("/Product/Index");
             }
         }
-
+        
         public IActionResult DailyCustomer(Cashier cashier)
         {
             int idShop = (int)HttpContext.Session.GetInt32("IdShop");
@@ -186,7 +188,5 @@ namespace ClickAndCollect.Controllers
             return Redirect($"ValidateReceipt/{order.OrderId}");
 
         }
-
-
     }
 }

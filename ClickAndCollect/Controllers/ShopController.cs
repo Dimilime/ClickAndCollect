@@ -50,9 +50,9 @@ namespace ClickAndCollect.Controllers
                 var obj = HttpContext.Session.GetString("CurrentOrder");
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
-                Shop shop =  Shop.GetInfoShop(_shopDAL,ShopId);
+                Shop shop = Shop.GetInfoShop(_shopDAL, ShopId);
 
-                orderDicoViewModels.Order.Shop = shop;    
+                orderDicoViewModels.Order.Shop = shop;
                 HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
 
                 return View();

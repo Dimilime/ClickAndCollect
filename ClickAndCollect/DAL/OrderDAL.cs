@@ -86,7 +86,7 @@ namespace ClickAndCollect.DAL
                     res2 = cmd2.ExecuteNonQuery();
 
                     //2eme insert 
-                    SqlCommand cmd3 = new SqlCommand("INSERT INTO [Order] (Ready, TimeSlotId, IdPerson) VALUES ('false', ident_current('TimeSlot'), @IdPerson)", connection);
+                    SqlCommand cmd3 = new SqlCommand("INSERT INTO [Order] (Ready, NumberOfBoxUsed,NumberOfBoxReturned, Receipt,TimeSlotId, IdPerson) VALUES ('false', 0,0,'false',ident_current('TimeSlot'), @IdPerson)", connection);
                     cmd3.Parameters.AddWithValue("IdPerson", order.Customer.Id);
                     res3 = cmd3.ExecuteNonQuery();
 
@@ -281,9 +281,6 @@ namespace ClickAndCollect.DAL
             return succes;
 
         }
-
-
-
     }
 }
 
