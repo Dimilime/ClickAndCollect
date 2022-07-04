@@ -199,8 +199,8 @@ namespace ClickAndCollect.DAL
             {
                 sql2 = "and Receipt=0";
             }
-            try
-            {
+            //try
+            //{
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
 
@@ -231,12 +231,12 @@ namespace ClickAndCollect.DAL
                     }
                 }
                 return orders;
-            }
-            catch (Exception)
-            {
+            //}
+            //catch (Exception)
+            //{
 
-               return null;
-            }
+            //   return null;
+            //}
 
         }
 
