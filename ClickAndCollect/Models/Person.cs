@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClickAndCollect.Models
 {
-    public class Person //abstract !
+    public class Person
     {
         public int Id { get; set; }
         private string lastName;

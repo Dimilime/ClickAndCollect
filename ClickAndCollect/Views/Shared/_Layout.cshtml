@@ -30,17 +30,17 @@
                             }
                             if ((string)TempData["State"] == "connected" && (string)TempData["Type"] == "Customer")
                             {
-                                <a class="navbar-brand" asp-controller="Product" asp-action="Index">Accueil</a>
+                                
                                 <partial name="_ConnectedAsCustomer" />
                             }
-                            if ((string)TempData["State"] == "connected" && (string)TempData["Type"] == "OrderPicker")
+                            @*if ((string)TempData["State"] == "connected" && (string)TempData["Type"] == "OrderPicker")
                             {
                                 <partial name="_ConnectedAsOrderPicker" />
                             }
                             if ((string)TempData["State"] == "connected" && (string)TempData["Type"] == "Cashier")
                             {
                                 <partial name="_ConnectedAsCashier" />
-                            }
+                            }*@
 
                             if ((string)TempData["State"] == "Disconnect" || (string)TempData["State"] is null)
                             {

@@ -34,6 +34,10 @@ namespace ClickAndCollect.Controllers
                 {
                     ViewData["ErrorOrder"] = "Erreur liste de commande non trouvé!";
                 }
+                else if(orderPicker.Shop.Orders.Count == 0)
+                {
+                    ViewData["EmptyOrder"] = "Pas de commande pour demain!";
+                }
                 return View(orderPicker.Shop.Orders);
             }
             catch (Exception)

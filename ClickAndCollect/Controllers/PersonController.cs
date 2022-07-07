@@ -23,6 +23,10 @@ namespace ClickAndCollect.Controllers
 
         public IActionResult Authenticate()
         {
+            if ((string)TempData["State"] == "connected" && (string)TempData["Type"] == "Customer")
+            {
+                return RedirectToAction("Index", "Product");
+            }
             return View();
         }
 
@@ -45,6 +49,7 @@ namespace ClickAndCollect.Controllers
                         HttpContext.Session.SetString("Type", "Customer");
                         TempData["Type"] = HttpContext.Session.GetString("Type");
                         TempData["State"] = HttpContext.Session.GetString("State");
+                       
                         return Redirect("/Product/Index");
                     }
                 }
@@ -83,7 +88,7 @@ namespace ClickAndCollect.Controllers
         {
             HttpContext.Session.Clear();
             TempData["State"] = "Disconnect";
-            return Redirect("/Product/Index");
+            return RedirectToAction("Authenticate");
         }
 
     }

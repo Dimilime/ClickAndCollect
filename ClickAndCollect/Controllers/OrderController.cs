@@ -69,7 +69,7 @@ namespace ClickAndCollect.Controllers
                 bool result = orderDicoViewModels.Order.MakeOrder(_orderDAL, orderDicoViewModels2);
                 if (result == true)
                 {
-                    HttpContext.Session.SetString("CurrentOrder", "False");
+                    HttpContext.Session.SetString("CurrentOrder", null);
 
                     TempData["SuccessOrder"] = "Felicitation ta commande a été validé !";
                     return Redirect("/Product/Index");
@@ -80,7 +80,7 @@ namespace ClickAndCollect.Controllers
             }
             catch (Exception)
             {
-                TempData["Error"] = "Erreur session";
+                TempData["Error"] = "Erreur session, reconnectez vous!";
                 return Redirect("/Product/Index");
             }
 
@@ -100,7 +100,7 @@ namespace ClickAndCollect.Controllers
             }
             catch (Exception)
             {
-                TempData["Error"] = "Erreur session";
+                TempData["Error"] = "Erreur session, reconnectez vous!";
                 return Redirect("/Product/Index");
             }
         }

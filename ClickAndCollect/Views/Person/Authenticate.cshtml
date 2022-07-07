@@ -1,8 +1,9 @@
 ﻿@model Person
 
-@if (TempData["ErrorSession"] != null)
+@if (TempData["ErrorSession"] != null || TempData["ErrorAuthenticate"]!= null)
 {
     <span>@TempData["ErrorSession"]</span>
+    <span>@TempData["ErrorAuthenticate"]</span>
 }
 
 <form asp-controller="Person" asp-action="Authenticate" method="post">

@@ -72,3 +72,63 @@ body {
 
 /*Form css------------------------*/
 
+div.detailTable {
+    width: 100%;
+    height:120px;
+    text-align: center;
+    border-collapse: collapse;
+}
+div.detailTable {
+    text-align: center;
+}
+
+
+.divTable.detailTable .divTableHeading {
+    background: #DDDDDD;
+}
+
+    .divTable.detailTable .divTableHeading .divTableHead {
+        font-weight: normal;
+    }
+
+.divTable {
+    display: table;
+}
+
+.divTableRow {
+    display: table-row;
+}
+
+.divTableHeading {
+    display: table-header-group;
+}
+
+.divTableCell, .divTableHead {
+    display: table-cell;
+}
+
+.divTableHeading {
+    display: table-header-group;
+}
+
+.divTableFoot {
+    display: table-footer-group;
+}
+
+.divTableBody {
+    display: table-row-group;
+}
+
+.divMsg {
+    -webkit-animation-name: hideit;
+    -webkit-animation-timing-function: ease-in;
+    -webkit-animation-delay: 2s;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes hideit {
+    100% {
+        opacity: 0;
+    }
+}

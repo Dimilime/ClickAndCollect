@@ -34,7 +34,11 @@
 else
 {
     <h1>Erreur</h1>
-    <p>@ViewData["ErrorOrder"]</p>
+    <div class="alert-danger">
+        @ViewData["ErrorCustomer"]
+        @ViewData["OrderNotFound"]
+    </div>
+    
 }
 
 

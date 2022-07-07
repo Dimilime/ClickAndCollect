@@ -37,17 +37,16 @@ namespace ClickAndCollect.Controllers
 
         public IActionResult AddProduct(int NumProduct, int Nbr)
         {
-            if (Nbr <= 0)
-            {
-                TempData["Minimum"] = "Vous devez ajouter minimum 1 article !";
-                return Redirect("Index");
-            }
             try
             {
-                if (HttpContext.Session.GetString("OrderExist") == "false")
+                if (Nbr <= 0)
+                {
+                    TempData["Minimum"] = "Vous devez ajouter minimum 1 article !";
+                    return Redirect("Details");
+                }
+                else if (HttpContext.Session.GetString("OrderExist") == "false" || HttpContext.Session.GetString("OrderExist") == null)
                 {
                     HttpContext.Session.SetString("OrderExist", "True");
-
                     int id = (int)HttpContext.Session.GetInt32("Id");
                     Customer customer = new Customer();
                     customer.Id = id;
@@ -81,12 +80,12 @@ namespace ClickAndCollect.Controllers
 
                 }
                 TempData["Add"] = "L'ajout a été réalisé avec succès !";
-                return Redirect("Index");
+                return Redirect("Details");
             }
             catch (Exception)
             {
                 TempData["Error"] = "Erreur session, reconnectez vous!";
-                return Redirect("/Product/Index");
+                return Redirect("Index");
             }
 
         }

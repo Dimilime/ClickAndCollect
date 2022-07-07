@@ -33,15 +33,19 @@ namespace ClickAndCollect.Controllers
                 int idShop = cashier.Shop.ShopId;
                 cashier.Shop = Shop.GetInfoShop(_shopDAL, idShop);
                 cashier.Shop.Orders = Order.GetOrders(_orderDAL, cashier);
-                for (int i = 0; i < cashier.Shop.Orders.Count; i++)
+                
+                if (cashier.Shop.Orders != null)
                 {
-                    cashier.Shop.Orders[i].Customer = Customer.GetInfoCustomer(_customerDAL, cashier.Shop.Orders[i].Customer.Id);
+                    for (int i = 0; i < cashier.Shop.Orders.Count; i++)
+                    {
+                        cashier.Shop.Orders[i].Customer = Customer.GetInfoCustomer(_customerDAL, cashier.Shop.Orders[i].Customer.Id);
+                    }
                 }
-                if (cashier.Shop.Orders == null)
+                else
                 {
                     ViewData["ErrorCustomer"] = "Erreur liste de client non trouvé!";
                 }
-                if (cashier.Shop.Orders.Count == 0)
+                if (cashier.Shop.Orders != null && cashier.Shop.Orders.Count == 0 )
                 {
                     ViewData["EmptyList"] = "Plus de client pour aujourd'hui !";
                 }
@@ -71,31 +75,32 @@ namespace ClickAndCollect.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DailyCustomer(Order order)
         {
-            if (ModelState.IsValid)
+            if(order != null)
             {
-                if (order.ModifyReceipt(_orderDAL))
+                if (ModelState.IsValid)
                 {
-                    if (order.Receipt)
+                    if (order.ModifyReceipt(_orderDAL))
                     {
-                        TempData["ReceiptValid"] = "Commande repris!";
+                        if (order.Receipt)
+                        {
+                            TempData["ReceiptValid"] = "Commande repris!";
+                        }
+                        else
+                        {
+                            TempData["ReceiptValid"] = "Attention! Veuillez indiquer la commande comme reprise";
+                        }
+
                     }
                     else
                     {
-                        TempData["ReceiptValid"] = "Attention! Veuillez indiquer la commande comme reprise";
+                        TempData["ReceiptValid"] = "L'insertion s'est mal déroulé veuillez réessayer!";
                     }
-
                 }
-                else
-                {
-                    TempData["ReceiptValid"] = "L'insertion s'est mal déroulé veuillez réessayer!";
-                }
+                return Redirect($"ValidateReceipt/{order.OrderId}");
             }
-            if (order == null)
-            {
-                ViewData["Error"] = "Commande introuvable!";
-            }
-            return Redirect($"ValidateReceipt/{order.OrderId}");
-
+            ViewData["OrderNotFound"] = "Commande non trouvé!";
+            return View();
+            
         }
 
     }

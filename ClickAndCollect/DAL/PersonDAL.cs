@@ -52,7 +52,7 @@ namespace ClickAndCollect.DAL
 
         public Person GetAllFromUser(Person p)
         {
-            try 
+            try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
@@ -85,42 +85,44 @@ namespace ClickAndCollect.DAL
                                 c.FirstName = p.FirstName;
                                 c.Email = p.Email;
                                 c.Password = p.Password;
+                                
                                 c.DoB = reader.GetDateTime("DoB");
                                 c.PhoneNumber = reader.GetInt32("PhoneNumber");
-                                return c;
+                                
+                                return c ;
                             }
 
                             if (type == "OrderPicker")
                             {
                                 OrderPicker o = new OrderPicker();
-                                o.Id = reader.GetInt32("IdPerson");
-                                o.LastName = reader.GetString("LastName");
-                                o.FirstName = reader.GetString("FirstName");
-                                o.Email = reader.GetString("Email");
-                                o.Password = reader.GetString("Password");
+                                o.Id = p.Id;
+                                o.LastName = p.LastName;
+                                o.FirstName = p.FirstName;
+                                o.Email = p.Email;
+                                o.Password = p.Password;
                                 return o;
                             }
 
                             if (type == "Cashier")
                             {
                                 Cashier c = new Cashier();
-                                c.Id = reader.GetInt32("IdPerson");
-                                c.LastName = reader.GetString("LastName");
-                                c.FirstName = reader.GetString("FirstName");
-                                c.Email = reader.GetString("Email");
-                                c.Password = reader.GetString("Password");
+                                c.Id = p.Id;
+                                c.LastName = p.LastName;
+                                c.FirstName = p.FirstName;
+                                c.Email = p.Email;
+                                c.Password = p.Password;
                                 return c;
                             }
                         }
                     }
                     return null;
                 }
-            }
+        }
             catch(Exception)
             {
                 return null;
             }
-           
-        }
+
+}
     }
 }

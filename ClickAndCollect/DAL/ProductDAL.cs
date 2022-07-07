@@ -37,7 +37,7 @@ namespace ClickAndCollect.DAL
                             Product produit = new Product();
                             produit.Name = null;
                             produit.Price = 0;
-                            produit.Category = reader.GetString("Category");
+                            produit.Category = (Category)Enum.Parse(typeof(Category),reader.GetString("Category"));
                             categorys.Add(produit);
                         }
                     }
@@ -63,7 +63,7 @@ namespace ClickAndCollect.DAL
                 {
                     SqlCommand cmd = new SqlCommand("SELECT * FROM Products WHERE Category = @Category", connection);
 
-                    cmd.Parameters.AddWithValue("Category", product.Category);
+                    cmd.Parameters.AddWithValue("Category", product.Category.ToString());
 
                     connection.Open();
 
@@ -75,7 +75,7 @@ namespace ClickAndCollect.DAL
                             produit.NumProduct = reader.GetInt32("NumProduct");
                             produit.Name = reader.GetString("Name");
                             produit.Price = (float)reader.GetDouble("Price");
-                            produit.Category = reader.GetString("Category");
+                            produit.Category = (Category)Enum.Parse(typeof(Category), reader.GetString("Category"));
                             produits.Add(produit);
                         }
                     }
@@ -108,7 +108,7 @@ namespace ClickAndCollect.DAL
                             product.NumProduct = reader.GetInt32("NumProduct");
                             product.Name = reader.GetString("Name");
                             product.Price = (float)reader.GetDouble("Price");
-                            product.Category = reader.GetString("Category");
+                            product.Category = (Category)Enum.Parse(typeof(Category), reader.GetString("Category"));
                         }
                     }
 
