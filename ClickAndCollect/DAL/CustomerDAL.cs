@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace ClickAndCollect.DAL
 {
@@ -82,5 +83,40 @@ namespace ClickAndCollect.DAL
             }
 
         }
+
+        public Customer GetInfoCustomer(int id)
+        {
+            Customer customer = new Customer();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string sql = "select p.LastName, p.FirstName, c.PhoneNumber from customer c inner join Person p on p.IdPerson= c.Idperson where c.IdPerson=@Id";
+                    SqlCommand cmd = new SqlCommand(sql, connection);
+                    cmd.Parameters.AddWithValue("Id", id);
+
+                    connection.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            customer.Id = id;
+                            customer.LastName = reader.GetString("LastName");
+                            customer.FirstName = reader.GetString("FirstName");
+                            customer.PhoneNumber = reader.GetInt32("PhoneNumber");
+                        }
+                    }
+                    
+                }
+                return customer;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+        }
+
     }
 }

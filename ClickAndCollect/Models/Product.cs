@@ -6,13 +6,25 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace ClickAndCollect.Models
 {
+    public enum Category
+    {
+        [Display(Name = "Boissons")]
+        Drinks,
+        [Display(Name = "Fruits et légumes")]
+        FruitsAndVegetables,
+        [Display(Name = "Aliments surgelés")]
+        FrozenFoods,
+        [Display(Name = "Produits laitier")]
+        MilkProducts
+    }
     public class Product
     {
         public int NumProduct { get; set; }
         public string Name { get; set; }
-        public string Category { get; set; }
+        public Category Category { get; set; }
         public float Price { get; set; }
 
         public Product()
@@ -25,7 +37,7 @@ namespace ClickAndCollect.Models
             return productDAL.GetProducts(produit);
         }
         
-        public static List<Product> GetCategories(IProductDAL productDAL)
+        public static List<string> GetCategories(IProductDAL productDAL)
         {
             return productDAL.GetCategories();
         }

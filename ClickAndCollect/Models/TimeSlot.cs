@@ -13,7 +13,7 @@ namespace ClickAndCollect.Models
         private TimeSpan start;
         private TimeSpan end;
         private DateTime day;
-        public Shop shop { get; set; }
+        public Shop Shop { get; set; }
 
         public TimeSlot()
         {
@@ -48,7 +48,7 @@ namespace ClickAndCollect.Models
 
         public int CheckIfAvalaible(ITimeSlotDAL timeSlotDAL, Shop shop)
         {
-            this.shop = shop;
+            Shop = shop;
             return timeSlotDAL.CheckIfAvalaible(this, shop);
         }
     }

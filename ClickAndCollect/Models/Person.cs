@@ -7,18 +7,13 @@ using System.Threading.Tasks;
 
 namespace ClickAndCollect.Models
 {
-    public class Person //abstract !
+    public class Person
     {
         public int Id { get; set; }
         private string lastName;
         private string firstName;
         private string email;
         private string password;
-        
-        public Person()
-        {
-
-        }
 
         [Display(Name = "Nom de famille")]
         [Required(ErrorMessage = "Le nom de famille est obligatoire !")]
@@ -40,7 +35,7 @@ namespace ClickAndCollect.Models
 
         [Display(Name ="Adresse email")]
         [Required(ErrorMessage ="L'adresse email est obligatoire !")]
-        [DataType(DataType.EmailAddress, ErrorMessage ="L'adresse email est invalide !")]
+        [EmailAddress (ErrorMessage ="L'adresse email est invalide !")]
         public string Email
         {
             get { return email; }

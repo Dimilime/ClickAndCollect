@@ -6,12 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace ClickAndCollect.Controllers
 {
     public class CustomerController : Controller
     {
         private readonly ICustomerDAL _customerDAL;
+        
 
         public CustomerController(ICustomerDAL customerDAL)
         {

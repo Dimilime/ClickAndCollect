@@ -21,8 +21,13 @@ namespace ClickAndCollect.Controllers
         }
         public IActionResult Index()
         {
-            List<Product> categories = Product.GetCategories(_productDAL); 
-            return View(categories);
+            List<string> categories = Product.GetCategories(_productDAL);
+            List<Category> cats = new List<Category>();
+            for (int i = 0; i < categories.Count; i++)
+            {
+                cats.Add((Category)Enum.Parse(typeof(Category), categories[i]));
+            }
+            return View(cats);
         }
 
         public IActionResult Details(Product produit)
@@ -37,17 +42,16 @@ namespace ClickAndCollect.Controllers
 
         public IActionResult AddProduct(int NumProduct, int Nbr)
         {
-            if (Nbr <= 0)
-            {
-                TempData["Minimum"] = "Vous devez ajouter minimum 1 article !";
-                return Redirect("Index");
-            }
             try
             {
-                if (HttpContext.Session.GetString("OrderExist") == "false")
+                if (Nbr <= 0)
+                {
+                    TempData["Minimum"] = "Vous devez ajouter minimum 1 article !";
+                    return Redirect("Details");
+                }
+                else if (HttpContext.Session.GetString("OrderExist") == "false" || HttpContext.Session.GetString("OrderExist") == null)
                 {
                     HttpContext.Session.SetString("OrderExist", "True");
-
                     int id = (int)HttpContext.Session.GetInt32("Id");
                     Customer customer = new Customer();
                     customer.Id = id;
@@ -81,12 +85,12 @@ namespace ClickAndCollect.Controllers
 
                 }
                 TempData["Add"] = "L'ajout a été réalisé avec succès !";
-                return Redirect("Index");
+                return Redirect("Details");
             }
             catch (Exception)
             {
-                TempData["Error"] = "Erreur session";
-                return Redirect("/Product/Index");
+                TempData["Error"] = "Erreur session, reconnectez vous!";
+                return Redirect("Index");
             }
 
         }
@@ -99,8 +103,8 @@ namespace ClickAndCollect.Controllers
 
                 if (obj is null)
                 {
-                    TempData["BasketEmpty"] = "Votre panier est vide :(";
-                    return View("BasketEmpty");
+                    ViewData["BasketEmpty"] = "Votre panier est vide :(";
+                    return View();
                 }
 
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
@@ -120,13 +124,13 @@ namespace ClickAndCollect.Controllers
 
                 double SoldePanier = orderDicoViewModels.Order.GetOrderAmount();
 
-                TempData["OrderAmount"] = SoldePanier;
+                ViewData["OrderAmount"] = SoldePanier;
 
                 return View(orderDicoViewModels);
             }
             catch (Exception)
             {
-                TempData["Error"] = "Erreur session";
+                TempData["Error"] = "Erreur session, reconnectez vous!";
                 return Redirect("/Product/Index");
             }
         }
@@ -146,7 +150,7 @@ namespace ClickAndCollect.Controllers
             }
             catch (Exception)
             {
-                TempData["Error"] = "Erreur session";
+                TempData["Error"] = "Erreur session, reconnectez vous!";
                 return Redirect("/Product/Index");
             }
         }
@@ -174,14 +178,14 @@ namespace ClickAndCollect.Controllers
 
                 double SoldePanier = orderDicoViewModels.Order.GetOrderAmount();
 
-                TempData["OrderAmount"] = SoldePanier;
+                ViewData["OrderAmount"] = SoldePanier;
 
 
                 return View(orderDicoViewModels);
             }
             catch (Exception)
             {
-                TempData["Error"] = "Erreur session";
+                TempData["Error"] = "Erreur session, reconnectez vous!";
                 return Redirect("/Product/Index");
             }
         }

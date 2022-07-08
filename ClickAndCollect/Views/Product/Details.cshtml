@@ -1,35 +1,44 @@
 ﻿@model ClickAndCollect.ViewModels.ProductNbrViewModels
-
-<div class="text-center">
-    <table class="table">
-        <tr>
-            <th>Nom</th>
-            <th>Prix</th>
-
-            @if ((string)TempData["State"] == "connected")
-            {
-                <th>Quantité</th>
-            }
-            </tr>
-        @{
-
+<div class="alert-success divMsg">
+    @TempData["Add"]
+</div>
+<div class="alert-danger divMsg">
+    @TempData["Minimum"]
+    @TempData["Error"]
+</div>
+<div class="divTable detailTable">
+    <div class="divTableHeading">
+        <div class="divTableRow">
+            <div class="divTableHead">Nom</div>
+            <div class="divTableHead">Prix</div>
+            <div class="divTableHead">Quantité</div>
+            
+        </div>
+    </div>
+    <div class="divTableBody">
+        @if (Model != null)
+        {
             foreach (Product p in Model.Product)
             {
-                <tr>
-                    <td>@p.Name</td>
-                    <td>@p.Price</td>
-
-                    @if ((string)TempData["State"] == "connected")
-                    {
-                        <form asp-controller="Product" asp-action="AddProduct" asp-route-NumProduct="@p.NumProduct" method="post">
-                            <td><input asp-for="Nbr" /></td>
-                            <td><input type="submit" /></td>
+                <div class="divTableRow">
+                    <div class="divTableCell">@p.Name</div>
+                    <div class="divTableCell">@p.Price €</div>
+                    <div class="divTableCell">
+                        <form asp-controller="Product" asp-action="AddProduct" method="post">
+                            <input asp-for="Nbr" min="0" />
+                            <input type="submit" />
+                            <input type="hidden" name="NumProduct" value="@p.NumProduct" />
                         </form>
-                    }
-                </tr>
+                    </div>
+
+                </div>
             }
+
         }
 
-    </table>
-
+    </div>
 </div>
+
+    
+
+

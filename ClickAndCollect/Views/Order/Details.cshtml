@@ -1,0 +1,46 @@
+﻿@model Order
+    
+    @if (TempData["OrderValid"] != null)
+    {
+        <span>@TempData["OrderValid"]</span>
+    }
+    @if (Model != null)
+    {
+        <h3>Détails de la commande n°: @Model.OrderId</h3>
+        <table class="table">
+            <tr>
+                <th>Numero du produit</th>
+                <th>Nom du Produit </th>
+                <th>Quantité</th>
+            </tr>
+            @foreach (var produit in Model.DictionaryProducts)
+            {
+                <tr>
+                    <td>@produit.Key.NumProduct</td>
+                    <td>@produit.Key.Name</td>
+                    <td>@produit.Value</td>
+                </tr>
+            }
+       
+        </table>
+        @if (!Model.Ready)
+        {
+            <form asp-action="OrderReady" method="post">
+                <input type="hidden" asp-for="OrderId" value="@Model.OrderId" />
+                <label asp-for="NumberOfBoxUsed"></label>
+                <input asp-for="NumberOfBoxUsed" min="0"/>
+                <span asp-validation-for="NumberOfBoxUsed"></span>
+                <label asp-for="Ready"></label>
+                <input asp-for="Ready" />
+                <span asp-validation-for="Ready"></span>
+                <input type="submit" />
+            </form>
+        } 
+        
+    }
+    else
+    {
+        <h1>Erreur</h1>
+        <p>@ViewData["Error"]</p>
+    }
+<a asp-controller="OrderPicker" asp-action="Orders">Retour</a>
