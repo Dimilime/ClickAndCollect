@@ -104,7 +104,7 @@ namespace ClickAndCollect.Controllers
 
                 Shop shop = orderDicoViewModels.Order.Shop;
 
-                List<TimeSlot> timeSlots = Shop.GetTimeSlots(_shopDAL, shop);
+                List<TimeSlot> timeSlots = shop.GetTimeSlots(_shopDAL);
 
                 HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
 

@@ -21,8 +21,13 @@ namespace ClickAndCollect.Controllers
         }
         public IActionResult Index()
         {
-            List<Product> categories = Product.GetCategories(_productDAL); 
-            return View(categories);
+            List<string> categories = Product.GetCategories(_productDAL);
+            List<Category> cats = new List<Category>();
+            for (int i = 0; i < categories.Count; i++)
+            {
+                cats.Add((Category)Enum.Parse(typeof(Category), categories[i]));
+            }
+            return View(cats);
         }
 
         public IActionResult Details(Product produit)
@@ -98,8 +103,8 @@ namespace ClickAndCollect.Controllers
 
                 if (obj is null)
                 {
-                    TempData["BasketEmpty"] = "Votre panier est vide :(";
-                    return View("BasketEmpty");
+                    ViewData["BasketEmpty"] = "Votre panier est vide :(";
+                    return View();
                 }
 
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
@@ -119,7 +124,7 @@ namespace ClickAndCollect.Controllers
 
                 double SoldePanier = orderDicoViewModels.Order.GetOrderAmount();
 
-                TempData["OrderAmount"] = SoldePanier;
+                ViewData["OrderAmount"] = SoldePanier;
 
                 return View(orderDicoViewModels);
             }
@@ -173,7 +178,7 @@ namespace ClickAndCollect.Controllers
 
                 double SoldePanier = orderDicoViewModels.Order.GetOrderAmount();
 
-                TempData["OrderAmount"] = SoldePanier;
+                ViewData["OrderAmount"] = SoldePanier;
 
 
                 return View(orderDicoViewModels);

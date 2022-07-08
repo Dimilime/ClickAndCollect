@@ -28,7 +28,7 @@
             <form asp-action="OrderReady" method="post">
                 <input type="hidden" asp-for="OrderId" value="@Model.OrderId" />
                 <label asp-for="NumberOfBoxUsed"></label>
-                <input asp-for="NumberOfBoxUsed" />
+                <input asp-for="NumberOfBoxUsed" min="0"/>
                 <span asp-validation-for="NumberOfBoxUsed"></span>
                 <label asp-for="Ready"></label>
                 <input asp-for="Ready" />

@@ -65,8 +65,7 @@ namespace ClickAndCollect.Controllers
             {
                 var obj = HttpContext.Session.GetString("CurrentOrder");
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
-                OrderDicoViewModels orderDicoViewModels2 = orderDicoViewModels;
-                bool result = orderDicoViewModels.Order.MakeOrder(_orderDAL, orderDicoViewModels2);
+                bool result = orderDicoViewModels.Order.MakeOrder(_orderDAL, orderDicoViewModels);
                 if (result == true)
                 {
                     HttpContext.Session.SetString("CurrentOrder", null);
@@ -86,24 +85,6 @@ namespace ClickAndCollect.Controllers
 
         }
 
-        public IActionResult History()
-        {
-            try
-            {
-                int Id = (int)HttpContext.Session.GetInt32("Id");
-                Customer customer = new Customer();
-                customer.Id = Id;
-
-                List<OrderTimeSlotOrderProductViewModel> orders = Order.GetOrders(_orderDAL, customer);
-
-                return View(orders);
-            }
-            catch (Exception)
-            {
-                TempData["Error"] = "Erreur session, reconnectez vous!";
-                return Redirect("/Product/Index");
-            }
-        }
         
         
         

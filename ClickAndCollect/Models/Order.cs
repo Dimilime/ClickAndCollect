@@ -39,18 +39,13 @@ namespace ClickAndCollect.Models
         }
         public Order(Customer customer)
         {
-            this.Customer = customer;
+            Customer = customer;
             DictionaryProducts = new Dictionary<Product, int>();
         }
-       
-        public static List<OrderTimeSlotOrderProductViewModel> GetOrders (IOrderDAL orderDAL, Customer customer)
-        {
-            return orderDAL.GetOrders(customer);
-        }
 
-        public bool MakeOrder(IOrderDAL orderDAL, OrderDicoViewModels orderDicoViewModels2)
+        public bool MakeOrder(IOrderDAL orderDAL, OrderDicoViewModels orderDicoViewModels)
         {
-            return orderDAL.MakeOrder(this, orderDicoViewModels2);
+            return orderDAL.MakeOrder(this, orderDicoViewModels);
         }
 
         public double GetOrderAmount()
@@ -58,7 +53,7 @@ namespace ClickAndCollect.Models
             return CalculAmount();
         }
 
-        private double CalculAmount()
+        public double CalculAmount()
         {
             double prix;
             double total = 0;
@@ -80,10 +75,7 @@ namespace ClickAndCollect.Models
         {
             return orderDAL.GetOrders(employee); 
         }
-        /*public static List<Customer> GetOrderCustomers(IOrderDAL orderDAL, Shop shop)
-        {
-            //return orderDAL.GetOrderCustomers(shop); 
-        }*/
+        
         public bool ModifyReady(IOrderDAL orderDAL)
         {
             return orderDAL.OrderReady(this);

@@ -22,11 +22,7 @@ namespace ClickAndCollect.Controllers
         
 
         public IActionResult Authenticate()
-        {
-            if ((string)TempData["State"] == "connected" && (string)TempData["Type"] == "Customer")
-            {
-                return RedirectToAction("Index", "Product");
-            }
+        {   
             return View();
         }
 

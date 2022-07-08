@@ -16,7 +16,7 @@
         <form asp-action="DailyCustomer" method="post">
             <input type="hidden" asp-for="OrderId" value="@Model.OrderId" />
             <label asp-for="NumberOfBoxReturned"></label>
-            <input asp-for="NumberOfBoxReturned" />
+            <input asp-for="NumberOfBoxReturned" min="0" />
             <span asp-validation-for="NumberOfBoxReturned"></span>
             <label asp-for="Receipt"></label>
             <input asp-for="Receipt" />

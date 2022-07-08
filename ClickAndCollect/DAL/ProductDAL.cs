@@ -18,9 +18,9 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
-        public List<Product> GetCategories()
+        public List<string> GetCategories()
         {
-            List<Product> categorys = new List<Product>();
+            List<string> categorys = new List<string>();
 
             try
             {
@@ -34,11 +34,8 @@ namespace ClickAndCollect.DAL
                     {
                         while (reader.Read())
                         {
-                            Product produit = new Product();
-                            produit.Name = null;
-                            produit.Price = 0;
-                            produit.Category = (Category)Enum.Parse(typeof(Category),reader.GetString("Category"));
-                            categorys.Add(produit);
+                            string cat = reader.GetString("Category");
+                            categorys.Add(cat);
                         }
                     }
                 }

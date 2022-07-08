@@ -14,11 +14,6 @@ namespace ClickAndCollect.Models
         private string firstName;
         private string email;
         private string password;
-        
-        public Person()
-        {
-
-        }
 
         [Display(Name = "Nom de famille")]
         [Required(ErrorMessage = "Le nom de famille est obligatoire !")]

@@ -1,34 +1,42 @@
 ﻿@model ClickAndCollect.ViewModels.OrderDicoViewModels
 
-<div class="alert-danger">
-    @TempData["BasketEmpty"]
-</div>
 <div class="text-center">
-    <table class="table">
-        <tr>
-            <th>Produit</th>
-            <th>Quantité</th>
-            <th>Prix</th>
-        </tr>
-        @{
-            foreach (var d in Model.Order.DictionaryProducts)
+    @if (Model != null)
+    {
+        <table class="table">
+            <tr>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Prix</th>
+            </tr>
+
+            @foreach (var d in Model.Order.DictionaryProducts)
             {
-                <tr>
-                    <td>@d.Key.Name</td>
-                    <td>@d.Value</td>
-                    <td>@d.Key.Price</td>
-                    <td><a asp-controller="Product" asp-action="Delete" asp-route-Key="@d.Key.NumProduct">Supprimer</a></td>
-                </tr>
+            <tr>
+                <td>@d.Key.Name</td>
+                <td>x @d.Value</td>
+                <td>@d.Key.Price €</td>
+                <td><a asp-controller="Product" asp-action="Delete" asp-route-Key="@d.Key.NumProduct">Supprimer</a></td>
+            </tr>
             }
-        }
 
-    </table>
 
-    <p>Total : @TempData["OrderAmount"] € </p><small>(@Order.ServiceFees € de frais de service)</small>
-    
+        </table>
+
+        <p>Total : @ViewData["OrderAmount"] € </p><small>(@Order.ServiceFees € de frais de service)</small>
+        
+        <div class="text-lg-right">
+        <a asp-controller="Shop" asp-action="SelectShop">Valider</a>
+        </div>
+
+    }
+    else
+    {
+        <div class="alert-danger">
+            @ViewData["BasketEmpty"]
+        </div>
+    }
+ 
 </div>
     
 
-<div class="text-lg-right">
-    <a asp-controller="Shop" asp-action="SelectShop">Valider</a>
-</div>

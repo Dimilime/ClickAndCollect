@@ -1,4 +1,4 @@
-﻿@model List<Product>
+﻿@model List<Category>
 
 <div class="alert-success divMsg">
     @TempData["AccountCreate"] 
@@ -16,12 +16,12 @@
             <th>Catégories</th>
         </tr>
         
-        @foreach (var product in Html.GetEnumSelectList<Category>())
+        @foreach (Category cat in Model)
         {
-
             <tr>
-                <td>@product.Text</td>
-                <td><a asp-controller="Product" asp-action="Details" asp-route-category="@product.Value">details</a></td>
+                <td>@cat.GetDisplayName()</td>
+                
+                <td><a asp-controller="Product" asp-action="Details" asp-route-category="@cat">details</a></td>
             </tr>
         }
     </table>

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace ClickAndCollect.Models
 {
     public enum Category
@@ -36,7 +37,7 @@ namespace ClickAndCollect.Models
             return productDAL.GetProducts(produit);
         }
         
-        public static List<Product> GetCategories(IProductDAL productDAL)
+        public static List<string> GetCategories(IProductDAL productDAL)
         {
             return productDAL.GetCategories();
         }

@@ -68,6 +68,7 @@ namespace ClickAndCollect.DAL
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
+                        
                         while (reader.Read())
                         {
                             p.Id = reader.GetInt32("IdPerson");
@@ -76,7 +77,7 @@ namespace ClickAndCollect.DAL
                             p.Email = reader.GetString("Email");
                             p.Password = reader.GetString("Password");
                             type = reader.GetString("Type");
-
+                            
                             if (type == "Customer")
                             {
                                 Customer c = new Customer();
@@ -85,7 +86,6 @@ namespace ClickAndCollect.DAL
                                 c.FirstName = p.FirstName;
                                 c.Email = p.Email;
                                 c.Password = p.Password;
-                                
                                 c.DoB = reader.GetDateTime("DoB");
                                 c.PhoneNumber = reader.GetInt32("PhoneNumber");
                                 
@@ -94,6 +94,7 @@ namespace ClickAndCollect.DAL
 
                             if (type == "OrderPicker")
                             {
+                                
                                 OrderPicker o = new OrderPicker();
                                 o.Id = p.Id;
                                 o.LastName = p.LastName;

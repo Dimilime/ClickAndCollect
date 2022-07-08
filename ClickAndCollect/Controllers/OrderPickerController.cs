@@ -21,6 +21,7 @@ namespace ClickAndCollect.Controllers
             _shopDAL = shopDAL;
             _orderDAL = orderDAL;
         }
+        
         public IActionResult Orders()
         {
             try
@@ -34,7 +35,7 @@ namespace ClickAndCollect.Controllers
                 {
                     ViewData["ErrorOrder"] = "Erreur liste de commande non trouvé!";
                 }
-                else if(orderPicker.Shop.Orders.Count == 0)
+                else if (orderPicker.Shop.Orders.Count == 0)
                 {
                     ViewData["EmptyOrder"] = "Pas de commande pour demain!";
                 }
@@ -42,7 +43,7 @@ namespace ClickAndCollect.Controllers
             }
             catch (Exception)
             {
-                TempData["ErrorIdShop"] = "Erreur reconnectez vous!";
+                TempData["ErrorSession"] = "Erreur reconnectez vous!";
                 return Redirect("/Person/Authenticate");
             }
 

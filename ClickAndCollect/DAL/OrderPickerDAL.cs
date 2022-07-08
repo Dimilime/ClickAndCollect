@@ -20,7 +20,7 @@ namespace ClickAndCollect.DAL
         
         public OrderPicker GetOrderPicker(int id)
         {
-            OrderPicker orderPicker = new OrderPicker();
+            OrderPicker orderPicker=null;
             Shop shop = new Shop();
             try
             {
@@ -35,14 +35,13 @@ namespace ClickAndCollect.DAL
                     {
                         while (reader.Read())
                         {
-
+                            shop.ShopId= reader.GetInt32("ShopId");
+                            orderPicker = new OrderPicker(shop);
                             orderPicker.Id = reader.GetInt32("IdPerson");
                             orderPicker.LastName = reader.GetString("LastName");
                             orderPicker.FirstName = reader.GetString("FirstName");
                             orderPicker.Email = reader.GetString("Email");
                             orderPicker.Password = reader.GetString("Password");
-                            shop.ShopId= reader.GetInt32("ShopId");
-                            orderPicker.Shop= shop;
                             
                         }
 
