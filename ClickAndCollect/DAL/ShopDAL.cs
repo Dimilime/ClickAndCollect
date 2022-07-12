@@ -137,7 +137,7 @@ namespace ClickAndCollect.DAL
             }
             else
             {
-                sql2 = "and Receipt=0";
+                sql2 = "and Receipt=0 and Ready=1";
             }
             try
             {
@@ -145,7 +145,7 @@ namespace ClickAndCollect.DAL
                 {
 
                     string sql = "select o.OrderId, o.IdPerson, o.Ready, t.Days, t.Start, t.[End] from [Order] o inner join TimeSlot t on o.TimeSlotId = t.TimeSlotId " +
-                    $"where o.TimeSlotId in (select TimeSlotId from TimeSlot where ShopId = @shopId) and Days = Convert(varchar(10),GETDATE()+{nb},23) {sql2}";
+                    $"where o.TimeSlotId in (select TimeSlotId from TimeSlot where ShopId = @shopId) and Days = Convert(varchar(10),GETDATE()+{nb},23) {sql2} order by Ready";
                     SqlCommand cmd = new SqlCommand(sql, connection);
                     cmd.Parameters.AddWithValue("shopId",shop.ShopId);
                     connection.Open();

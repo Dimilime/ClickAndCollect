@@ -15,10 +15,6 @@ namespace ClickAndCollect.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderDAL _orderDAL;
-       
-        
-
-
         public OrderController(IOrderDAL orderDAL)
         {
             _orderDAL = orderDAL;
