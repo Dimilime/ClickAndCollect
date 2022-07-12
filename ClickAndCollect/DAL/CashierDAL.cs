@@ -36,14 +36,16 @@ namespace ClickAndCollect.DAL
                         while (reader.Read())
                         {
                             shop.ShopId = reader.GetInt32("ShopId");
-                            cashier = new Cashier(shop);
-                            cashier.Id = reader.GetInt32("IdPerson");
-                            cashier.LastName = reader.GetString("LastName");
-                            cashier.FirstName = reader.GetString("FirstName");
-                            cashier.Email = reader.GetString("Email");
-                            cashier.Password = reader.GetString("Password");
-                            
-                            
+                            cashier = new Cashier(shop)
+                            {
+                                Id = reader.GetInt32("IdPerson"),
+                                LastName = reader.GetString("LastName"),
+                                FirstName = reader.GetString("FirstName"),
+                                Email = reader.GetString("Email"),
+                                Password = reader.GetString("Password")
+                            };
+
+
                         }
 
                     }

@@ -14,8 +14,6 @@ namespace ClickAndCollect.DAL.IDAL
         
         public bool InsertOrderProductWithQuantity(int OrderId, int NumProduct, int Quantity);
         public Order GetOrder(int id);
-        public List<Order> GetOrders(IEmployees employee);
-
         public bool OrderReady(Order order);
         public bool OrderReceipt(Order order);
     }

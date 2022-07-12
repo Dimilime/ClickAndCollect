@@ -18,15 +18,20 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
-        public TimeSlot GetTimeSlot(TimeSlot timeSlot)
+        public TimeSlot GetTimeSlot(int id)
         {
+            TimeSlot timeSlot = new TimeSlot()
+            {
+                IdCanva = id
+                
+            };
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     SqlCommand cmd = new SqlCommand("SELECT * FROM Canva WHERE IdCanva = @IdCanva", connection);
 
-                    cmd.Parameters.AddWithValue("IdCanva", timeSlot.IdCanva);
+                    cmd.Parameters.AddWithValue("IdCanva", id);
 
                     connection.Open();
 
@@ -34,7 +39,6 @@ namespace ClickAndCollect.DAL
                     {
                         while (reader.Read())
                         {
-                            timeSlot.IdCanva = reader.GetInt32("IdCanva");
                             timeSlot.Start = (TimeSpan)reader.GetValue("Start");
                             timeSlot.End = (TimeSpan)reader.GetValue("End");
                         }
@@ -54,7 +58,7 @@ namespace ClickAndCollect.DAL
         {
             int nbr = 0;
 
-            try 
+            try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
@@ -70,14 +74,14 @@ namespace ClickAndCollect.DAL
                     {
                         while (reader.Read())
                         {
-                            nbr = nbr + 1;
+                            nbr++;
                         }
                     }
 
                     return nbr;
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return 0;
             }

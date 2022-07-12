@@ -21,29 +21,16 @@ namespace ClickAndCollect.Controllers
         }
 
 
-        public IActionResult GetCanva(TimeSlot ts)//Gerer l'afficher des dispo
+        public IActionResult GetCanva(int idCanva)
         {
             try
             {
                 var obj = HttpContext.Session.GetString("CurrentOrder");
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
-
-                Shop shop = orderDicoViewModels.Order.Shop;
-
-                DateTime timeSlotJour = orderDicoViewModels.Order.TimeSlot.Day;
-
-                TimeSlot timeSlot = TimeSlot.GetTimeSlot(_timeSlotDAL, ts);
-                timeSlot.Day = timeSlotJour;
-
-                orderDicoViewModels.Order.TimeSlot = timeSlot;
-
-                int nbr = orderDicoViewModels.Order.TimeSlot.CheckIfAvalaible(_timeSlotDAL, shop);
-
-                if (nbr >= 10)
-                {
-                    TempData["ErrorNbr"] = "Plus de place disponible !!";
-                    return Redirect("/Shop/SelectCanva");
-                }
+                TimeSlot timeSlot = TimeSlot.GetTimeSlot(_timeSlotDAL, idCanva);
+                
+                orderDicoViewModels.Order.TimeSlot.Start = timeSlot.Start;
+                orderDicoViewModels.Order.TimeSlot.End = timeSlot.End;
 
                 HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
 

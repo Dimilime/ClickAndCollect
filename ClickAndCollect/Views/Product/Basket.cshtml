@@ -6,16 +6,16 @@
         <table class="table">
             <tr>
                 <th>Produit</th>
-                <th>Quantité</th>
                 <th>Prix</th>
+                <th>Quantité</th>
             </tr>
 
             @foreach (var d in Model.Order.DictionaryProducts)
             {
             <tr>
                 <td>@d.Key.Name</td>
-                <td>x @d.Value</td>
                 <td>@d.Key.Price €</td>
+                <td>x @d.Value</td>
                 <td><a asp-controller="Product" asp-action="Delete" asp-route-Key="@d.Key.NumProduct">Supprimer</a></td>
             </tr>
             }
@@ -26,7 +26,7 @@
         <p>Total : @ViewData["OrderAmount"] € </p><small>(@Order.ServiceFees € de frais de service)</small>
         
         <div class="text-lg-right">
-        <a asp-controller="Shop" asp-action="SelectShop">Valider</a>
+            <a asp-controller="Shop" asp-action="SelectShop">Valider</a>
         </div>
 
     }

@@ -30,9 +30,8 @@ namespace ClickAndCollect.Controllers
             {
                 int cId = (int)HttpContext.Session.GetInt32("IdC");// get cashier id
                 Cashier cashier = Cashier.GetCashier(_cashierDAL, cId);
-                int idShop = cashier.Shop.ShopId;
-                cashier.Shop = Shop.GetInfoShop(_shopDAL, idShop);
-                cashier.Shop.Orders = Order.GetOrders(_orderDAL, cashier);
+                cashier.GetInfoShop(_shopDAL);
+                cashier.GetOrders(_shopDAL);
                 
                 if (cashier.Shop.Orders != null)
                 {
@@ -60,7 +59,7 @@ namespace ClickAndCollect.Controllers
 
         public IActionResult ValidateReceipt(int id)
         {
-            Order order = Order.GetDetails(id, _orderDAL);
+            Order order = Order.GetDetails(_orderDAL, id);
             if (order == null)
             {
                 ViewData["Error"] = "Commande introuvable!";

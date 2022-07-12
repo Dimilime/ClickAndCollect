@@ -68,11 +68,13 @@ namespace ClickAndCollect.DAL
                     {
                         while (reader.Read())
                         {
-                            Product produit = new Product();
-                            produit.NumProduct = reader.GetInt32("NumProduct");
-                            produit.Name = reader.GetString("Name");
-                            produit.Price = (float)reader.GetDouble("Price");
-                            produit.Category = (Category)Enum.Parse(typeof(Category), reader.GetString("Category"));
+                            Product produit = new Product
+                            {
+                                NumProduct = reader.GetInt32("NumProduct"),
+                                Name = reader.GetString("Name"),
+                                Price = (float)reader.GetDouble("Price"),
+                                Category = (Category)Enum.Parse(typeof(Category), reader.GetString("Category"))
+                            };
                             produits.Add(produit);
                         }
                     }

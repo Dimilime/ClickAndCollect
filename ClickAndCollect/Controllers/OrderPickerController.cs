@@ -28,9 +28,8 @@ namespace ClickAndCollect.Controllers
             {
                 int oPId = (int)HttpContext.Session.GetInt32("IdOp");// get orderpicker id
                 OrderPicker orderPicker = OrderPicker.GetOrderPicker(_orderPickerDAL, oPId);
-                int idShop = orderPicker.Shop.ShopId;
-                orderPicker.Shop = Shop.GetInfoShop(_shopDAL, idShop);
-                orderPicker.Shop.Orders = Order.GetOrders(_orderDAL, orderPicker);
+                orderPicker.GetInfoShop(_shopDAL);
+                orderPicker.GetOrders(_shopDAL);
                 if (orderPicker.Shop.Orders == null)
                 {
                     ViewData["ErrorOrder"] = "Erreur liste de commande non trouvé!";

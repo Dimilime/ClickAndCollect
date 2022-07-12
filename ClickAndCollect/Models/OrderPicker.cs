@@ -25,5 +25,14 @@ namespace ClickAndCollect.Models
             return orderPickerDAL.GetOrderPicker(id);
         }
 
+        public void GetOrders(IShopDAL shopDAL)
+        {
+            Shop.GetOrders(shopDAL, this);
+        }
+
+        public void GetInfoShop(IShopDAL shopDAL)
+        {
+            Shop = Shop.GetInfoShop(shopDAL, Shop.ShopId);
+        }
     }
 }

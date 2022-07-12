@@ -80,38 +80,44 @@ namespace ClickAndCollect.DAL
                             
                             if (type == "Customer")
                             {
-                                Customer c = new Customer();
-                                c.Id = p.Id;
-                                c.LastName = p.LastName;
-                                c.FirstName = p.FirstName;
-                                c.Email = p.Email;
-                                c.Password = p.Password;
-                                c.DoB = reader.GetDateTime("DoB");
-                                c.PhoneNumber = reader.GetInt32("PhoneNumber");
-                                
+                                Customer c = new Customer
+                                {
+                                    Id = p.Id,
+                                    LastName = p.LastName,
+                                    FirstName = p.FirstName,
+                                    Email = p.Email,
+                                    Password = p.Password,
+                                    DoB = reader.GetDateTime("DoB"),
+                                    PhoneNumber = reader.GetInt32("PhoneNumber")
+                                };
+
                                 return c ;
                             }
 
                             if (type == "OrderPicker")
                             {
-                                
-                                OrderPicker o = new OrderPicker();
-                                o.Id = p.Id;
-                                o.LastName = p.LastName;
-                                o.FirstName = p.FirstName;
-                                o.Email = p.Email;
-                                o.Password = p.Password;
+
+                                OrderPicker o = new OrderPicker
+                                {
+                                    Id = p.Id,
+                                    LastName = p.LastName,
+                                    FirstName = p.FirstName,
+                                    Email = p.Email,
+                                    Password = p.Password
+                                };
                                 return o;
                             }
 
                             if (type == "Cashier")
                             {
-                                Cashier c = new Cashier();
-                                c.Id = p.Id;
-                                c.LastName = p.LastName;
-                                c.FirstName = p.FirstName;
-                                c.Email = p.Email;
-                                c.Password = p.Password;
+                                Cashier c = new Cashier
+                                {
+                                    Id = p.Id,
+                                    LastName = p.LastName,
+                                    FirstName = p.FirstName,
+                                    Email = p.Email,
+                                    Password = p.Password
+                                };
                                 return c;
                             }
                         }

@@ -27,7 +27,7 @@ namespace ClickAndCollect.Controllers
        
         public IActionResult Details(int id)
         {
-            Order order = Order.GetDetails(id, _orderDAL);
+            Order order = Order.GetDetails(_orderDAL, id );
             if (order == null)
             {
                 ViewData["Error"] = "Commande introuvable!";
@@ -63,12 +63,12 @@ namespace ClickAndCollect.Controllers
         {
             try
             {
-                var obj = HttpContext.Session.GetString("CurrentOrder");
+                string obj = HttpContext.Session.GetString("CurrentOrder");
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
                 bool result = orderDicoViewModels.Order.MakeOrder(_orderDAL, orderDicoViewModels);
                 if (result == true)
                 {
-                    HttpContext.Session.SetString("CurrentOrder", null);
+                    HttpContext.Session.Remove("CurrentOrder");
 
                     TempData["SuccessOrder"] = "Felicitation ta commande a été validé !";
                     return Redirect("/Product/Index");

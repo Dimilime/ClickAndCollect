@@ -1,9 +1,5 @@
 ﻿@model List<TimeSlot>
 
-<div class="alert-danger">
-    @TempData["ErrorNbr"]
-</div>
-
 <div class="text-center">
     <table class="table">
         <tr>
@@ -16,7 +12,7 @@
             <td>@timeSlot.Start</td>
             <td>@timeSlot.End</td>
 
-            <td><a asp-controller="TimeSlot" asp-action="GetCanva" asp-route-IdCanva="@timeSlot.IdCanva">Choisir</a></td>
+            <td><a asp-controller="TimeSlot" asp-action="GetCanva" asp-route-idCanva="@timeSlot.IdCanva">Choisir</a></td>
         </tr>
         }
     </table>

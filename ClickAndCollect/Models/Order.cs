@@ -67,14 +67,11 @@ namespace ClickAndCollect.Models
             return total + ServiceFees + (NumberOfBoxUsed - NumberOfBoxReturned) * BoxesFees;
 
         }
-        public static Order GetDetails(int id,IOrderDAL orderDAL)
+        public static Order GetDetails(IOrderDAL orderDAL, int id)
         {
             return orderDAL.GetOrder(id);
         }
-        public static List<Order> GetOrders(IOrderDAL orderDAL, IEmployees employee)
-        {
-            return orderDAL.GetOrders(employee); 
-        }
+        
         
         public bool ModifyReady(IOrderDAL orderDAL)
         {

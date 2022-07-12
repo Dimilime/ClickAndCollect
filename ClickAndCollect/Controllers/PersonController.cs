@@ -41,7 +41,7 @@ namespace ClickAndCollect.Controllers
                     {
                         HttpContext.Session.SetInt32("Id", person.Id);
                         HttpContext.Session.SetString("State", "connected");
-                        HttpContext.Session.SetString("OrderExist", "false");
+                        //HttpContext.Session.SetString("OrderExist", "false");
                         HttpContext.Session.SetString("Type", "Customer");
                         TempData["Type"] = HttpContext.Session.GetString("Type");
                         TempData["State"] = HttpContext.Session.GetString("State");
