@@ -49,7 +49,7 @@ namespace ClickAndCollect.DAL
 
         }
 
-        public List<Product> GetProducts(Product product)
+        public List<Product> GetProducts(string category)
         {
 
             List<Product> produits = new List<Product>();
@@ -60,7 +60,7 @@ namespace ClickAndCollect.DAL
                 {
                     SqlCommand cmd = new SqlCommand("SELECT * FROM Products WHERE Category = @Category", connection);
 
-                    cmd.Parameters.AddWithValue("Category", product.Category.ToString());
+                    cmd.Parameters.AddWithValue("Category", category);
 
                     connection.Open();
 

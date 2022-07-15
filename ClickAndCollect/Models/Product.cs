@@ -32,9 +32,9 @@ namespace ClickAndCollect.Models
 
         }
 
-        public static List<Product> GetProducts(IProductDAL productDAL, Product produit)
+        public static List<Product> GetProducts(IProductDAL productDAL, string category)
         {
-            return productDAL.GetProducts(produit);
+            return productDAL.GetProducts(category);
         }
         
         public static List<string> GetCategories(IProductDAL productDAL)

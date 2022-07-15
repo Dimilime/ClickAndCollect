@@ -30,24 +30,25 @@ namespace ClickAndCollect.Controllers
             return View(cats);
         }
 
-        public IActionResult Details(Product produit)
+        public IActionResult Details(string category)
         {
-            List<Product> produits = Product.GetProducts(_productDAL,produit);
+            List<Product> produits = Product.GetProducts(_productDAL,category);
             int Nbr = 0;
             ProductNbrViewModels pnvm = new ProductNbrViewModels(produits,Nbr);
-
+            TempData["Category"] =category;
             return View(pnvm);
         }
 
+        
         public IActionResult AddProduct(int NumProduct, int Nbr)
         {
-            
+            string category= (string)TempData["Category"];
             try
             {
                 if (Nbr <= 0)
                 {
                     TempData["Minimum"] = "Vous devez ajouter minimum 1 article !";
-                    return Redirect("Details");
+                    return Redirect($"Details?category={category}");
                     
                 }
                 else if (HttpContext.Session.GetString("CurrentOrder") == null)
@@ -86,7 +87,7 @@ namespace ClickAndCollect.Controllers
 
                 }
                 TempData["Add"] = "Produit ajouté dans le panier !";
-                return Redirect("Details");
+                return Redirect($"Details?category={category}");
             }
             catch (Exception)
             {
