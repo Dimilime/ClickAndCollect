@@ -23,7 +23,7 @@
 
         </table>
 
-        <p>Total : @ViewData["OrderAmount"] € </p><small>(@Order.ServiceFees € de frais de service)</small>
+        <p>Total : @String.Format("{0:0.00}", ViewData["OrderAmount"]) € </p><small>(@Order.ServiceFees € de frais de service)</small>
         
         <div class="text-lg-right">
             <a asp-controller="Shop" asp-action="SelectShop">Valider</a>

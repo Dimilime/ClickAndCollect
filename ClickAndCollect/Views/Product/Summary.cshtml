@@ -20,7 +20,7 @@
 
     </table>
 
-    Total : @ViewData["OrderAmount"] €
+    Total : @String.Format("{0:0.00}", ViewData["OrderAmount"]) €
 
 </div>
 
