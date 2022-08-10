@@ -20,54 +20,7 @@ namespace ClickAndCollect.DAL
             this.connectionString = connectionString;
         }
 
-        public List<OrderTimeSlotOrderProductViewModel> GetOrders(Customer customer)
-        {
-            List<OrderTimeSlotOrderProductViewModel> orderTimeSlotOrderProductViewModel = new List<OrderTimeSlotOrderProductViewModel>();
-
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    SqlCommand cmd = new SqlCommand
-                        ("select o.OrderId from [Order] o " +
-                        "full join TimeSlot t on o.TimeSlotId = t.TimeSlotId " +
-                        "full join OrderProducts op on o.OrderId = op.OrderId " +
-                        "where o.IdPerson = @IdPerson group by o.OrderId", connection);
-
-                    cmd.Parameters.AddWithValue("IdPerson", customer.Id);
-
-                    connection.Open();
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Order order = new Order(customer);
-                            TimeSlot timeSlot = new TimeSlot();
-                            Dictionary<int, int> dictonary = new Dictionary<int, int>();
-                            OrderTimeSlotOrderProductViewModel orderTimeSlotOrderProductViewModel1 = new OrderTimeSlotOrderProductViewModel(order, timeSlot, dictonary);
-
-                            orderTimeSlotOrderProductViewModel1.Order.OrderId = reader.GetInt32("OrderId");
-                            //orderTimeSlotOrderProductViewModel1.Order.Receipt = (bool)reader.GetValue("Receipt");
-                            //orderTimeSlotOrderProductViewModel1.TimeSlot.Day = (DateTime)reader.GetValue("Days");
-
-                            orderTimeSlotOrderProductViewModel.Add(orderTimeSlotOrderProductViewModel1);
-
-                            //orderTimeSlotOrderProductViewModel.OrderProduct.Keys = reader.GetValue("NumProduct");
-                            //orderTimeSlotOrderProductViewModel.OrderProduct.Values = reader.GetValue("Quantity");
-                        }
-                    }
-                }
-
-                return orderTimeSlotOrderProductViewModel;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
-        public bool MakeOrder(Order order, OrderDicoViewModels orderDicoViewModels2)
+        public bool MakeOrder(Order order, OrderDicoViewModels orderDicoViewModels)
         {
             bool success = false;
             int res2, res3;
@@ -103,7 +56,7 @@ namespace ClickAndCollect.DAL
 
                 //3ème insert
                 bool res4 = false;
-                foreach (KeyValuePair<int, int> kvp in orderDicoViewModels2.Dictionary)
+                foreach (KeyValuePair<int, int> kvp in orderDicoViewModels.Dictionary)
                 {
                     res4 = InsertOrderProductWithQuantity(order.OrderId, kvp.Key, kvp.Value);
                 }
@@ -145,8 +98,11 @@ namespace ClickAndCollect.DAL
         public Order GetOrder(int id)
         {
 
-            Order order = new Order();
-            order.OrderId = id;
+            Order order = new Order
+            {
+                OrderId = id
+                                
+            };
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -162,11 +118,14 @@ namespace ClickAndCollect.DAL
                     {
                         while (reader.Read())
                         {
-                            Product product = new Product();
-                            product.NumProduct = reader.GetInt32("NumProduct");
-                            product.Name = reader.GetString("Name");
-                            product.Price = (float)reader.GetDouble("Price");
-                            order.DictionaryProducts.Add(product,reader.GetInt32("Quantity"));
+                            Product product = new Product
+                            {
+                                NumProduct = reader.GetInt32("NumProduct"),
+                                Name = reader.GetString("Name"),
+                                Price = (float)reader.GetDouble("Price")
+                            };
+                            
+                            order.Products.Add(product,reader.GetInt32("Quantity"));
                             order.Ready = reader.GetBoolean("Ready");
                             order.Receipt = reader.GetBoolean("Receipt");
                             order.NumberOfBoxUsed = reader.GetInt32("NumberOfBoxUsed");
@@ -183,60 +142,6 @@ namespace ClickAndCollect.DAL
                 return null;
             }
             
-
-        }
-
-        public List<Order> GetOrders(IEmployees employee)
-        {
-            List<Order> orders = new List<Order>();
-            int nb = 0;
-            string sql2 = "";
-            if (employee is OrderPicker) 
-            {
-                nb = 1;
-            }
-            else
-            {
-                sql2 = "and Receipt=0";
-            }
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-
-                    string sql = "select o.OrderId, o.IdPerson, o.Ready, t.Days, t.Start, t.[End] from [Order] o inner join TimeSlot t on o.TimeSlotId = t.TimeSlotId " +
-                    $"where o.TimeSlotId in (select TimeSlotId from TimeSlot where ShopId = @shopId) and Days = Convert(varchar(10),GETDATE()+{nb},23) {sql2}";
-                    SqlCommand cmd = new SqlCommand(sql, connection);
-                    cmd.Parameters.AddWithValue("shopId", employee.Shop.ShopId);
-                    connection.Open();
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Order order = new Order();
-                            order.OrderId = reader.GetInt32("OrderId");
-                            order.Ready = reader.GetBoolean("Ready");
-                            order.TimeSlot = new TimeSlot();
-                            order.TimeSlot.Start = (TimeSpan)reader.GetValue("Start");
-                            order.TimeSlot.End = (TimeSpan)reader.GetValue("End");
-                            order.TimeSlot.Day = reader.GetDateTime("Days");
-                            order.TimeSlot.Shop = employee.Shop;
-                            order.Customer = new Customer();
-                            order.Customer.Id = reader.GetInt32("IdPerson");
-                            
-                            orders.Add(order);
-                        }
-
-                    }
-                }
-                return orders;
-            }
-            catch (Exception)
-            {
-
-               return null;
-            }
 
         }
 

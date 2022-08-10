@@ -1,4 +1,5 @@
-﻿using ClickAndCollect.Models;
+﻿using ClickAndCollect.Interface;
+using ClickAndCollect.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,6 @@ namespace ClickAndCollect.DAL.IDAL
         public List<Shop> GetShops();
         public Shop GetInfoShop(int id);
         public List<TimeSlot> GetTimeSlots(Shop shop);
-        
+        List<Order> GetOrders(Shop shop, IEmployees employee);
     }
 }

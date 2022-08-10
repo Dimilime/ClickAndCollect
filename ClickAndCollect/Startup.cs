@@ -71,7 +71,7 @@ namespace ClickAndCollect
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Product}/{action=Index}/{id?}");
+                    pattern: "{controller=Person}/{action=Authenticate}/{id?}");
             });
         }
     }

@@ -1,0 +1,10 @@
+﻿@if (TempData["ReceiptValid"] != null && ViewData["Total"] != null)
+{
+    <span>@TempData["ReceiptValid"]</span>
+    <span>Montant total : @String.Format("{0:0.00}", ViewData["Total"]) €</span>
+}
+else
+{
+    <p>Erreur le montant ne peut pas être affiché recommencez</p>
+}
+<a asp-controller="Cashier" asp-action="DailyCustomer">Retour</a>

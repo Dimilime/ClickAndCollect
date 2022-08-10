@@ -15,10 +15,6 @@ namespace ClickAndCollect.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderDAL _orderDAL;
-       
-        
-
-
         public OrderController(IOrderDAL orderDAL)
         {
             _orderDAL = orderDAL;
@@ -27,7 +23,7 @@ namespace ClickAndCollect.Controllers
        
         public IActionResult Details(int id)
         {
-            Order order = Order.GetDetails(id, _orderDAL);
+            Order order = Order.GetDetails(_orderDAL, id );
             if (order == null)
             {
                 ViewData["Error"] = "Commande introuvable!";
@@ -63,13 +59,12 @@ namespace ClickAndCollect.Controllers
         {
             try
             {
-                var obj = HttpContext.Session.GetString("CurrentOrder");
+                string obj = HttpContext.Session.GetString("CurrentOrder");
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
-                OrderDicoViewModels orderDicoViewModels2 = orderDicoViewModels;
-                bool result = orderDicoViewModels.Order.MakeOrder(_orderDAL, orderDicoViewModels2);
+                bool result = orderDicoViewModels.Order.MakeOrder(_orderDAL, orderDicoViewModels);
                 if (result == true)
                 {
-                    HttpContext.Session.SetString("CurrentOrder", "False");
+                    HttpContext.Session.Remove("CurrentOrder");
 
                     TempData["SuccessOrder"] = "Felicitation ta commande a été validé !";
                     return Redirect("/Product/Index");
@@ -80,32 +75,25 @@ namespace ClickAndCollect.Controllers
             }
             catch (Exception)
             {
-                TempData["Error"] = "Erreur session";
+                TempData["Error"] = "Erreur session, reconnectez vous!";
                 return Redirect("/Product/Index");
             }
 
         }
 
-        public IActionResult History()
+        public IActionResult ValidateReceipt(int id)
         {
-            try
+            Order order = Order.GetDetails(_orderDAL, id);
+            if (order == null)
             {
-                int Id = (int)HttpContext.Session.GetInt32("Id");
-                Customer customer = new Customer();
-                customer.Id = Id;
-
-                List<OrderTimeSlotOrderProductViewModel> orders = Order.GetOrders(_orderDAL, customer);
-
-                return View(orders);
+                ViewData["Error"] = "Commande introuvable!";
             }
-            catch (Exception)
-            {
-                TempData["Error"] = "Erreur session";
-                return Redirect("/Product/Index");
-            }
+            
+            return View(order);
         }
-        
-        
-        
+
+
+
+
     }
 }

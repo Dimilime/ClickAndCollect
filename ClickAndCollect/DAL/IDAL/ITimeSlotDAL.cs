@@ -8,7 +8,7 @@ namespace ClickAndCollect.DAL.IDAL
 {
     public interface ITimeSlotDAL
     {
-        public TimeSlot GetTimeSlot(TimeSlot timeSlot);
+        public TimeSlot GetTimeSlot(int id);
         public int CheckIfAvalaible(TimeSlot timeSlot, Shop shop);
     }
 }

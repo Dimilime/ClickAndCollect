@@ -28,29 +28,24 @@ namespace ClickAndCollect.Models
         public Boolean Receipt { get; set; }
         public static double ServiceFees { get; set; } = 5.95;
         public static double BoxesFees { get; set; } = 5.95;
-        public Dictionary<Product, int> DictionaryProducts { get; set; }
+        public Dictionary<Product, int> Products { get; set; }
         public Customer Customer { get; set; }
         public TimeSlot TimeSlot { get; set; }
         public Shop Shop { get; set; }
 
         public Order()
         {
-            DictionaryProducts = new Dictionary<Product, int>();
+            Products = new Dictionary<Product, int>();
         }
         public Order(Customer customer)
         {
-            this.Customer = customer;
-            DictionaryProducts = new Dictionary<Product, int>();
-        }
-       
-        public static List<OrderTimeSlotOrderProductViewModel> GetOrders (IOrderDAL orderDAL, Customer customer)
-        {
-            return orderDAL.GetOrders(customer);
+            Customer = customer;
+            Products = new Dictionary<Product, int>();
         }
 
-        public bool MakeOrder(IOrderDAL orderDAL, OrderDicoViewModels orderDicoViewModels2)
+        public bool MakeOrder(IOrderDAL orderDAL, OrderDicoViewModels orderDicoViewModels)
         {
-            return orderDAL.MakeOrder(this, orderDicoViewModels2);
+            return orderDAL.MakeOrder(this, orderDicoViewModels);
         }
 
         public double GetOrderAmount()
@@ -58,12 +53,12 @@ namespace ClickAndCollect.Models
             return CalculAmount();
         }
 
-        private double CalculAmount()
+        public double CalculAmount()
         {
             double prix;
             double total = 0;
 
-            foreach (var item in DictionaryProducts)
+            foreach (var item in Products)
             {
                 prix = item.Key.Price * item.Value ;
                 total += prix;
@@ -72,18 +67,12 @@ namespace ClickAndCollect.Models
             return total + ServiceFees + (NumberOfBoxUsed - NumberOfBoxReturned) * BoxesFees;
 
         }
-        public static Order GetDetails(int id,IOrderDAL orderDAL)
+        public static Order GetDetails(IOrderDAL orderDAL, int id)
         {
             return orderDAL.GetOrder(id);
         }
-        public static List<Order> GetOrders(IOrderDAL orderDAL, IEmployees employee)
-        {
-            return orderDAL.GetOrders(employee); 
-        }
-        /*public static List<Customer> GetOrderCustomers(IOrderDAL orderDAL, Shop shop)
-        {
-            //return orderDAL.GetOrderCustomers(shop); 
-        }*/
+        
+        
         public bool ModifyReady(IOrderDAL orderDAL)
         {
             return orderDAL.OrderReady(this);

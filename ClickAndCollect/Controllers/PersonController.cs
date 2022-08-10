@@ -22,7 +22,7 @@ namespace ClickAndCollect.Controllers
         
 
         public IActionResult Authenticate()
-        {
+        {   
             return View();
         }
 
@@ -41,10 +41,11 @@ namespace ClickAndCollect.Controllers
                     {
                         HttpContext.Session.SetInt32("Id", person.Id);
                         HttpContext.Session.SetString("State", "connected");
-                        HttpContext.Session.SetString("OrderExist", "false");
+                        //HttpContext.Session.SetString("OrderExist", "false");
                         HttpContext.Session.SetString("Type", "Customer");
                         TempData["Type"] = HttpContext.Session.GetString("Type");
                         TempData["State"] = HttpContext.Session.GetString("State");
+                       
                         return Redirect("/Product/Index");
                     }
                 }
@@ -83,7 +84,7 @@ namespace ClickAndCollect.Controllers
         {
             HttpContext.Session.Clear();
             TempData["State"] = "Disconnect";
-            return Redirect("/Product/Index");
+            return RedirectToAction("Authenticate");
         }
 
     }

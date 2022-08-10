@@ -52,7 +52,7 @@ namespace ClickAndCollect.DAL
 
         public Person GetAllFromUser(Person p)
         {
-            try 
+            try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
@@ -68,6 +68,7 @@ namespace ClickAndCollect.DAL
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
+                        
                         while (reader.Read())
                         {
                             p.Id = reader.GetInt32("IdPerson");
@@ -76,51 +77,59 @@ namespace ClickAndCollect.DAL
                             p.Email = reader.GetString("Email");
                             p.Password = reader.GetString("Password");
                             type = reader.GetString("Type");
-
+                            
                             if (type == "Customer")
                             {
-                                Customer c = new Customer();
-                                c.Id = p.Id;
-                                c.LastName = p.LastName;
-                                c.FirstName = p.FirstName;
-                                c.Email = p.Email;
-                                c.Password = p.Password;
-                                c.DoB = reader.GetDateTime("DoB");
-                                c.PhoneNumber = reader.GetInt32("PhoneNumber");
-                                return c;
+                                Customer c = new Customer
+                                {
+                                    Id = p.Id,
+                                    LastName = p.LastName,
+                                    FirstName = p.FirstName,
+                                    Email = p.Email,
+                                    Password = p.Password,
+                                    DoB = reader.GetDateTime("DoB"),
+                                    PhoneNumber = reader.GetInt32("PhoneNumber")
+                                };
+
+                                return c ;
                             }
 
                             if (type == "OrderPicker")
                             {
-                                OrderPicker o = new OrderPicker();
-                                o.Id = reader.GetInt32("IdPerson");
-                                o.LastName = reader.GetString("LastName");
-                                o.FirstName = reader.GetString("FirstName");
-                                o.Email = reader.GetString("Email");
-                                o.Password = reader.GetString("Password");
+
+                                OrderPicker o = new OrderPicker
+                                {
+                                    Id = p.Id,
+                                    LastName = p.LastName,
+                                    FirstName = p.FirstName,
+                                    Email = p.Email,
+                                    Password = p.Password
+                                };
                                 return o;
                             }
 
                             if (type == "Cashier")
                             {
-                                Cashier c = new Cashier();
-                                c.Id = reader.GetInt32("IdPerson");
-                                c.LastName = reader.GetString("LastName");
-                                c.FirstName = reader.GetString("FirstName");
-                                c.Email = reader.GetString("Email");
-                                c.Password = reader.GetString("Password");
+                                Cashier c = new Cashier
+                                {
+                                    Id = p.Id,
+                                    LastName = p.LastName,
+                                    FirstName = p.FirstName,
+                                    Email = p.Email,
+                                    Password = p.Password
+                                };
                                 return c;
                             }
                         }
                     }
                     return null;
                 }
-            }
+        }
             catch(Exception)
             {
                 return null;
             }
-           
-        }
+
+}
     }
 }

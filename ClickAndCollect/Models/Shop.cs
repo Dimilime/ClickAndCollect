@@ -1,5 +1,6 @@
 ﻿using ClickAndCollect.DAL;
 using ClickAndCollect.DAL.IDAL;
+using ClickAndCollect.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,10 +32,14 @@ namespace ClickAndCollect.Models
             return shopDAL.GetInfoShop(id);
         }
 
-        public static List<TimeSlot> GetTimeSlots(IShopDAL shopDAL, Shop shop)
+        public List<TimeSlot> GetTimeSlots(IShopDAL shopDAL)
         {
-            return shopDAL.GetTimeSlots(shop);
+            return shopDAL.GetTimeSlots(this);
         }
 
+        public void GetOrders(IShopDAL shopDAL, IEmployees employee)
+        {
+            Orders = shopDAL.GetOrders(this,employee);
+        }
     }
 }

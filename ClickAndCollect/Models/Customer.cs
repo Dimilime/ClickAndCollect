@@ -1,4 +1,5 @@
 ﻿using ClickAndCollect.DAL;
+using ClickAndCollect.Validations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,14 +11,12 @@ namespace ClickAndCollect.Models
     public class Customer : Person
     {
         private DateTime doB;
-        private int phoneNumber;   
-        public int OrderId { get; set; }
+        private int phoneNumber;
 
         public Customer() { }
 
         [Display(Name = "Date de naissance")]
-        [DataType(DataType.Date)]
-        //[Range(typeof(DateTime), "01/01/1900", "31/12/2006", ErrorMessage ="La date est incorrect !")] Fonctionne pas
+        [DoB(), DataType(DataType.Date)]
         [Required(ErrorMessage ="La date de naisse est obligatoire !")]
         public DateTime DoB
         {

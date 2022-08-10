@@ -14,17 +14,19 @@ namespace ClickAndCollect.Controllers
     public class ShopController : Controller
     {
         private readonly IShopDAL _shopDAL;
+        private readonly ITimeSlotDAL _timeSlotDAL;
 
-        public ShopController(IShopDAL shopDAL)
+        public ShopController(IShopDAL shopDAL, ITimeSlotDAL timeSlotDAL)
         {
             _shopDAL = shopDAL;
+            _timeSlotDAL = timeSlotDAL;
         }
         
         public IActionResult SelectShop()
         {
             try
             {
-                var obj = HttpContext.Session.GetString("CurrentOrder");
+                string obj = HttpContext.Session.GetString("CurrentOrder");
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
                 if (orderDicoViewModels.Dictionary.Count == 0)
                 {
@@ -37,7 +39,7 @@ namespace ClickAndCollect.Controllers
             }
             catch (Exception)
             {
-                TempData["Error"] = "Erreur session";
+                TempData["Error"] = "Erreur session, reconnectez-vous!";
                 return Redirect("/Product/Index");
             }
         }
@@ -47,7 +49,7 @@ namespace ClickAndCollect.Controllers
         {
             try
             {
-                var obj = HttpContext.Session.GetString("CurrentOrder");
+                string obj = HttpContext.Session.GetString("CurrentOrder");
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
                 Shop shop = Shop.GetInfoShop(_shopDAL, ShopId);
@@ -59,7 +61,7 @@ namespace ClickAndCollect.Controllers
             }
             catch (Exception)
             {
-                TempData["Error"] = "Erreur session";
+                TempData["Error"] = "Erreur session, reconnectez-vous!";
                 return Redirect("/Product/Index");
             }
         }
@@ -71,13 +73,13 @@ namespace ClickAndCollect.Controllers
         {
             if (ts.Day <= DateTime.Today)
             {
-                TempData["Today"] = "La date de retrait doit être une date futur!!";
+                ViewData["Today"] = "La date de retrait doit être une date future!!";
                 return View();
             }
 
             try
             {
-                var obj = HttpContext.Session.GetString("CurrentOrder");
+                string obj = HttpContext.Session.GetString("CurrentOrder");
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
                 TimeSlot timeSlotJour = ts;
@@ -99,14 +101,22 @@ namespace ClickAndCollect.Controllers
         {
             try
             {
-                var obj = HttpContext.Session.GetString("CurrentOrder");
+                string obj = HttpContext.Session.GetString("CurrentOrder");
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
                 Shop shop = orderDicoViewModels.Order.Shop;
+                
 
-                List<TimeSlot> timeSlots = Shop.GetTimeSlots(_shopDAL, shop);
+                List<TimeSlot> timeSlots = shop.GetTimeSlots(_shopDAL);
 
-                HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
+                for (int i = 0; i < timeSlots.Count; i++)
+                {
+                    timeSlots[i].Day = orderDicoViewModels.Order.TimeSlot.Day;
+                    if (timeSlots[i].CheckIfAvalaible(_timeSlotDAL) == 10)
+                    {
+                        timeSlots.RemoveAt(i);
+                    }
+                }
 
                 return View(timeSlots);
             }

@@ -1,22 +1,13 @@
 ﻿@model Order
-@if (TempData["ReceiptValid"] != null)
-{
-    <span>@TempData["ReceiptValid"]</span>
-    
-}
-@if(ViewData["Total"] != null)
-{
-    <span>Montant total : @String.Format("{0:0.00}", ViewData["Total"]) €</span>
-}
 
 @if (Model != null)
 {
     @if (!Model.Receipt)
     {
-        <form asp-action="DailyCustomer" method="post">
+        <form asp-controller="Cashier" asp-action="DailyCustomer" method="post">
             <input type="hidden" asp-for="OrderId" value="@Model.OrderId" />
             <label asp-for="NumberOfBoxReturned"></label>
-            <input asp-for="NumberOfBoxReturned" />
+            <input asp-for="NumberOfBoxReturned" min="0" />
             <span asp-validation-for="NumberOfBoxReturned"></span>
             <label asp-for="Receipt"></label>
             <input asp-for="Receipt" />
@@ -31,4 +22,4 @@ else
     <h1>Erreur!!</h1>
     <p>@ViewData["Error"]</p>
 }
-<a asp-action="DailyCustomer">Retour</a>
+<a asp-controller="Cashier" asp-action="DailyCustomer">Retour</a>

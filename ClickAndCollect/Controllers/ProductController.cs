@@ -21,33 +21,39 @@ namespace ClickAndCollect.Controllers
         }
         public IActionResult Index()
         {
-            List<Product> categories = Product.GetCategories(_productDAL); 
-            return View(categories);
+            List<string> categories = Product.GetCategories(_productDAL);
+            List<Category> cats = new List<Category>();
+            for (int i = 0; i < categories.Count; i++)
+            {
+                cats.Add((Category)Enum.Parse(typeof(Category), categories[i]));
+            }
+            return View(cats);
         }
 
-        public IActionResult Details(Product produit)
+        public IActionResult Details(string category)
         {
-            List<Product> produits = Product.GetProducts(_productDAL,produit);
+            List<Product> produits = Product.GetProducts(_productDAL,category);
             int Nbr = 0;
-
             ProductNbrViewModels pnvm = new ProductNbrViewModels(produits,Nbr);
-
+            TempData["Category"] =category;
             return View(pnvm);
         }
 
+        
         public IActionResult AddProduct(int NumProduct, int Nbr)
         {
-            if (Nbr <= 0)
-            {
-                TempData["Minimum"] = "Vous devez ajouter minimum 1 article !";
-                return Redirect("Index");
-            }
+            string category= (string)TempData["Category"];
             try
             {
-                if (HttpContext.Session.GetString("OrderExist") == "false")
+                if (Nbr <= 0)
                 {
-                    HttpContext.Session.SetString("OrderExist", "True");
-
+                    TempData["Minimum"] = "Vous devez ajouter minimum 1 article !";
+                    return Redirect($"Details?category={category}");
+                    
+                }
+                else if (HttpContext.Session.GetString("CurrentOrder") == null)
+                {
+                    //HttpContext.Session.SetString("OrderExist", "True");
                     int id = (int)HttpContext.Session.GetInt32("Id");
                     Customer customer = new Customer();
                     customer.Id = id;
@@ -63,7 +69,7 @@ namespace ClickAndCollect.Controllers
                 }
                 else
                 {
-                    var obj = HttpContext.Session.GetString("CurrentOrder");
+                    string obj = HttpContext.Session.GetString("CurrentOrder");
                     OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
                     if (orderDicoViewModels.Dictionary.ContainsKey(NumProduct))
@@ -80,13 +86,13 @@ namespace ClickAndCollect.Controllers
                     HttpContext.Session.SetString("CurrentOrder", JsonConvert.SerializeObject(orderDicoViewModels));
 
                 }
-                TempData["Add"] = "L'ajout a été réalisé avec succès !";
-                return Redirect("Index");
+                TempData["Add"] = "Produit ajouté dans le panier !";
+                return Redirect($"Details?category={category}");
             }
             catch (Exception)
             {
                 TempData["Error"] = "Erreur session, reconnectez vous!";
-                return Redirect("/Product/Index");
+                return Redirect("Index");
             }
 
         }
@@ -95,16 +101,16 @@ namespace ClickAndCollect.Controllers
         {
             try
             {
-                var obj = HttpContext.Session.GetString("CurrentOrder");
+                string obj = HttpContext.Session.GetString("CurrentOrder");
 
                 if (obj is null)
                 {
-                    TempData["BasketEmpty"] = "Votre panier est vide :(";
-                    return View("BasketEmpty");
+                    ViewData["BasketEmpty"] = "Votre panier est vide :(";
+                    return View();
                 }
 
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
-                orderDicoViewModels.Order.DictionaryProducts = new Dictionary<Product, int>();
+                orderDicoViewModels.Order.Products = new Dictionary<Product, int>();
 
                 foreach (int key in orderDicoViewModels.Dictionary.Keys)
                 {
@@ -114,13 +120,13 @@ namespace ClickAndCollect.Controllers
 
                     int Nbr = orderDicoViewModels.Dictionary[key];
 
-                    orderDicoViewModels.Order.DictionaryProducts.Add(p, Nbr);
+                    orderDicoViewModels.Order.Products.Add(p, Nbr);
 
                 }
 
                 double SoldePanier = orderDicoViewModels.Order.GetOrderAmount();
 
-                TempData["OrderAmount"] = SoldePanier;
+                ViewData["OrderAmount"] = SoldePanier;
 
                 return View(orderDicoViewModels);
             }
@@ -135,7 +141,7 @@ namespace ClickAndCollect.Controllers
         {
             try
             {
-                var obj = HttpContext.Session.GetString("CurrentOrder");
+                string obj = HttpContext.Session.GetString("CurrentOrder");
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
                 orderDicoViewModels.Dictionary.Remove(Key);
@@ -155,26 +161,28 @@ namespace ClickAndCollect.Controllers
         {
             try
             {
-                var obj = HttpContext.Session.GetString("CurrentOrder");
+                string obj = HttpContext.Session.GetString("CurrentOrder");
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
-                orderDicoViewModels.Order.DictionaryProducts = new Dictionary<Product, int>();
+                orderDicoViewModels.Order.Products = new Dictionary<Product, int>();
 
                 foreach (int key in orderDicoViewModels.Dictionary.Keys)
                 {
-                    Product p = new Product();
-                    p.NumProduct = key;
+                    Product p = new Product
+                    {
+                        NumProduct = key
+                    };
                     p = p.GetInfoProduct(_productDAL);
 
                     int Nbr = orderDicoViewModels.Dictionary[key];
 
-                    orderDicoViewModels.Order.DictionaryProducts.Add(p, Nbr);
+                    orderDicoViewModels.Order.Products.Add(p, Nbr);
 
                 }
 
                 double SoldePanier = orderDicoViewModels.Order.GetOrderAmount();
 
-                TempData["OrderAmount"] = SoldePanier;
+                ViewData["OrderAmount"] = SoldePanier;
 
 
                 return View(orderDicoViewModels);

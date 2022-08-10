@@ -1,12 +1,11 @@
-﻿@model List<Product>
+﻿@model List<Category>
 
-<div class="alert-success">
-    @TempData["Add"]
+<div class="alert-success divMsg">
     @TempData["AccountCreate"] 
     @TempData["SuccessOrder"]
 </div>
-<div class="alert-danger">
-    @TempData["Minimum"]
+<div class="alert-danger divMsg">
+    
     @TempData["ErrorOrder"]
     @TempData["Error"]
 </div>
@@ -14,14 +13,16 @@
 <div class="text-center">
     <table class="table">
         <tr>
-            Categorie
+            <th>Catégories</th>
         </tr>
-        @foreach (Product product in Model)
+        
+        @foreach (Category cat in Model)
         {
-    <tr>
-        <td>@product.Category</td>
-        <td><a asp-controller="Product" asp-action="Details" asp-route-category="@product.Category">details</a></td>
-    </tr>
+            <tr>
+                <td>@cat.GetDisplayName()</td>
+                
+                <td><a asp-controller="Product" asp-action="Details" asp-route-category="@cat">details</a></td>
+            </tr>
         }
     </table>
 

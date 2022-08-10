@@ -21,24 +21,28 @@ namespace ClickAndCollect.Controllers
             _shopDAL = shopDAL;
             _orderDAL = orderDAL;
         }
+        
         public IActionResult Orders()
         {
             try
             {
                 int oPId = (int)HttpContext.Session.GetInt32("IdOp");// get orderpicker id
                 OrderPicker orderPicker = OrderPicker.GetOrderPicker(_orderPickerDAL, oPId);
-                int idShop = orderPicker.Shop.ShopId;
-                orderPicker.Shop = Shop.GetInfoShop(_shopDAL, idShop);
-                orderPicker.Shop.Orders = Order.GetOrders(_orderDAL, orderPicker);
+                orderPicker.GetInfoShop(_shopDAL);
+                orderPicker.GetOrders(_shopDAL);
                 if (orderPicker.Shop.Orders == null)
                 {
                     ViewData["ErrorOrder"] = "Erreur liste de commande non trouvé!";
+                }
+                else if (orderPicker.Shop.Orders.Count == 0)
+                {
+                    ViewData["EmptyOrder"] = "Pas de commande pour demain!";
                 }
                 return View(orderPicker.Shop.Orders);
             }
             catch (Exception)
             {
-                TempData["ErrorIdShop"] = "Erreur reconnectez vous!";
+                TempData["ErrorSession"] = "Erreur reconnectez vous!";
                 return Redirect("/Person/Authenticate");
             }
 

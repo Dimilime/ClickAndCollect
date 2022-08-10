@@ -20,7 +20,7 @@ namespace ClickAndCollect.DAL
 
         public Cashier GetCashier(int id)
         {
-            Cashier cashier = new Cashier();
+            Cashier cashier = null;
             Shop shop = new Shop();
             try
             {
@@ -35,14 +35,17 @@ namespace ClickAndCollect.DAL
                     {
                         while (reader.Read())
                         {
-
-                            cashier.Id = reader.GetInt32("IdPerson");
-                            cashier.LastName = reader.GetString("LastName");
-                            cashier.FirstName = reader.GetString("FirstName");
-                            cashier.Email = reader.GetString("Email");
-                            cashier.Password = reader.GetString("Password");
                             shop.ShopId = reader.GetInt32("ShopId");
-                            cashier.Shop = shop;
+                            cashier = new Cashier(shop)
+                            {
+                                Id = reader.GetInt32("IdPerson"),
+                                LastName = reader.GetString("LastName"),
+                                FirstName = reader.GetString("FirstName"),
+                                Email = reader.GetString("Email"),
+                                Password = reader.GetString("Password")
+                            };
+
+
                         }
 
                     }

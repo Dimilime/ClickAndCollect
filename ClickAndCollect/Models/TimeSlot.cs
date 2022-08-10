@@ -19,6 +19,10 @@ namespace ClickAndCollect.Models
         {
 
         }
+        public TimeSlot(Shop shop)
+        {
+            Shop = shop;
+        }
 
         public TimeSpan Start
         {
@@ -41,15 +45,14 @@ namespace ClickAndCollect.Models
             set { day = value; }
         }
 
-        public static TimeSlot GetTimeSlot(ITimeSlotDAL timeSlotDAL, TimeSlot timeSlot)
+        public static TimeSlot GetTimeSlot(ITimeSlotDAL timeSlotDAL,int id)
         {
-            return timeSlotDAL.GetTimeSlot(timeSlot);
+            return timeSlotDAL.GetTimeSlot(id);
         }
 
-        public int CheckIfAvalaible(ITimeSlotDAL timeSlotDAL, Shop shop)
+        public int CheckIfAvalaible(ITimeSlotDAL timeSlotDAL)
         {
-            Shop = shop;
-            return timeSlotDAL.CheckIfAvalaible(this, shop);
+            return timeSlotDAL.CheckIfAvalaible(this, Shop);
         }
     }
 }
