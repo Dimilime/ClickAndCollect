@@ -125,7 +125,7 @@ namespace ClickAndCollect.DAL
                                 Price = (float)reader.GetDouble("Price")
                             };
                             
-                            order.DictionaryProducts.Add(product,reader.GetInt32("Quantity"));
+                            order.Products.Add(product,reader.GetInt32("Quantity"));
                             order.Ready = reader.GetBoolean("Ready");
                             order.Receipt = reader.GetBoolean("Receipt");
                             order.NumberOfBoxUsed = reader.GetInt32("NumberOfBoxUsed");

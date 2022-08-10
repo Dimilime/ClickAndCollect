@@ -110,7 +110,7 @@ namespace ClickAndCollect.Controllers
                 }
 
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
-                orderDicoViewModels.Order.DictionaryProducts = new Dictionary<Product, int>();
+                orderDicoViewModels.Order.Products = new Dictionary<Product, int>();
 
                 foreach (int key in orderDicoViewModels.Dictionary.Keys)
                 {
@@ -120,7 +120,7 @@ namespace ClickAndCollect.Controllers
 
                     int Nbr = orderDicoViewModels.Dictionary[key];
 
-                    orderDicoViewModels.Order.DictionaryProducts.Add(p, Nbr);
+                    orderDicoViewModels.Order.Products.Add(p, Nbr);
 
                 }
 
@@ -164,7 +164,7 @@ namespace ClickAndCollect.Controllers
                 string obj = HttpContext.Session.GetString("CurrentOrder");
                 OrderDicoViewModels orderDicoViewModels = JsonConvert.DeserializeObject<OrderDicoViewModels>(obj);
 
-                orderDicoViewModels.Order.DictionaryProducts = new Dictionary<Product, int>();
+                orderDicoViewModels.Order.Products = new Dictionary<Product, int>();
 
                 foreach (int key in orderDicoViewModels.Dictionary.Keys)
                 {
@@ -176,7 +176,7 @@ namespace ClickAndCollect.Controllers
 
                     int Nbr = orderDicoViewModels.Dictionary[key];
 
-                    orderDicoViewModels.Order.DictionaryProducts.Add(p, Nbr);
+                    orderDicoViewModels.Order.Products.Add(p, Nbr);
 
                 }
 

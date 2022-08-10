@@ -73,7 +73,7 @@ namespace ClickAndCollect.Controllers
         {
             if (ts.Day <= DateTime.Today)
             {
-                TempData["Today"] = "La date de retrait doit être une date future!!";
+                ViewData["Today"] = "La date de retrait doit être une date future!!";
                 return View();
             }
 

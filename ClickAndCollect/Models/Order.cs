@@ -28,19 +28,19 @@ namespace ClickAndCollect.Models
         public Boolean Receipt { get; set; }
         public static double ServiceFees { get; set; } = 5.95;
         public static double BoxesFees { get; set; } = 5.95;
-        public Dictionary<Product, int> DictionaryProducts { get; set; }
+        public Dictionary<Product, int> Products { get; set; }
         public Customer Customer { get; set; }
         public TimeSlot TimeSlot { get; set; }
         public Shop Shop { get; set; }
 
         public Order()
         {
-            DictionaryProducts = new Dictionary<Product, int>();
+            Products = new Dictionary<Product, int>();
         }
         public Order(Customer customer)
         {
             Customer = customer;
-            DictionaryProducts = new Dictionary<Product, int>();
+            Products = new Dictionary<Product, int>();
         }
 
         public bool MakeOrder(IOrderDAL orderDAL, OrderDicoViewModels orderDicoViewModels)
@@ -58,7 +58,7 @@ namespace ClickAndCollect.Models
             double prix;
             double total = 0;
 
-            foreach (var item in DictionaryProducts)
+            foreach (var item in Products)
             {
                 prix = item.Key.Price * item.Value ;
                 total += prix;

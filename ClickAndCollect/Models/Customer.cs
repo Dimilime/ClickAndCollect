@@ -11,8 +11,7 @@ namespace ClickAndCollect.Models
     public class Customer : Person
     {
         private DateTime doB;
-        private int phoneNumber;   
-        public int OrderId { get; set; }
+        private int phoneNumber;
 
         public Customer() { }
 

@@ -57,19 +57,7 @@ namespace ClickAndCollect.Controllers
             }
         }
 
-        public IActionResult ValidateReceipt(int id)
-        {
-            Order order = Order.GetDetails(_orderDAL, id);
-            if (order == null)
-            {
-                ViewData["Error"] = "Commande introuvable!";
-            }
-            if ((string)TempData["ReceiptValid"] == "Commande repris!")
-            {
-                ViewData["Total"] = order.GetOrderAmount();
-            }
-            return View(order);
-        }
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DailyCustomer(Order order)
@@ -82,7 +70,10 @@ namespace ClickAndCollect.Controllers
                     {
                         if (order.Receipt)
                         {
+                            order = Order.GetDetails(_orderDAL, order.OrderId);//Juste pour calculer le montant total
+                            ViewData["Total"] = order.GetOrderAmount();
                             TempData["ReceiptValid"] = "Commande repris!";
+                            
                         }
                         else
                         {
@@ -95,7 +86,7 @@ namespace ClickAndCollect.Controllers
                         TempData["ReceiptValid"] = "L'insertion s'est mal déroulé veuillez réessayer!";
                     }
                 }
-                return Redirect($"ValidateReceipt/{order.OrderId}");
+                return View("Amount");
             }
             ViewData["OrderNotFound"] = "Commande non trouvé!";
             return View();

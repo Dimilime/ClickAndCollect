@@ -19,7 +19,7 @@
                     <td>@order.OrderId</td>
                     <td>@order.Customer.LastName</td>
                     <td>@order.Customer.FirstName</td>
-                    <td><a asp-action="ValidateReceipt" asp-route-id="@order.OrderId">Voir montant total</a></td>
+                    <td><a asp-controller="Order" asp-action="ValidateReceipt" asp-route-id="@order.OrderId">Voir montant total</a></td>
                 </tr>
             }
         </table>

@@ -81,8 +81,19 @@ namespace ClickAndCollect.Controllers
 
         }
 
-        
-        
-        
+        public IActionResult ValidateReceipt(int id)
+        {
+            Order order = Order.GetDetails(_orderDAL, id);
+            if (order == null)
+            {
+                ViewData["Error"] = "Commande introuvable!";
+            }
+            
+            return View(order);
+        }
+
+
+
+
     }
 }
