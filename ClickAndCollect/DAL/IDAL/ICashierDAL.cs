@@ -8,6 +8,6 @@ namespace ClickAndCollect.DAL.IDAL
 {
     public interface ICashierDAL
     {
-        public Cashier GetCashier(int id);
+         Cashier GetCashier(int id);
     }
 }

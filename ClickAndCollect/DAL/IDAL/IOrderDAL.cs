@@ -10,11 +10,11 @@ namespace ClickAndCollect.DAL.IDAL
 {
     public interface IOrderDAL
     {
-        public bool MakeOrder(Order order, OrderDicoViewModels orderDicoViewModels);
+        bool MakeOrder(Order order, OrderDicoViewModels orderDicoViewModels);
         
-        public bool InsertOrderProductWithQuantity(int OrderId, int NumProduct, int Quantity);
-        public Order GetOrder(int id);
-        public bool OrderReady(Order order);
-        public bool OrderReceipt(Order order);
+        bool InsertOrderProductWithQuantity(int OrderId, int NumProduct, int Quantity);
+        Order GetOrder(int id);
+        bool OrderReady(Order order);
+        bool OrderReceipt(Order order);
     }
 }
