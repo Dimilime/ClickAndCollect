@@ -9,10 +9,10 @@ namespace ClickAndCollect.Interface
 {
     public interface IEmployees
     {
-        public Shop Shop { get; set; }
+        Shop Shop { get; set; }
 
-        public void GetOrders(IShopDAL shopDAL);
+        void GetOrders(IShopDAL shopDAL);
 
-        public void GetInfoShop(IShopDAL shopDAL);
+        void GetInfoShop(IShopDAL shopDAL);
     }
 }
