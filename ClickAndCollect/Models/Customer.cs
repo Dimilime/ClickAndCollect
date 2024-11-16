@@ -24,7 +24,7 @@ namespace ClickAndCollect.Models
             get { return doB; }
             set { doB = value; }
         }
-        
+
         [Display(Name = "Numéro de téléphone")]
         [Required(ErrorMessage ="Le numéro de téléphone est obligatoire !")]
         [RegularExpression("^(\\+\\d{1,3}[- ]?)?\\d{10}$", ErrorMessage = "Entrez un numéro valide!")]

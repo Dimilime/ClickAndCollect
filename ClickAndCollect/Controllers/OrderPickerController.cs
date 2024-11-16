@@ -13,10 +13,13 @@ namespace ClickAndCollect.Controllers
     public class OrderPickerController : Controller
     {
         private readonly IOrderPickerDAL _orderPickerDAL;
-        
-        public OrderPickerController(IOrderPickerDAL orderPickerDAL, IShopDAL shopDAL)
+        private readonly IShopDAL _shopDAL;
+        private readonly IOrderDAL _orderDAL;
+        public OrderPickerController(IOrderPickerDAL orderPickerDAL, IShopDAL shopDAL, IOrderDAL orderDAL)
         {
             _orderPickerDAL = orderPickerDAL;
+            _shopDAL = shopDAL;
+            _orderDAL = orderDAL;
         }
         public IActionResult Orders()
         {
@@ -24,17 +27,22 @@ namespace ClickAndCollect.Controllers
             {
                 int oPId = (int)HttpContext.Session.GetInt32("IdOp");// get orderpicker id
                 OrderPicker orderPicker = OrderPicker.GetOrderPicker(_orderPickerDAL, oPId);
-                int IdShop = orderPicker.Shop.ShopId;
-                HttpContext.Session.SetInt32("IdShop", IdShop); 
-                return RedirectToAction("Orders","Order",orderPicker);
+                int idShop = orderPicker.Shop.ShopId;
+                orderPicker.Shop = Shop.GetInfoShop(_shopDAL, idShop);
+                orderPicker.Shop.Orders = Order.GetOrders(_orderDAL, orderPicker);
+                if (orderPicker.Shop.Orders == null)
+                {
+                    ViewData["ErrorOrder"] = "Erreur liste de commande non trouvé!";
+                }
+                return View(orderPicker.Shop.Orders);
             }
             catch (Exception)
             {
-                TempData["ErrorSession"] = "Erreur reconnectez vous!";
+                TempData["ErrorIdShop"] = "Erreur reconnectez vous!";
                 return Redirect("/Person/Authenticate");
             }
-            
-            
+
+
         }
         
     }
