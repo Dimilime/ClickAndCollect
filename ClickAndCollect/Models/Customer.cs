@@ -18,7 +18,7 @@ namespace ClickAndCollect.Models
         [Display(Name = "Date de naissance")]
         [DataType(DataType.Date)]
         //[Range(typeof(DateTime), "01/01/1900", "31/12/2006", ErrorMessage ="La date est incorrect !")] Fonctionne pas
-        [Required(ErrorMessage ="La date de naisse est obligatoire !")]
+        [Required(ErrorMessage ="La date de naissance est obligatoire !")]
         public DateTime DoB
         {
             get { return doB; }
@@ -27,7 +27,7 @@ namespace ClickAndCollect.Models
         
         [Display(Name = "Numéro de téléphone")]
         [Required(ErrorMessage ="Le numéro de téléphone est obligatoire !")]
-        [Phone (ErrorMessage ="Le numéro de téléphone est invalide !")]
+        [RegularExpression("^(\\+\\d{1,3}[- ]?)?\\d{10}$", ErrorMessage = "Entrez un numéro valide!")]
         public int PhoneNumber
         {
             get { return phoneNumber; }
